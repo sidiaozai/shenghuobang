@@ -1,0 +1,56 @@
+package sqliteDataBase.Model;
+
+import java.util.Date;
+
+public class ChargeStatistic {
+	private int id;
+	private Date date;
+	private int inSum;
+	private int outSum;
+	
+	public ChargeStatistic(int id,Date date,int inSum,int outSum){
+		this.id = id;
+		 this.date = date;
+		 this.inSum = inSum;
+		 this.outSum = outSum;
+	}
+	
+	public ChargeStatistic(Date date,Date date,int inSum,int outSum){
+		this.date = date;
+		 this.inSum = inSum;
+		 this.outSum = outSum;
+	}
+	public int getId(){
+		return id;
+	}
+	public void setId(int id){
+		this.id = id;
+	}
+	public Date getDate(){
+		return date;
+	}
+	public void setDate(Date date){
+		this.date = date;
+	}
+	public String getDataStr(){
+		return date.getYear()+"Äê"+date.getMonth()+"ÔÂ"+date.getDay()+"ÈÕ";
+	}
+	public int getSum(){
+		return sum;
+	}
+	public void setSum(int sum){
+		this.sum = sum;
+	}
+	public int getType(){
+		return type;
+	}
+	public void setType(int type){
+		this.type = type;
+	}
+	public String getDes(){
+		return des;
+	}
+	public void setDes(String des){
+		this.des = des;
+	}
+}

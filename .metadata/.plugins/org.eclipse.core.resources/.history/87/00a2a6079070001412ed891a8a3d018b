@@ -1,0 +1,5 @@
+package sqliteDataBase.Model;
+
+public class Password {
+
+}

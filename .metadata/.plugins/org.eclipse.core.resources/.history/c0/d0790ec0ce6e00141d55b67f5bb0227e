@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">生活帮</string>
+    
+    <string name="action_charge">记账</string>
+    <string name="action_memo">备忘</string>
+    <string name="action_password">密码</string>
+    <string name="action_settings">设置</string>
+    <string name="start">&#060</string>
+    
+
+</resources>

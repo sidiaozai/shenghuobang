@@ -1,0 +1,48 @@
+package com.example.shenghuobang;
+
+public class UnforgetAdapter {
+
+	extends BaseAdapter{ 
+        //上下文对象 
+        private Context context; 
+        //图片数组 
+        private Integer[] imgs = { 
+                R.drawable.pic0, R.drawable.pic1, R.drawable.pic2,  
+                R.drawable.pic3, R.drawable.pic4, R.drawable.pic5,                
+                R.drawable.pic6, R.drawable.pic7, R.drawable.pic8,  
+                R.drawable.pic0, R.drawable.pic1, R.drawable.pic2,  
+                R.drawable.pic3, R.drawable.pic4, R.drawable.pic5,                
+                R.drawable.pic6, R.drawable.pic7, R.drawable.pic8, 
+        }; 
+        MyAdapter(Context context){ 
+            this.context = context; 
+        } 
+        public int getCount() { 
+            return imgs.length; 
+        } 
+ 
+        public Object getItem(int item) { 
+            return item; 
+        } 
+ 
+        public long getItemId(int id) { 
+            return id; 
+        } 
+         
+        //创建View方法 
+        public View getView(int position, View convertView, ViewGroup parent) { 
+             ImageView imageView; 
+                if (convertView == null) { 
+                    imageView = new ImageView(context); 
+                    imageView.setLayoutParams(new GridView.LayoutParams(75, 75));//设置ImageView对象布局 
+                    imageView.setAdjustViewBounds(false);//设置边界对齐 
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);//设置刻度的类型 
+                    imageView.setPadding(8, 8, 8, 8);//设置间距 
+                }  
+                else { 
+                    imageView = (ImageView) convertView; 
+                } 
+                imageView.setImageResource(imgs[position]);//为ImageView设置图片资源 
+                return imageView; 
+        } 
+} 

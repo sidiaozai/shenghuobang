@@ -1,0 +1,45 @@
+package com.example.shenghuobang;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TableRow;
+
+public class UnforgetActivity extends Activity {
+	private Button btnAddUnForget;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_unforget);
+		
+		btnAddUnForget = (Button) findViewById(R.id.btnAddUnForget);
+		
+		btnAddUnForget.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+                intent.setClass(UnforgetActivity.this, AddUnforgetActivity.class);
+                startActivityForResult(intent, 1);
+			}
+		});
+	}
+	
+	private void setView(TableRow row, String strData, int iTextWith,
+            int iPadding, int iColor) {
+    Button tv_next = new Button(this);
+    tv_next.setPadding(iPadding, iPadding, iPadding, iPadding);
+    tv_next.setWidth(iTextWith);
+    tv_next.setText(strData);
+    tv_next.setGravity(Gravity.CENTER);
+    tv_next.setBackgroundColor(iColor);
+    TableRow.LayoutParams lp = new TableRow.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+    lp.setMargins(1, 1, 1, 1);
+    row.addView(tv_next, lp);
+}
+}

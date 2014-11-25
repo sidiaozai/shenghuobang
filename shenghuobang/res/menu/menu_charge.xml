@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/action_charge"
+        android:icon="@drawable/ico_writeing_press"
+        android:title="@string/action_charge"/>
+    <item
+        android:id="@+id/action_memo"
+        android:icon="@drawable/ico_unforget_norm"
+        android:title="@string/action_memo"/>
+    <item
+        android:id="@+id/action_password"
+        android:icon="@drawable/ico_password_norm"
+        android:title="@string/action_password"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ico_setting_norm"
+        android:title="@string/action_settings"/>
+    
+</menu>

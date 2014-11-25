@@ -1,0 +1,114 @@
+package com.example.shenghuobang;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import sqliteDataBase.Model.Charge;
+import android.app.Activity;
+import android.app.ListActivity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class AddChargeActivity extends ListActivity {
+	
+	private Button btnSave;
+	private TextView tVAddChargeTime1;
+	private EditText etAddChargeSum;
+	private EditText etSum;
+	private RadioButton radioButtonType;
+	private EditText etAddChargeDes;
+	private sqliteDataBase.Model.Charge modelCharge ;
+	private sqliteDataBase.Bll.Charge bllCharge;
+	
+	private MyAdapter adapter;
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_add_charge);
+		
+		bllCharge = new sqliteDataBase.Bll.Charge(AddChargeActivity.this);
+		
+		Date curDate = new Date(System.currentTimeMillis());
+		
+		int intYear = curDate.getYear()+1900;
+		String strYear = String.format("%04d",intYear)+"年";
+		int intMonth = curDate.getMonth()+1;
+		String strMonth = String.format("%02d",intMonth)+"月";
+		int intData = curDate.getDate();
+		String strData = String.format("%02d",intData)+"日";
+		
+	
+		tVAddChargeTime1 = (TextView) findViewById(R.id.tVAddChargeTime1);
+		tVAddChargeTime1.setText(strYear+strMonth+strData);
+		
+		etAddChargeSum = (EditText) findViewById(R.id.etAddChargeSum);
+		
+		radioButtonType = (RadioButton) findViewById(R.id.radioButton1);
+		
+		etAddChargeDes = (EditText) findViewById(R.id.etAddChargeDes);
+			
+		btnSave = (Button) findViewById(R.id.btnSave);
+		
+		btnSave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				Date curDate = new Date(System.currentTimeMillis());//获取当前时间       
+				String time = formatter.format(curDate);
+				String srtSum = etAddChargeSum.getText().toString();
+				if(srtSum.length()==0){
+					Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				int sum = Integer.valueOf(srtSum);
+				
+				int type = radioButtonType.isChecked()==true?1:0;
+				String des = etAddChargeDes.getText().toString();
+				if(des.length()==0){
+					Toast.makeText(AddChargeActivity.this, "用途不能为空", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				modelCharge = new Charge(time, sum, type, des);
+				
+				bllCharge.insert(modelCharge);
+				
+				adapter.setArrarys(getData());
+				adapter.notifyDataSetChanged();
+				
+			}
+		});
+		
+		adapter = new MyAdapter(this, getData());
+		setListAdapter(adapter);
+	}
+	private List<String> getData() {
+		List<String> list = new ArrayList<String>(); 
+
+		Cursor cursor = bllCharge.query();
+		
+		if (cursor.getCount() == 0) {
+			list.add("没有记录");
+        }else{
+        	while(cursor.moveToNext()){
+        		String sum = cursor.getString(cursor.getColumnIndex("sum"));
+        		String des = "";//cursor.getString(cursor.getColumnIndex("des"));
+        		list.add("金额："+sum+"    用途："+des);
+        	}
+        }
+        cursor.close();
+		return list;
+	}
+}

@@ -1,0 +1,19 @@
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="android.widget.BaseAdapter"><rhs name\="com.example.shenghuobang.MyAdapter"/></lhs><lhs name\="android.widget.ListAdapter"><rhs name\="com.example.shenghuobang.MyAdapter"/><rhs name\="com.example.shenghuobang.UnforgetAdapter"/></lhs><lhs name\="android.widget.SpinnerAdapter"><rhs name\="com.example.shenghuobang.MyAdapter"/></lhs><lhs name\="android.widget.Adapter"><rhs name\="com.example.shenghuobang.MyAdapter"/><rhs name\="com.example.shenghuobang.UnforgetAdapter"/></lhs><lhs name\="com.example.shenghuobang.MyAdapter"><rhs name\="com.example.shenghuobang.MyAdapter"/></lhs><lhs name\="android.content.Context"><rhs name\="com.example.shenghuobang.InputPasswordActivity"/><rhs name\="com.example.shenghuobang.AddChargeActivity"/><rhs name\="com.example.shenghuobang.PasswordActivity"/></lhs><lhs name\="sqliteDataBase.Model.Charge"><rhs name\="sqliteDataBase.Model.Charge"/></lhs><lhs name\="sqliteDataBase.Bll.Charge"><rhs name\="sqliteDataBase.Bll.Charge"/></lhs><lhs name\="android.database.sqlite.SQLiteOpenHelper"><rhs name\="sqliteDataBase.DatabaseHelper"/></lhs><lhs name\="sqliteDataBase.DatabaseHelper"><rhs name\="sqliteDataBase.DatabaseHelper"/></lhs><lhs name\="java.util.Collection"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Iterable"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.List"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.util.Date"/></lhs><lhs name\="java.util.Date"><rhs name\="java.util.Date"/></lhs><lhs name\="java.lang.CharSequence"><rhs name\="java.lang.String"/></lhs><lhs name\="sqliteDataBase.Model.Unforget"><rhs name\="sqliteDataBase.Model.Unforget"/></lhs><lhs name\="sqliteDataBase.Bll.Unforget"><rhs name\="sqliteDataBase.Bll.Unforget"/></lhs></history>
+content_assist_number_of_computers=13
+content_assist_proposals_background=255,255,255
+content_assist_proposals_foreground=0,0,0
+eclipse.preferences.version=1
+fontPropagated=true
+org.eclipse.jdt.ui.editor.tab.width=
+org.eclipse.jdt.ui.formatterprofiles.version=12
+org.eclipse.jdt.ui.javadoclocations.migrated=true
+org.eclipse.jdt.ui.text.code_templates_migrated=true
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.templates_migrated=true
+org.eclipse.jface.textfont=1|Consolas|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Consolas;
+proposalOrderMigrated=true
+spelling_locale_initialized=true
+tabWidthPropagated=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

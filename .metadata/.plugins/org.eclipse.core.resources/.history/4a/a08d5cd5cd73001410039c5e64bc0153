@@ -1,0 +1,153 @@
+package com.example.shenghuobang;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import sqliteDataBase.Model.Unforget;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class UnforgetActivity extends Activity {
+	
+	private Button btnAddUnForget;
+	private GridView gridViewUnforget;
+	private sqliteDataBase.Bll.Unforget bllUnforget;
+	private LinearLayout llUnforgetDate;
+	private LinearLayout llUnforgetTime;
+	
+	private TextView tvUnforgetYear;
+	private TextView tvUnforgetMonth;
+	private TextView tvUnforgetDay;
+	
+	private TextView tvUnforgetHour;
+	private TextView tvUnforgetMinute;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_unforget);
+		
+		bllUnforget = new sqliteDataBase.Bll.Unforget(this);
+		
+		
+		btnAddUnForget = (Button) findViewById(R.id.btnAddUnForget);
+		
+		btnAddUnForget.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+                intent.setClass(UnforgetActivity.this, AddUnforgetActivity.class);
+                startActivityForResult(intent, 1);
+			}
+		});
+		
+		gridViewUnforget = (GridView) findViewById(R.id.gridViewUnforget);
+		
+		//为GridView设置适配器 
+		gridViewUnforget.setAdapter(new UnforgetAdapter(this,getData())); 
+        //注册监听事件 
+		gridViewUnforget.setOnItemClickListener(new OnItemClickListener() 
+        { 
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) 
+            { 
+                Toast.makeText(UnforgetActivity.this, "pic" + position, Toast.LENGTH_SHORT).show(); 
+            } 
+        }); 
+		
+		llUnforgetDate = (LinearLayout) findViewById(R.id.llUnforgetDate);
+		llUnforgetDate.setOnClickListener(new OnClickListener() {
+			
+			Calendar calendar = Calendar.getInstance();
+			@Override
+			public void onClick(View arg0) {
+				
+					final Calendar localCalendar = Calendar.getInstance();
+					
+					new MonPickerDialog(UnforgetActivity.this,dateListener, localCalendar.get(1), localCalendar.get(2),localCalendar.get(5)).show();
+			}
+		});
+		llUnforgetTime = (LinearLayout) findViewById(R.id.llUnforgetTime);
+		llUnforgetTime.setOnClickListener(new OnClickListener() {
+			
+			Calendar calendar = Calendar.getInstance();
+			@Override
+			public void onClick(View arg0) {
+				
+					final Calendar localCalendar = Calendar.getInstance();
+					new MonPickerDialog(UnforgetActivity.this,dateListener, localCalendar.get(1), localCalendar.get(2),localCalendar.get(5)).show();
+			}
+		});
+	}
+	DatePickerDialog.OnDateSetListener dateListener =  new DatePickerDialog.OnDateSetListener() { 
+		@Override
+		public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+			
+			tvUnforgetYear.setText(String.valueOf(year)+"年");
+			tvUnforgetMonth.setText(String.format("%02d",month+1)+"月");
+			tvUnforgetDay.setText(String.format("%02d",dayOfMonth)+"日")
+		}     
+	};
+
+	private List<Unforget> getData() {
+		
+		List<Unforget> listUnforget = new ArrayList<Unforget>();
+		
+		Cursor cursor = bllUnforget.query();
+		if(cursor.getCount()!=0)
+		{
+			while(cursor.moveToNext()){
+				int year,month,day;
+				int hour,minute,second;
+				String name;
+				String soundFileName;
+				
+				
+	    		int yearIndex = cursor.getColumnIndex("year");
+	    		int monthIndex = cursor.getColumnIndex("month");
+	    		int dayIndex = cursor.getColumnIndex("day");
+	    		int hourIndex = cursor.getColumnIndex("hour");
+	    		int minuteIndex = cursor.getColumnIndex("minute");
+	    		int secondIndex = cursor.getColumnIndex("second");
+	    		int nameIndex = cursor.getColumnIndex("name");
+	    		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
+	    		
+	    		year = cursor.getInt(yearIndex);
+	    		month = cursor.getInt(monthIndex);
+	    		day = cursor.getInt(dayIndex);
+	    		hour = cursor.getInt(hourIndex);
+	    		minute = cursor.getInt(minuteIndex);
+	    		second = cursor.getInt(secondIndex);
+	    		name = cursor.getString(nameIndex);
+	    		soundFileName = cursor.getString(soundFileNameIndex);
+	    		
+	    		Unforget modelUnforget = new Unforget(year, month, day, hour, minute, second, name, soundFileName);
+	    		listUnforget.add(modelUnforget);
+			}
+		}
+		else{
+			Unforget modelUnforget = new Unforget(2014, 11, 24, 18, 52, 00, "妈妈生日", "NULL");
+			listUnforget.add(modelUnforget);
+		}
+		return listUnforget;
+	}
+	
+	
+}

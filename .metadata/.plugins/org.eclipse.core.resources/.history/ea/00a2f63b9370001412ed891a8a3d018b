@@ -1,0 +1,44 @@
+package sqliteDataBase.Model;
+
+public class Password {
+	String time;
+	String name;
+	String passWord;
+	String soundFileName;
+	
+	public void Password(String time,String name,String password,String soundFileName){
+		this.time = time;
+		this.name = name ;
+		this.passWord = password;
+		this.soundFileName = soundFileName;
+	}
+	
+	public String getTime(){
+		return time;
+	}
+	public void setTime(String time){
+		this.name = time;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public String getPassWord(){
+		return passWord;
+	}
+	
+	public void setPassWord(String passWord){
+		this.passWord = passWord;
+	}
+	public String getSoundFileName(){
+		return soundFileName;
+	}
+	public void setSoundFileName(String soundFileName){
+		this.soundFileName = soundFileName;
+	}
+
+}

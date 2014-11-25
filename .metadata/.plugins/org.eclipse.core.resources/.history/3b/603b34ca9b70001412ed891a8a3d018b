@@ -1,0 +1,32 @@
+package sqliteDataBase.Bll;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import sqliteDataBase.DatabaseHelper;
+import sqliteDataBase.Model.*;
+
+public class Charge {
+	
+	private DatabaseHelper helper;
+	private SQLiteDatabase db;
+	
+	public Charge(Context context){
+		helper = new DatabaseHelper(context);
+        db = helper.getWritableDatabase();
+	}
+	
+	public int insert(sqliteDataBase.Model.Charge modelCharge){
+		db.execSQL("insert into tableCharge(time,sum,type,des)values('?',?,?,'?')",
+                new Object[] {modelCharge.getTime(),modelCharge.getSum(),modelCharge.getType(),modelCharge.getDes()});
+		return 0;
+	}
+	
+	public int update(sqliteDataBase.Model.Charge modelCharge){
+		db.execSQL("update tableCharge set sum=?,type=?,des=? where time=" + modelCharge.getTime(),
+                new Object[] { modelCharge.getSum(),modelCharge.getType(),modelCharge.getDes()});
+		return 0;
+	}
+	public int delete(){
+		return 0;
+	}
+}

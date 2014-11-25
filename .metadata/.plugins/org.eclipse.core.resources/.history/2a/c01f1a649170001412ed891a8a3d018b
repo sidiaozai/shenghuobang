@@ -1,0 +1,10 @@
+package sqliteDataBase.Model;
+
+import java.util.Date;
+
+public class Charge {
+	Date time;
+	
+	public Charge()
+	{}
+}

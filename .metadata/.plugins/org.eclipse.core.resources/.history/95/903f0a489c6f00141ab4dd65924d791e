@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <FrameLayout 
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content">
+		    <de.hdodenhof.circleimageview.CircleImageView
+		        android:id="@+id/imageAddCharge"
+		        android:layout_width="100dp"
+		        android:layout_height="100dp"
+			    android:layout_centerInParent="true"
+			    android:src="@drawable/red_bg_norm"     	
+			    />
+		    <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_centerVertical="true"
+		        android:layout_above="@+id/ll1"
+		        android:text="记一笔"
+		        android:textColor="@color/white" />
+		</FrameLayout>
+</LinearLayout>

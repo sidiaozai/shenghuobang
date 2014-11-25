@@ -1,0 +1,10 @@
+package sqliteDataBase.Model;
+
+public class Time {
+	private int year;
+	private int month;
+	private int day;
+	
+	
+
+}

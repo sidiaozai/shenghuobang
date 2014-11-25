@@ -1,0 +1,54 @@
+package sqliteDataBase.Model;
+
+public class Charge {
+	private int id;
+	private String time;
+	private int sum;
+	private int type;
+	private String des;
+	
+	public Charge(int id,String time,int sum,int type,String des){
+		this.id = id;
+		 this.time = time;
+		 this.sum = sum;
+		 this.type = type;
+		 this.des = des;
+	}
+	
+	public Charge(String time,int sum,int type,String des){
+		 this.time = time;
+		 this.sum = sum;
+		 this.type = type;
+		 this.des = des;
+	}
+	public int getId(){
+		return id;
+	}
+	public void setId(int id){
+		this.id = id;
+	}
+	public String getTime(){
+		return time;
+	}
+	public void setTime(String time){
+		this.time = time;
+	}
+	public int getSum(){
+		return sum;
+	}
+	public void setSum(int sum){
+		this.sum = sum;
+	}
+	public int getType(){
+		return type;
+	}
+	public void setType(int type){
+		this.type = type;
+	}
+	public String getDes(){
+		return des;
+	}
+	public void setDes(String des){
+		this.des = des;
+	}
+}
