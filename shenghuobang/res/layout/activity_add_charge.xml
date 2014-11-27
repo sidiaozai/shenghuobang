@@ -16,12 +16,12 @@
         android:orientation="horizontal" >
         <Button
             android:id="@+id/btnRetrunCharge"
+            android:background="@drawable/shape_add_minus"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
-            android:background="@drawable/shape_add_minus"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:text="记账" />
         <TextView
             android:id="@+id/tVDetails"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:text="当日明细" />
         <Button
             android:id="@+id/btnSave"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:text="存储" />
         
     </RelativeLayout>
@@ -53,43 +53,43 @@
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="50dp" >
             <TextView
 	            android:id="@+id/tVAddChargeTime"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textSize="18sp"
 	            android:text="时间：" />
             <TextView
 	            android:id="@+id/tVAddChargeTime1"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textColor="@color/white"
+	            android:textSize="18sp"
 	            android:text="2014年11月02日" />
         </TableRow>
 
        <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="50dp" >
             <TextView
 	            android:id="@+id/tVAddChargeSum"
 	            
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textSize="18sp"
 	            android:text="金额：" />
 
             <EditText
 		        android:id="@+id/etAddChargeSum"
 		        android:layout_width="150dp"
 		        android:layout_height="wrap_content"
-		        android:background="@drawable/edit_text_shape"
+		        android:background="@drawable/shape_radius"
 		        android:ems="10"
-		        android:textSize="24sp"
+		        android:textSize="18sp"
 		        android:inputType="numberSigned" >
 		        <requestFocus />
 		    </EditText>
@@ -99,20 +99,22 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textSize="18sp"
 	            android:text="元" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
-             >
+            android:layout_height="50dp"
+            android:layout_gravity="center">
             <TextView
 	            android:id="@+id/tVAddChargeType"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
 	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textSize="18sp"
 	            android:text="类别：" />
             
             <RadioGroup android:id="@+id/radioGroupType" 
@@ -150,20 +152,20 @@
         <TableRow
             android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="50dp" >
             <TextView
 	            android:id="@+id/tVAddChargeDes"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textColor="#ffffff"
-	            android:textSize="24sp"
+	            android:textSize="18sp"
 	            android:text="备注：" />
             <EditText
 	            android:id="@+id/etAddChargeDes"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/edit_text_shape"
-	            android:textSize="24sp" />
+	            android:background="@drawable/shape_radius"
+	            android:textSize="18sp" />
         </TableRow>
     </TableLayout>
 
@@ -175,6 +177,12 @@
     	android:listSelector="@drawable/list_bg_selector"
     	android:cacheColorHint="@android:color/transparent"
     	android:divider="@android:color/transparent" 
-    	android:dividerHeight="30px" /> 
+    	android:dividerHeight="20px" /> 
     </LinearLayout>
+    <TextView android:id="@+id/android:empty"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"   
+        android:layout_gravity="center" 
+        android:textSize="40px"  
+        android:text="没有记录"/> 
 </LinearLayout>

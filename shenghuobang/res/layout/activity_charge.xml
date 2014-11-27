@@ -199,5 +199,11 @@
     	android:listSelector="@drawable/list_bg_selector"
     	android:cacheColorHint="@android:color/transparent"
     	android:divider="@android:color/transparent" 
-    	android:dividerHeight="30px" />  
+    	android:dividerHeight="30px" /> 
+    <TextView android:id="@+id/android:empty"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"   
+        android:layout_gravity="center" 
+        android:textSize="40px"  
+        android:text="没有记录"/> 
 </LinearLayout>

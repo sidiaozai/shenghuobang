@@ -11,6 +11,7 @@ import com.example.shenghuobang.MonPickerDialog;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.R.id;
 import com.example.shenghuobang.R.layout;
+import com.example.shenghuobang.Unforget.UnforgetActivity;
 
 import sqliteDataBase.Model.Charge;
 import sqliteDataBase.Model.ChargeStatistic;
@@ -21,9 +22,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -92,8 +97,7 @@ public class ChargeActivity extends ListActivity {
 			Calendar calendar = Calendar.getInstance();
 			@Override
 			public void onClick(View arg0) {
-				final Calendar localCalendar = Calendar.getInstance();
-				new MonPickerDialog(ChargeActivity.this,dateListener, localCalendar.get(1), localCalendar.get(2),localCalendar.get(5)).show();
+				new MonPickerDialog(ChargeActivity.this,dateListener, calendar.get(1), calendar.get(2),1).show();
 			}
 		});
 		
@@ -124,17 +128,18 @@ public class ChargeActivity extends ListActivity {
 		Cursor cursor = bllCharge.queryByMonth(intYear,intMonth);
 		
 		if(cursor.getCount()==0){
-			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
-			setListAdapter(arrayAdapter);
+//			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
+//			setListAdapter(arrayAdapter);
+			setListAdapter(null);
 		}
 		else{
 			adapter = new ChargeAdapter(this, getData(intYear,intMonth));
 			setListAdapter(adapter);
 		}
 	}
-	private void updateListViewData(){
-		setListViewData();
-	}
+//	private void updateListViewData(){
+//		setListViewData();
+//	}
 	
 	private List<ChargeStatistic> getData(int year,int month) {
 		
@@ -173,11 +178,11 @@ public class ChargeActivity extends ListActivity {
 		tvOutMonthSum.setText("支出："+ outMonthSum);
 		return list;
 	}
-	private List<String> getNullData(){
-		List<String> list = new ArrayList<String>();
-		list.add("没有记录");
-		return list;
-	}
+//	private List<String> getNullData(){
+//		List<String> list = new ArrayList<String>();
+//		list.add("没有记录");
+//		return list;
+//	}
 
 	@Override   
     protected void onListItemClick(ListView l, View v, int position, long id) {  
@@ -188,7 +193,7 @@ public class ChargeActivity extends ListActivity {
 	protected void onActivityResult(int requestCode,int resultCode,Intent data){
 		super.onActivityResult(requestCode,resultCode,data);   
 		if(resultCode==1){  
-			updateListViewData();
+			setListViewData();
 			//Toast.makeText(getApplicationContext(), "由添加界面返回", Toast.LENGTH_SHORT).show();
 		}
 	}  

@@ -10,7 +10,8 @@ public class Unforget {
 	private String name;
 	private String soundFileName;
 	
-	public Unforget(int year,int month,int day,int hour,int minute,int second,String name, String soundFileName){
+	public Unforget(int id,int year,int month,int day,int hour,int minute,int second,String name, String soundFileName){
+		this.id = id;
 		this.year = year;
 		this.month = month;
 		this.day = day;

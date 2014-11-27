@@ -127,8 +127,9 @@ public class AddChargeActivity extends ListActivity {
 		Cursor cursor = bllCharge.queryByDay(intYear,intMonth,intData);
 			
 		if(cursor.getCount()==0){
-			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
-			setListAdapter(arrayAdapter);
+//			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
+//			setListAdapter(arrayAdapter);
+			setListAdapter(null);
 		}
 		else{
 			adapter = new AddChargeAdapter(this, getData(cursor));
@@ -172,11 +173,11 @@ public class AddChargeActivity extends ListActivity {
         cursor.close();
 		return list;
 	}
-	private List<String> getNullData(){
-		List<String> list = new ArrayList<String>();
-		list.add("没有记录");
-		return list;
-	}
+//	private List<String> getNullData(){
+//		List<String> list = new ArrayList<String>();
+//		list.add("没有记录");
+//		return list;
+//	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		

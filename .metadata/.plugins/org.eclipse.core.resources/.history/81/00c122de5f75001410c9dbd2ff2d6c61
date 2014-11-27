@@ -1,0 +1,15 @@
+package sqliteDataBase.Bll;
+
+import sqliteDataBase.DatabaseHelper;
+import android.database.sqlite.SQLiteDatabase;
+
+public class Password {
+	
+	private DatabaseHelper helper;
+	private SQLiteDatabase db;
+	
+	public Password(Context){
+		
+	}
+
+}

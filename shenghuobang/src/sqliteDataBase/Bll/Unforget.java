@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class Unforget {
 	private DatabaseHelper helper;
@@ -31,6 +32,8 @@ public class Unforget {
 	}
 	
 	public int update(sqliteDataBase.Model.Unforget modelUnforget){
+		db.execSQL("update tableUnforget set year=?,month=?,day=?,hour=?,minute=?,second=?,name=?,soundFileName=? where id=?;",
+                new Object[] {modelUnforget.getYear(),modelUnforget.getMonth(),modelUnforget.getDay(),modelUnforget.getHour(),modelUnforget.getMinute(),0,modelUnforget.getName(),modelUnforget.getSoundFileName(),modelUnforget.getId() });
 		return 0;
 	}
 	public Cursor query()
@@ -41,7 +44,15 @@ public class Unforget {
 
 	
 	public int delete(int id){
+		Log.i("tag", "É¾³ýÊý¾Ý£º"+id);
 		db.delete("tableUnforget", "id=?",new String[]{String.valueOf(id)});
 		return 0;
+	}
+	public int getMaxId(){
+		int maxid=0;
+		Cursor cr = db.rawQuery("select last_insert_rowid() from tableUnforget;", null);  
+		if(cr.moveToFirst())  
+			maxid  = cr.getInt(0); 
+		return maxid;
 	}
 }

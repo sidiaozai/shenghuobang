@@ -1,18 +1,27 @@
 package com.example.shenghuobang.Unforget;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
+import com.example.shenghuobang.DateTimePickerDialog;
+import com.example.shenghuobang.FileOper;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.R.id;
 import com.example.shenghuobang.R.layout;
 
 import sqliteDataBase.Model.Unforget;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -51,14 +60,14 @@ public class AddUnforgetActivity extends Activity {
 	private TextView tvUnforgetMinute;
 	
 	private EditText edUnforgetName;
-	private EditText edSoundFileName;
-	
 	
 	private Button btnAddUnforgetAudio;
-	private String FileName = null; 
+	private String pathName = null; 
+	private String fileName = "NULL";
 	
-	private Intent intent;
 	private MediaRecorder mRecorder;
+	
+	private AlarmManager alarmManager=null;
 	
 	private sqliteDataBase.Bll.Unforget bllUnforget;
 	
@@ -73,18 +82,36 @@ public class AddUnforgetActivity extends Activity {
 		
 		setContentView(R.layout.activity_add_unforget);
 		
-		FileName = Environment.getExternalStorageDirectory().getAbsolutePath();  
-        FileName += "/audiorecordtest.3gp";  
+		alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		
-		intent = getIntent();
+		pathName = Environment.getExternalStorageDirectory().getAbsolutePath();  
 		
 		bllUnforget = new sqliteDataBase.Bll.Unforget(this);
 		
+		long currentTime = System.currentTimeMillis();
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy年-MM月dd日-HH时mm分ss秒");
+		Date date = new Date(currentTime);
+
 		tvUnforgetYear = (TextView) findViewById(R.id.tvUnforgetYear);
+		int year = date.getYear()+1900;
+		tvUnforgetYear.setText(String.valueOf(year)+"年");
+		
+		
 		tvUnforgetMonth = (TextView) findViewById(R.id.tvUnforgetMonth);
+		int month = date.getMonth();
+		tvUnforgetMonth.setText(String.format("%02d",month+1)+"月");
+		
 		tvUnforgetDay = (TextView) findViewById(R.id.tvUnforgetDay);
+		int dayOfMonth = date.getDate();
+		tvUnforgetDay.setText(String.format("%02d",dayOfMonth)+"日");
+		
 		tvUnforgetHour = (TextView) findViewById(R.id.tvUnforgetHour);
+		int hour = date.getHours();
+		tvUnforgetHour.setText(String.format("%02d",hour)+"时");
+		
 		tvUnforgetMinute = (TextView) findViewById(R.id.tvUnforgetMinute);
+		int minute = date.getMinutes();
+		tvUnforgetMinute.setText(String.format("%02d",minute)+"分");
 		
 		edUnforgetName = (EditText) findViewById(R.id.etForgetName);
 		
@@ -94,29 +121,56 @@ public class AddUnforgetActivity extends Activity {
 			
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
+				
+				if(btnAddUnforgetAudio.getText().toString().equals("播放"))
+					return false;
+				
 				if (event.getAction()== MotionEvent.ACTION_UP)//判断按钮释放被释放 
 				{
-					Toast.makeText(AddUnforgetActivity.this, "按钮释放", Toast.LENGTH_SHORT).show();
+					btnAddUnforgetAudio.setText("播放");
 					mRecorder.stop();  
 					mRecorder.release();  
 					mRecorder = null;  
+					return true;
 				}else if(event.getAction()== MotionEvent.ACTION_DOWN){
-					Toast.makeText(AddUnforgetActivity.this, "按钮按下", Toast.LENGTH_SHORT).show();
-
+					
+					btnAddUnforgetAudio.setText("正在录音");
+					
+					long curDate = System.currentTimeMillis();
+					fileName = String.valueOf(""+curDate+".3gp") ;
+					
 					mRecorder = new MediaRecorder();  
-		             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);  
-		             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);  
-		             mRecorder.setOutputFile(FileName);  
-		             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);  
-		             try {  
-		                 mRecorder.prepare();  
-		             } catch (IOException e) {  
-		                 Log.e("LOG_TAG", "prepare() failed");  
-		             }  
-		             mRecorder.start();  
+		            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);  
+		            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);  
+		            mRecorder.setOutputFile(pathName +"/"+ fileName);  
+		            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);  
+		            try {
+		            	mRecorder.prepare();  
+		            } catch (IOException e) {
+		            	btnAddUnforgetAudio.setText("录音失败");
+		            	Log.e("LOG_TAG", "prepare() failed");  
+		            }  
+		            mRecorder.start();  
 				}
 				
 				return false;
+			}
+		});
+		
+		
+		btnAddUnforgetAudio.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				MediaPlayer mPlayer = new MediaPlayer();  
+	            try{  
+	                mPlayer.setDataSource(pathName +"/"+ fileName);  
+	                mPlayer.prepare();  
+	                mPlayer.start();  
+	            }catch(IOException e){  
+	                Log.e("LOG_TAG","播放失败");  
+	            } 
+				
 			}
 		});
 		
@@ -126,16 +180,11 @@ public class AddUnforgetActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				
-				MediaPlayer mPlayer = new MediaPlayer();  
-	            try{  
-	                mPlayer.setDataSource(FileName);  
-	                mPlayer.prepare();  
-	                mPlayer.start();  
-	            }catch(IOException e){  
-	                Log.e("LOG_TAG","播放失败");  
-	            } 
-				//finish();
+			
+				FileOper fileOper = new FileOper();
+				File file = new File(pathName +"/"+ fileName);
+				fileOper.deleteFile(file);
+				finish();
 			}
 		});
 		
@@ -144,13 +193,26 @@ public class AddUnforgetActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
+				
+				String unforgetName = edUnforgetName.getText().toString();
+				if(unforgetName.equals("")){
+					
+					Toast.makeText(getApplicationContext(), "备忘名不能为空", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				Calendar c_set = Calendar.getInstance();//获取日期对象    
+				Calendar c_cur = Calendar.getInstance();//获取日期对象  
+				
 				String strYear = tvUnforgetYear.getText().toString().substring(0, 4);
 				int intYear;
 				intYear=Integer.parseInt(strYear);
 				
+				
 				String strMonth = tvUnforgetMonth.getText().toString().substring(0, 2);
 				int intMonth;
 				intMonth=Integer.parseInt(strMonth);
+
 				
 				String strDay = tvUnforgetDay.getText().toString().substring(0, 2);
 				int intDay;
@@ -164,12 +226,28 @@ public class AddUnforgetActivity extends Activity {
 				int intMinute;
 				intMinute=Integer.parseInt(strMinute);
 				
-				String unforgetName = edUnforgetName.getText().toString();
+				c_set.set(Calendar.YEAR, intYear);
+				c_set.set(Calendar.MONTH, intMonth-1);
+				c_set.set(Calendar.DAY_OF_MONTH, intDay);
+				c_set.set(Calendar.HOUR_OF_DAY, intHour);        //设置闹钟小时数
+				c_set.set(Calendar.MINUTE, intMinute);            //设置闹钟的分钟数
+				c_set.set(Calendar.SECOND, 0);                //设置闹钟的秒数
+				c_set.set(Calendar.MILLISECOND, 0);            //设置闹钟的毫秒数
 				
-				Unforget modelUnforget = new Unforget(intYear, intMonth, intDay, intHour, intMinute, 0, unforgetName, unforgetName);
+                if(c_cur.getTimeInMillis()> c_set.getTimeInMillis()){  
+                	Toast.makeText(getApplicationContext(), "备忘时间小于系统时间", Toast.LENGTH_SHORT).show();
+    				return;
+                } 
+				
+				Unforget modelUnforget = new Unforget(0,intYear, intMonth, intDay, intHour, intMinute, 0, unforgetName, fileName);
 				bllUnforget.insert(modelUnforget);
+
+                Intent intent = new Intent(AddUnforgetActivity.this, AlarmReceiver.class);    //创建Intent对象
+                PendingIntent pi = PendingIntent.getBroadcast(AddUnforgetActivity.this, 0, intent, 0);    //创建PendingIntent
+                alarmManager.set(AlarmManager.RTC_WAKEUP, c_set.getTimeInMillis(), pi);
+                Toast.makeText(AddUnforgetActivity.this, "闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户
 				
-				setResult(1,intent);  
+				setResult(1,getIntent());  
 				finish();
 				
 			}
@@ -184,7 +262,7 @@ public class AddUnforgetActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				
-					final Calendar localCalendar = Calendar.getInstance();
+					
 					new DatePickerDialog(AddUnforgetActivity.this,new OnDateSetListener() {
 						
 						@Override
@@ -194,7 +272,7 @@ public class AddUnforgetActivity extends Activity {
 							tvUnforgetDay.setText(String.format("%02d",dayOfMonth)+"日");
 							
 						}
-					},localCalendar.get(1),localCalendar.get(2),localCalendar.get(3)).show();
+					},calendar.getTime().getYear()+1900,calendar.getTime().getMonth(),calendar.getTime().getDate()).show();
 				}
 		});
 		llUnforgetTime = (LinearLayout) findViewById(R.id.llUnforgetTime);
@@ -204,7 +282,7 @@ public class AddUnforgetActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				
-					final Calendar localCalendar = Calendar.getInstance();
+					
 					new TimePickerDialog(AddUnforgetActivity.this, new OnTimeSetListener() {
 						
 						@Override
@@ -213,7 +291,7 @@ public class AddUnforgetActivity extends Activity {
 							tvUnforgetMinute.setText(String.format("%02d",minute)+"分");
 							
 						}
-					}, localCalendar.get(4), localCalendar.get(5), true).show();
+					}, calendar.getTime().getHours(),calendar.getTime().getMinutes()/*calendar.get(4), calendar.get(5)*/, true).show();
 			}
 		});
 	}

@@ -1,0 +1,58 @@
+package sqliteDataBase.Bll;
+
+import sqliteDataBase.DatabaseHelper;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+public class Password {
+	
+	private DatabaseHelper helper;
+	private SQLiteDatabase db;
+	
+	public Password(Context context){
+		helper = new DatabaseHelper(context);
+        db = helper.getWritableDatabase();
+	}
+	public int insert(sqliteDataBase.Model.Password modelPassword){
+		ContentValues values = new ContentValues(); 
+		values.put("name", modelPassword.getName());
+		values.put("passWord",modelPassword.getPassWord());
+		values.put("soundFileName", modelPassword.getSoundFileName());
+		
+		
+		db.insert("tableUnforget", null, values); 
+		return 0;
+	}
+	public int update(sqliteDataBase.Model.Unforget modelUnforget){
+		Log.i("tag", "更新数据ID："+modelUnforget.getId());
+		Log.i("tag", "更新数据Name："+modelUnforget.getName());
+		
+		
+		db.execSQL("update tableUnforget set year=?,month=?,day=?,hour=?,minute=?,second=?,name=?,soundFileName=? where id=?;",
+                new Object[] {modelUnforget.getYear(),modelUnforget.getMonth(),modelUnforget.getDay(),modelUnforget.getHour(),modelUnforget.getMinute(),0,modelUnforget.getName(),modelUnforget.getSoundFileName(),modelUnforget.getId() });
+		return 0;
+	}
+	public Cursor query()
+    {
+        Cursor c=db.query("tableUnforget", null, null, null, null, null, null);
+        return c;
+    }
+
+	
+	public int delete(int id){
+		Log.i("tag", "删除数据："+id);
+		db.delete("tableUnforget", "id=?",new String[]{String.valueOf(id)});
+		return 0;
+	}
+	public int getMaxId(){
+		int maxid=0;
+		Cursor cr = db.rawQuery("select last_insert_rowid() from tableUnforget;", null);  
+		if(cr.moveToFirst())  
+			maxid  = cr.getInt(0); 
+		return maxid;
+	}
+
+}

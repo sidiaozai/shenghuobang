@@ -7,7 +7,14 @@ public class Password {
 	private String passWord;
 	private String soundFileName;
 	
-	public Password(String time,String name,String password,String soundFileName){
+	public Password(int id,String name,String password,String soundFileName){
+		this.id = id;
+		this.name = name ;
+		this.passWord = password;
+		this.soundFileName = soundFileName;
+	}
+	
+	public Password(String name,String password,String soundFileName){
 		this.name = name ;
 		this.passWord = password;
 		this.soundFileName = soundFileName;
