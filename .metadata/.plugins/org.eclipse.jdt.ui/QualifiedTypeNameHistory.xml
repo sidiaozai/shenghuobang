@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.example.shenghuobang.UnforgetAdapter"/>
-<fullyQualifiedTypeName name="android.widget.Button"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Bll.Unforget"/>
 <fullyQualifiedTypeName name="android.app.TimePickerDialog"/>
 <fullyQualifiedTypeName name="android.app.TimePickerDialog.OnTimeSetListener"/>
@@ -14,8 +10,6 @@
 <fullyQualifiedTypeName name="android.os.Environment"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemLongClickListener"/>
 <fullyQualifiedTypeName name="java.lang.Boolean"/>
-<fullyQualifiedTypeName name="android.app.AlertDialog"/>
-<fullyQualifiedTypeName name="android.content.DialogInterface"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Unforget.UpdateUnforgetActivity"/>
@@ -48,7 +42,6 @@
 <fullyQualifiedTypeName name="sqliteDataBase.Bll.Password"/>
 <fullyQualifiedTypeName name="android.view.Gravity"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Password.UpdatePasswordActivity"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="com.example.aes256demo.R.id"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Unforget.UnforgetAdapter"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Password.PasswordAdapter"/>
@@ -60,4 +53,11 @@
 <fullyQualifiedTypeName name="android.app.Notification"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.R"/>
 <fullyQualifiedTypeName name="android.app.PendingIntent"/>
+<fullyQualifiedTypeName name="android.graphics.Bitmap"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="android.app.AlertDialog"/>
+<fullyQualifiedTypeName name="android.app.Dialog"/>
+<fullyQualifiedTypeName name="android.widget.AbsListView.MultiChoiceModeListener"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
 </qualifiedTypeNameHistroy>

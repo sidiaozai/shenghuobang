@@ -2,6 +2,7 @@ package com.example.shenghuobang;
 
 import com.example.shenghuobang.Charge.ChargeActivity;
 import com.example.shenghuobang.Password.PasswordActivity;
+import com.example.shenghuobang.Setting.SettingActivity;
 import com.example.shenghuobang.Unforget.UnforgetActivity;
 
 import android.annotation.SuppressLint;

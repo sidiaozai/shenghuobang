@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;xml&apos; to &apos;res&apos;&#x0D;&#x0A;－ 原始项目：“QQUIDemo”&#x0D;&#x0A;－ 目标元素：“res”&#x0D;&#x0A;－ 原始元素：“xml”" description="复制文件夹" element1="res/xml" files="0" flags="589830" folders="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1417524710107" target="/shenghuobang/res" units="0" version="1.0"/>
+</session>

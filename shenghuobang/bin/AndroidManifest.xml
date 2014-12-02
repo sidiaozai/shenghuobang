@@ -36,7 +36,7 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.example.shenghuobang.Unforget.UnforgetActivity"
             android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.example.shenghuobang.SettingActivity" 
+        <activity android:name="com.example.shenghuobang.Setting.SettingActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.example.shenghuobang.Charge.AddChargeActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
