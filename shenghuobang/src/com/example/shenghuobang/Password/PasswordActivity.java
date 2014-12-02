@@ -23,11 +23,16 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -36,14 +41,15 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class PasswordActivity extends Activity {
+public class PasswordActivity extends Activity  {
 	
 	private Button btnAddPassword;
-	
+	private TextView mActionText;
 	private GridView gridViewPassword;
 	
 	private sqliteDataBase.Bll.Password bllPassword;
 	private List<sqliteDataBase.Model.Password> listPassword;
+	private PasswordAdapter passwordAdapter;
 	
 	private String pathName;
 	
@@ -56,8 +62,11 @@ public class PasswordActivity extends Activity {
 		pathName = Environment.getExternalStorageDirectory().getAbsolutePath(); 
 		
 		gridViewPassword = (GridView) findViewById(R.id.gridViewPassword);
-		showGridViewData();
 		
+		setEmptyData();
+		
+		
+
 		gridViewPassword.setOnItemClickListener(new OnItemClickListener() { 
 			
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) 
@@ -66,7 +75,6 @@ public class PasswordActivity extends Activity {
             	Log.i("tag", "按钮按下"); 
             	
                 Password password = listPassword.get(position);
-                 
                 
                 Log.i("tag", "读数据成功");	
 
@@ -100,6 +108,8 @@ public class PasswordActivity extends Activity {
 						File file = new File(pathName +"/"+ password.getSoundFileName());
 						fileOper.deleteFile(file);
 						bllPassword.delete(password.getId());
+						
+						updateGridView();
 					}
 				});
 				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -109,7 +119,6 @@ public class PasswordActivity extends Activity {
 				});
 				
 				builder.create().show(); 
-				
 				return true;
 			}
 		});
@@ -127,52 +136,57 @@ public class PasswordActivity extends Activity {
 		});
 	}
 	
-	private void showGridViewData(){
+	
+	private List<Password> getData(){
 		listPassword = new ArrayList<sqliteDataBase.Model.Password>();
 		
 		Cursor cursor = bllPassword.query();
-		if(cursor.getCount()!=0)
-		{
-			Log.i("tag", "密码数据："+cursor.getCount());
-			while(cursor.moveToNext()){
-				int id;
-				String name;
-				String password;
-				String soundFileName;
-				
-				int idIndex =  cursor.getColumnIndex("id");
-	    		int nameIndex = cursor.getColumnIndex("name");
-	    		int passwordIndex = cursor.getColumnIndex("passWord");
-	    		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
-	    		
-	    		id = cursor.getInt(idIndex);
-	    		name = cursor.getString(nameIndex);
-	    		password = cursor.getString(passwordIndex);
-	    		soundFileName = cursor.getString(soundFileNameIndex);
 
-	    		Log.i("tag", "密码名"+name);
-	    		sqliteDataBase.Model.Password modelPassword = new Password(id,name, password, soundFileName);
-	    		listPassword.add(modelPassword);
-			}
-			gridViewPassword.setAdapter(new PasswordAdapter(PasswordActivity.this,listPassword)); 
+		while(cursor.moveToNext()){
+			int id;
+			String name;
+			String password;
+			String soundFileName;
 			
+			int idIndex =  cursor.getColumnIndex("id");
+    		int nameIndex = cursor.getColumnIndex("name");
+    		int passwordIndex = cursor.getColumnIndex("passWord");
+    		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
+    		
+    		id = cursor.getInt(idIndex);
+    		name = cursor.getString(nameIndex);
+    		password = cursor.getString(passwordIndex);
+    		soundFileName = cursor.getString(soundFileNameIndex);
+
+    		Log.i("tag", "密码名"+name);
+    		sqliteDataBase.Model.Password modelPassword = new Password(id,name, password, soundFileName);
+    		listPassword.add(modelPassword);
 		}
-		else{
-			Log.i("tag", "没有密码数据");
-			TextView emptyView = new TextView(PasswordActivity.this);  
-            emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));  
-            emptyView.setText("没有密码数据，请先添加密码数据");  
-            emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
-            emptyView.setVisibility(View.GONE);  
-            ((ViewGroup)gridViewPassword.getParent()).addView(emptyView);  
-            gridViewPassword.setEmptyView(emptyView);
-		}
+		return listPassword;
+		
 	}
-	@Override 
-	protected void onActivityResult(int requestCode,int resultCode,Intent data){
-		super.onActivityResult(requestCode,resultCode,data);   
-		if(resultCode==1){  
-			showGridViewData();
-		}
-	}  
+	private void setEmptyData(){
+		Log.i("tag", "没有密码数据");
+		TextView emptyView = new TextView(PasswordActivity.this);  
+        emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));  
+        emptyView.setText("没有密码数据，请先添加密码数据");  
+        emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        emptyView.setVisibility(View.GONE);  
+        ((ViewGroup)gridViewPassword.getParent()).addView(emptyView);  
+        gridViewPassword.setEmptyView(emptyView);
+	}
+	private void updateGridView(){
+		passwordAdapter = new PasswordAdapter(this, getData());
+		passwordAdapter.notifyDataSetChanged();
+		gridViewPassword.invalidateViews();
+		gridViewPassword.setAdapter(passwordAdapter);
+	}
+
+	@Override
+	protected void onResume(){
+		updateGridView();
+		super.onResume();
+	}
+
+	
 }

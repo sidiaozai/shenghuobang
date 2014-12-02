@@ -10,4 +10,7 @@
     <string name="start">&#060;</string>
     <string name="end">&#062;</string>
 	<string name="add">&#043;</string>
+	<string name="selection">选中%s个</string>
+    <string name="select_all">全选</string>
+    <string name="unselect_all">全不选</string>
 </resources>

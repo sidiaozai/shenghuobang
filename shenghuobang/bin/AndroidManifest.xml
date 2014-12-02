@@ -40,6 +40,8 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.example.shenghuobang.Charge.AddChargeActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+         <activity android:name="com.example.shenghuobang.Charge.UpdateChargeActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name="com.example.shenghuobang.Password.AddPasswordActivity"
             android:theme="@style/MyDialogStyle" >
         </activity>

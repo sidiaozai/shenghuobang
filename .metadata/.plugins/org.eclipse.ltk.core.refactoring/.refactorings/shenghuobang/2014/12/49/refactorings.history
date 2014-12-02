@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;AddChargeActivity.java&apos; to &apos;com.example.shenghuobang.Charge.AddChargeActivity.java&apos;&#x0D;&#x0A;－ 原始项目：“shenghuobang”&#x0D;&#x0A;－ 目标元素：“com.example.shenghuobang.Charge.AddChargeActivity.java”&#x0D;&#x0A;－ 原始元素：“com.example.shenghuobang.Charge.AddChargeActivity.java”" description="复制编译单元" destination="/src&lt;com.example.shenghuobang.Charge{AddChargeActivity.java" element1="/src&lt;com.example.shenghuobang.Charge{AddChargeActivity.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1417433400802" units="1" version="1.0"/>
+</session>

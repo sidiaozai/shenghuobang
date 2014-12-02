@@ -64,4 +64,8 @@ public class Charge {
 		db.delete("tableCharge", "id=?",new String[]{String.valueOf(id)});
 		return 0;
 	}
+	public int delete(int year,int month,int day){
+		db.delete("tableCharge", "year=? and month=? and day=?",new String[]{String.valueOf(year),String.valueOf(month),String.valueOf(day)});
+		return 0;
+	}
 }

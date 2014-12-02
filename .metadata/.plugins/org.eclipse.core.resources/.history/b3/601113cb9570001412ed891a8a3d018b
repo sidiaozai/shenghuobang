@@ -1,5 +1,0 @@
-package sqliteDataBase.Bll;
-
-public class Charge {
-
-}

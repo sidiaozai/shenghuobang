@@ -29,6 +29,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -44,15 +46,16 @@ public class ChargeActivity extends ListActivity {
 	private ImageView imageAddCharge;
 	private TextView tvInMonthSum;
 	private TextView tvOutMonthSum;
+	private TextView tvBalance;
 	private TextView tvYear;
 	private TextView tvMonth;
 	
 	private LinearLayout llTimeSelector;
 	
 	private ChargeAdapter adapter;
-	private ArrayAdapter arrayAdapter;
 	
 	private sqliteDataBase.Bll.Charge bllCharge;
+	private List<ChargeStatistic> list;
  
 	@SuppressWarnings("deprecation")
 	@Override
@@ -67,6 +70,7 @@ public class ChargeActivity extends ListActivity {
 		
 		tvInMonthSum = (TextView) findViewById(R.id.tvInMonthSum);
 		tvOutMonthSum = (TextView) findViewById(R.id.tvOutMonthSum);
+		tvBalance = (TextView) findViewById(R.id.tvBalance);
 
 		Date curDate = new Date(System.currentTimeMillis());//获取当前时间    
 		
@@ -100,9 +104,6 @@ public class ChargeActivity extends ListActivity {
 				new MonPickerDialog(ChargeActivity.this,dateListener, calendar.get(1), calendar.get(2),1).show();
 			}
 		});
-		
-		
-		
 		setListViewData();
 	}
 	DatePickerDialog.OnDateSetListener dateListener =  new DatePickerDialog.OnDateSetListener() { 
@@ -114,6 +115,12 @@ public class ChargeActivity extends ListActivity {
 			setListViewData();
 		}     
 	}; 
+
+	@Override
+	protected void onResume() {
+		// TODO 自动生成的方法存根
+		super.onResume();
+	}
 
 	private void setListViewData(){
 		
@@ -131,23 +138,25 @@ public class ChargeActivity extends ListActivity {
 //			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
 //			setListAdapter(arrayAdapter);
 			setListAdapter(null);
+			tvInMonthSum.setText("收入");
+			tvOutMonthSum.setText("支出");
+			tvBalance.setText("结余");
 		}
 		else{
 			adapter = new ChargeAdapter(this, getData(intYear,intMonth));
 			setListAdapter(adapter);
 		}
 	}
-//	private void updateListViewData(){
-//		setListViewData();
-//	}
+
+	
+	
 	
 	private List<ChargeStatistic> getData(int year,int month) {
-		
-		
-		List<ChargeStatistic> list = new ArrayList<ChargeStatistic>();
+
+		list = new ArrayList<ChargeStatistic>();
 		int inMonthSum=0;
 		int outMonthSum=0;
-		for(int day=1;day<=31;day++){
+		for(int day=31;day>=1;day--){
 
 			Cursor cursor = bllCharge.queryByDay(year, month, day);
 			if(cursor.getCount()==0)
@@ -176,17 +185,26 @@ public class ChargeActivity extends ListActivity {
 		tvInMonthSum.setText("收入："+ inMonthSum);
 		
 		tvOutMonthSum.setText("支出："+ outMonthSum);
+		
+		int monthBalance = inMonthSum-outMonthSum;
+		
+		tvBalance.setText("结余："+monthBalance);
 		return list;
 	}
-//	private List<String> getNullData(){
-//		List<String> list = new ArrayList<String>();
-//		list.add("没有记录");
-//		return list;
-//	}
 
 	@Override   
     protected void onListItemClick(ListView l, View v, int position, long id) {  
 		super.onListItemClick(l, v, position, id);  
+		
+		ChargeStatistic chargeStatistic = list.get(position);
+
+		Intent intent = new Intent();
+		intent.putExtra("year", chargeStatistic.getYear());
+		intent.putExtra("month", chargeStatistic.getMonth());
+		intent.putExtra("day", chargeStatistic.getDay());
+        intent.setClass(ChargeActivity.this, UpdateChargeActivity.class);
+        
+        startActivityForResult(intent, 1);
     }  
 	
 	@Override 

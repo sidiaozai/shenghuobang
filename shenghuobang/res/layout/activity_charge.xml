@@ -176,12 +176,13 @@
 				    	/>
 		
 				    <TextView
+				        android:id="@+id/tvBalance"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"  
 				        android:layout_gravity="center"
 				        android:textColor="@color/white"
 				        android:textSize="10sp"
-				        android:text="结余 5112"
+				        android:text="结余 "
 				         />
 				</FrameLayout>
 		        

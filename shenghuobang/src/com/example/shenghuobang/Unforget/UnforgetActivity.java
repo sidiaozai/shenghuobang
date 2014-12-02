@@ -38,6 +38,8 @@ public class UnforgetActivity extends Activity {
 	private List<Unforget> listUnforget;
 	private String pathName;
 	
+	private UnforgetAdapter unforgetAdapter;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class UnforgetActivity extends Activity {
 		bllUnforget = new sqliteDataBase.Bll.Unforget(this);
 		
 		pathName = Environment.getExternalStorageDirectory().getAbsolutePath();  
+		
 		
 		btnAddUnForget = (Button) findViewById(R.id.btnAddUnForget);
 		
@@ -62,10 +65,7 @@ public class UnforgetActivity extends Activity {
 		});
 		
 		gridViewUnforget = (GridView) findViewById(R.id.gridViewUnforget);
-		
-		
-		
-		showGridViewData(); 
+		setEmptyData();
         
 		gridViewUnforget.setOnItemClickListener(new OnItemClickListener() 
         { 
@@ -112,7 +112,9 @@ public class UnforgetActivity extends Activity {
 						FileOper fileOper = new FileOper();
 						File file = new File(pathName +"/"+ unforget.getSoundFileName());
 						fileOper.deleteFile(file);
-						bllUnforget.delete(unforget.getId());
+						bllUnforget.delete(unforget.getId());	
+						
+						updateGridView();
 					}
 				});
 				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -122,74 +124,75 @@ public class UnforgetActivity extends Activity {
 				});
 				
 				builder.create().show(); 
-				
 				return true;
 			}
 		});
 	}
 	
-	private void showGridViewData(){
+	private List<Unforget> getData(){
+		
 		listUnforget = new ArrayList<Unforget>();
 		
 		Cursor cursor = bllUnforget.query();
-		if(cursor.getCount()!=0)
-		{
-			while(cursor.moveToNext()){
-				int id;
-				int year,month,day;
-				int hour,minute,second;
-				String name;
-				String soundFileName;
-				
-				int idIndex = cursor.getColumnIndex("id");
-	    		int yearIndex = cursor.getColumnIndex("year");
-	    		int monthIndex = cursor.getColumnIndex("month");
-	    		int dayIndex = cursor.getColumnIndex("day");
-	    		int hourIndex = cursor.getColumnIndex("hour");
-	    		int minuteIndex = cursor.getColumnIndex("minute");
-	    		int secondIndex = cursor.getColumnIndex("second");
-	    		int nameIndex = cursor.getColumnIndex("name");
-	    		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
-	    		
-	    		id = cursor.getInt(idIndex);
-	    		year = cursor.getInt(yearIndex);
-	    		month = cursor.getInt(monthIndex);
-	    		day = cursor.getInt(dayIndex);
-	    		hour = cursor.getInt(hourIndex);
-	    		minute = cursor.getInt(minuteIndex);
-	    		second = cursor.getInt(secondIndex);
-	    		name = cursor.getString(nameIndex);
-	    		soundFileName = cursor.getString(soundFileNameIndex);
-	    		
-	    		Log.i("tag", "显示："+id);
-	    		
-	    		Unforget modelUnforget = new Unforget(id,year, month, day, hour, minute, second, name, soundFileName);
-	    		listUnforget.add(modelUnforget);
-			}
-			gridViewUnforget.setAdapter(new UnforgetAdapter(UnforgetActivity.this,listUnforget)); 
-			
-		}
-		else{
-			Log.i("tag", "没有备忘数据");
-			TextView emptyView = new TextView(UnforgetActivity.this);  
-            emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));  
-            emptyView.setText("没有备忘数据请先添加备忘数据");  
-            emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
-            emptyView.setVisibility(View.GONE);  
-            ((ViewGroup)gridViewUnforget.getParent()).addView(emptyView);  
-            gridViewUnforget.setEmptyView(emptyView);
-		}
 		
+		while(cursor.moveToNext()){
+			int id;
+			int year,month,day;
+			int hour,minute,second;
+			String name;
+			String soundFileName;
+			
+			int idIndex = cursor.getColumnIndex("id");
+    		int yearIndex = cursor.getColumnIndex("year");
+    		int monthIndex = cursor.getColumnIndex("month");
+    		int dayIndex = cursor.getColumnIndex("day");
+    		int hourIndex = cursor.getColumnIndex("hour");
+    		int minuteIndex = cursor.getColumnIndex("minute");
+    		int secondIndex = cursor.getColumnIndex("second");
+    		int nameIndex = cursor.getColumnIndex("name");
+    		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
+    		
+    		id = cursor.getInt(idIndex);
+    		year = cursor.getInt(yearIndex);
+    		month = cursor.getInt(monthIndex);
+    		day = cursor.getInt(dayIndex);
+    		hour = cursor.getInt(hourIndex);
+    		minute = cursor.getInt(minuteIndex);
+    		second = cursor.getInt(secondIndex);
+    		name = cursor.getString(nameIndex);
+    		soundFileName = cursor.getString(soundFileNameIndex);
+    		
+    		Log.i("tag", "显示："+id);
+    		
+    		Unforget modelUnforget = new Unforget(id,year, month, day, hour, minute, second, name, soundFileName);
+    		listUnforget.add(modelUnforget);
+		}
+		return listUnforget;
+	}
+	private void setEmptyData(){
+		Log.i("tag", "没有备忘数据");
+		TextView emptyView = new TextView(UnforgetActivity.this);  
+        emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));  
+        emptyView.setText("没有备忘数据请先添加备忘数据");  
+        emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        emptyView.setVisibility(View.GONE);  
+        ((ViewGroup)gridViewUnforget.getParent()).addView(emptyView);  
+        gridViewUnforget.setEmptyView(emptyView);
 		
 	}
-	
-	@Override 
-	protected void onActivityResult(int requestCode,int resultCode,Intent data){
-		super.onActivityResult(requestCode,resultCode,data);   
-		if(resultCode==1){  
-			showGridViewData();
-		}
-	}  
-	
+	private void updateGridView(){
+
+		unforgetAdapter = new UnforgetAdapter(this, getData());
+		
+		unforgetAdapter.notifyDataSetChanged();
+		gridViewUnforget.invalidateViews();
+		gridViewUnforget.setAdapter(unforgetAdapter);
+	}
+
+	@Override
+	protected void onResume(){
+		updateGridView();
+		super.onResume();
+	}
 	
 }

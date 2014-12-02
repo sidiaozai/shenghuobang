@@ -243,10 +243,9 @@ public class AddUnforgetActivity extends Activity {
 				bllUnforget.insert(modelUnforget);
 
                 Intent intent = new Intent(AddUnforgetActivity.this, AlarmReceiver.class);    //创建Intent对象
-                PendingIntent pi = PendingIntent.getBroadcast(AddUnforgetActivity.this, 0, intent, 0);    //创建PendingIntent
+                PendingIntent pi = PendingIntent.getBroadcast(AddUnforgetActivity.this, bllUnforget.getMaxId(), intent, 0);    //创建PendingIntent
                 alarmManager.set(AlarmManager.RTC_WAKEUP, c_set.getTimeInMillis(), pi);
-                Toast.makeText(AddUnforgetActivity.this, "闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户
-				
+                //alarmManager.cancel(pi);
 				setResult(1,getIntent());  
 				finish();
 				

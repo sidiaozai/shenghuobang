@@ -1,0 +1,238 @@
+package com.example.gridvieweditpicture;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+
+public class MainActivity extends Activity {
+
+	private GridView gridView;  
+    private ImageAdapter imgAdapter;  
+      
+    private TextView seclectNumView;  
+    private Button deleteButton;  
+      
+    private List<LoadImage> fileNameList = new ArrayList<LoadImage>();     //保存Adapter中显示的图片详情(要跟adapter里面的List要对应)  
+    private List<LoadImage> selectFileLs = new ArrayList<LoadImage>();      //保存选中的图片信息  
+      
+    private boolean isDbClick = false;   //是否正在长按状态  
+      
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) {  
+          
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.picturescan);  
+          
+        gridView = (GridView)findViewById(R.id.picture_grid);  
+        seclectNumView = (TextView)findViewById(R.id.pic_seclet_num);  
+        deleteButton = (Button)findViewById(R.id.pic_delete);  
+        deleteButton.setOnClickListener(delClickListener);  
+          
+        imgAdapter = new ImageAdapter(this);  
+        gridView.setAdapter(imgAdapter);  
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+            @Override  
+            public void onItemClick(AdapterView<?> parent, View view,  
+                    int position, long id) {  
+                LoadImage loadimg = fileNameList.get(position);  
+                ViewHolder holder = (ViewHolder)view.getTag();  
+                if(isDbClick){  
+                    if(selectFileLs.contains(loadimg)){  
+                        holder.image1.setImageDrawable(null);   
+                        holder.image2.setVisibility(View.GONE);  
+                        imgAdapter.delNumber(position+"");  
+                        selectFileLs.remove(loadimg);  
+                    }else{  
+                        holder.image1.setImageResource(R.drawable.border);    //添加图片(带边框的透明图片)[主要目的就是让该图片带边框]  
+                        holder.image2.setVisibility(View.VISIBLE);  //设置图片右上角的对号显示  
+                        imgAdapter.addNumber(position+"");    //把该图片添加到adapter的选中状态，防止滚动后就没有在选中状态了。  
+                        selectFileLs.add(loadimg);  
+                    }  
+                    seclectNumView.setText("选中"+selectFileLs.size()+"张图片");  
+                }else{  
+                    startActivity(new Intent(PictureScanAct.this, PictureViewAct.class).putExtra("flag","upload").putExtra("imagePath",loadimg.getFileName()));  
+                }  
+            }  
+        });  
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {  
+            @Override  
+            public boolean onItemLongClick(AdapterView<?> parent, View view,  
+                    int position, long id) {  
+                LoadImage loadimg = fileNameList.get(position);  
+                ViewHolder holder = (ViewHolder)view.getTag();  
+                if(!isDbClick){  
+                    isDbClick = true;  
+                    gridView.setPadding(0, 50, 0, 50);            //长按后，让gridview上下都分出点空间，显示删除按钮之类的。看效果图就知道了。  
+                    seclectNumView.setVisibility(View.VISIBLE);  
+                    deleteButton.setVisibility(View.VISIBLE);  
+                    holder.image1.setImageResource(R.drawable.border);  
+                    holder.image2.setVisibility(View.VISIBLE);  
+                    imgAdapter.addNumber(position+"");  
+                    selectFileLs.add(loadimg);  
+                    seclectNumView.setText("选中1张图片");  
+                    return true;  
+                }  
+                return false;  
+            }  
+        });  
+        Toast.makeText(this, "加载图片中....", Toast.LENGTH_SHORT).show();  
+        new AsyncLoadedImage().execute();  
+    }  
+    /** 
+     * 删除监听器事件 
+     */  
+    private android.view.View.OnClickListener delClickListener = new View.OnClickListener() {  
+        @Override  
+        public void onClick(View v) {  
+            if(selectFileLs.isEmpty()) {  
+                Toast.makeText(PictureScanAct.this, "请选择图片", Toast.LENGTH_SHORT).show();  
+                return ;  
+            }  
+            for(LoadImage loadimg : selectFileLs){  
+                File file = new File(loadimg.getFileName());  
+                boolean isTrue = file.delete();  
+                Log.i("----------------------删除图片------", isTrue+"---------------");  
+            }  
+            imgAdapter.deletePhoto(selectFileLs);  
+            seclectNumView.setText("选中0张图片");  
+        }     
+    };  
+      
+    @Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        if(isDbClick && keyCode == KeyEvent.KEYCODE_BACK){    //点击返回按键  
+            isDbClick = false;  
+            gridView.setPadding(0, 0, 0, 0);            //退出编辑转台时候，使gridview全屏显示  
+            seclectNumView.setVisibility(View.GONE);  
+            deleteButton.setVisibility(View.GONE);  
+            selectFileLs.clear();  
+            imgAdapter.clear();  
+            return false;  
+        }  
+        return super.onKeyDown(keyCode, event);  
+    }  
+    /** 
+     * 异步加载图片展示 
+     * @author： aokunsang 
+     * @date： 2012-8-1 
+     */  
+    class AsyncLoadedImage extends AsyncTask<Object, LoadImage, Boolean> {  
+  
+        @Override  
+        protected Boolean doInBackground(Object... params) {  
+            File fileDir = new File(Const.imgPath);  
+            File[] files = fileDir.listFiles();  
+            boolean result = false;  
+            if(files!=null){  
+                for(File file:files){  
+                    String fileName = file.getName();  
+                    if (fileName.lastIndexOf(".") > 0    
+                            && fileName.substring(fileName.lastIndexOf(".") + 1,    
+                            fileName.length()).equals("jpg")){  
+                        Bitmap bitmap;  
+                        Bitmap newBitmap;  
+                         try {  
+                            BitmapFactory.Options options = new BitmapFactory.Options();  
+                            options.inSampleSize = 10;  
+                            bitmap = BitmapFactory.decodeFile(file.getPath(), options);  
+                            newBitmap = ThumbnailUtils.extractThumbnail(bitmap, 67, 70);  
+                            bitmap.recycle();  
+                            if (newBitmap != null) {  
+                                LoadImage loadImage = new LoadImage(file.getPath(),newBitmap);  
+                                fileNameList.add(loadImage);  
+                                publishProgress(loadImage);  
+                                result = true;  
+                            }  
+                        } catch (Exception e) {  
+                            e.printStackTrace();  
+                        }  
+                    }  
+                }  
+            }  
+            return result;  
+        }  
+        @Override  
+        public void onProgressUpdate(LoadImage... value) {  
+            for(LoadImage loadImage:value){  
+                imgAdapter.addPhoto(loadImage);  
+            }  
+        }  
+        @Override  
+        protected void onPostExecute(Boolean result) {  
+            if(!result){  
+                showDialog(1);  
+            }  
+        }  
+     }  
+     @Override  
+    protected Dialog onCreateDialog(int id) {  
+         AlertDialog dialog = new AlertDialog.Builder(PictureScanAct.this).setTitle("温馨提示").setMessage("暂时还没有照片,请先采集照片！")  
+            .setPositiveButton("确定", new DialogInterface.OnClickListener(){  
+                @Override  
+                public void onClick(DialogInterface dialog, int which) {  
+                    startActivity(new Intent(PictureScanAct.this,TakePhotoAct.class));  
+                }  
+            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {  
+                @Override  
+                public void onClick(DialogInterface dialog, int which) {  
+                    finish();  
+                }  
+            }).show();  
+         return dialog;  
+    }  
+       
+     /** 
+      * 图片详细信息bean 
+      * @author： aokunsang 
+      * @date： 2012-8-31 
+      */  
+    public class LoadImage {  
+           
+         private String fileName;  
+         private Bitmap bitmap;  
+           
+        public LoadImage() {  
+            super();  
+            // TODO Auto-generated constructor stub  
+        }  
+        public LoadImage(String fileName, Bitmap bitmap) {  
+            super();  
+            this.fileName = fileName;  
+            this.bitmap = bitmap;  
+        }  
+        /** 
+         * @return the fileName 
+         */  
+        public String getFileName() {  
+            return fileName;  
+        }  
+        /** 
+         * @param fileName the fileName to set 
+         */  
+        public void setFileName(String fileName) {  
+            this.fileName = fileName;  
+        }  
+        /** 
+         * @return the bitmap 
+         */  
+        public Bitmap getBitmap() {  
+            return bitmap;  
+        }  
+        /** 
+         * @param bitmap the bitmap to set 
+         */  
+        public void setBitmap(Bitmap bitmap) {  
+            this.bitmap = bitmap;  
+        }  
+        @Override  
+        public int hashCode() {  
+            return this.getFileName().hashCode();  
+        }  
+          
+        @Override  
+        public boolean equals(Object o) {  
+            LoadImage loadImg = (LoadImage)o;  
+            return this.getFileName().equals(loadImg.getFileName());  
+        }  
+
+}

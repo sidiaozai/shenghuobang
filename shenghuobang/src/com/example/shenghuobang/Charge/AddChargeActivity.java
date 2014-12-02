@@ -30,14 +30,12 @@ public class AddChargeActivity extends ListActivity {
 	private Button btnSave;
 	private TextView tVAddChargeTime1;
 	private EditText etAddChargeSum;
-	private EditText etSum;
 	private RadioButton radioButtonType;
 	private EditText etAddChargeDes;
 	private sqliteDataBase.Model.Charge modelCharge ;
 	private sqliteDataBase.Bll.Charge bllCharge;
 	
 	private AddChargeAdapter adapter;
-	private ArrayAdapter arrayAdapter;
 	
 	private Intent intent;   
 	
@@ -98,6 +96,9 @@ public class AddChargeActivity extends ListActivity {
 				bllCharge.insert(modelCharge);
 				
 				setListViewData();
+				etAddChargeSum.setText("");
+				etAddChargeDes.setText("");
+				
 				
 			}
 		});
@@ -136,9 +137,7 @@ public class AddChargeActivity extends ListActivity {
 			setListAdapter(adapter);
 		}
 	}
-	private void updateListViewData(){
-		setListViewData();
-	}
+	
 	private List<Charge> getData(Cursor cursor) {
 		
 		List<Charge> list = new ArrayList<Charge>();
@@ -173,11 +172,7 @@ public class AddChargeActivity extends ListActivity {
         cursor.close();
 		return list;
 	}
-//	private List<String> getNullData(){
-//		List<String> list = new ArrayList<String>();
-//		list.add("Ã»ÓÐ¼ÇÂ¼");
-//		return list;
-//	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
