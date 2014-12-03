@@ -29,30 +29,29 @@ public class AlarmActivity extends Activity {
 //                }
 //            }).create().show();
         AddNotification();
+        finish();
         
     }
     
     public void AddNotification(){ 
-        //添加通知到顶部任务栏 
-        //获得NotificationManager实例 
-        String service = NOTIFICATION_SERVICE; 
-        NotificationManager nm = (NotificationManager)getSystemService(service); 
-        //实例化Notification 
+        
+        
+        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
+        
         Notification n = new Notification(); 
-        //设置显示图标 
+        
         int icon = R.drawable.ic_launcher; 
-        //设置提示信息 
-        String tickerText ="我的程序"; 
-        //显示时间 
+        
+        String tickerText ="生活帮"; 
+       
         long when = System.currentTimeMillis(); 
           
         n.icon = icon; 
         n.tickerText = tickerText; 
         n.when = when; 
-        //显示在“正在进行中” 
-        //  n.flags = Notification.FLAG_ONGOING_EVENT; 
+        
         n.flags|=Notification.FLAG_AUTO_CANCEL; //自动终止 
-        //实例化Intent 
+         
         Intent it = new Intent(this,AlarmActivity.class);  
         /*********************
          *获得PendingIntent  
@@ -79,7 +78,7 @@ public class AlarmActivity extends Activity {
         PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT); 
          
         //设置事件信息，显示在拉开的里面 
-        n.setLatestEventInfo(this,"我的软件", "我的软件正在运行……", pi); 
+        n.setLatestEventInfo(this,"生活帮", "备忘提醒……", pi); 
       
         nm.notify(ID,n); 
     } 

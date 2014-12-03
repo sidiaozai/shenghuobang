@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="sqliteDataBase.Bll.Unforget"/>
-<fullyQualifiedTypeName name="android.app.TimePickerDialog"/>
-<fullyQualifiedTypeName name="android.app.TimePickerDialog.OnTimeSetListener"/>
-<fullyQualifiedTypeName name="android.app.DatePickerDialog.OnDateSetListener"/>
-<fullyQualifiedTypeName name="sqliteDataBase.Model.Unforget"/>
-<fullyQualifiedTypeName name="android.media.MediaRecorder"/>
-<fullyQualifiedTypeName name="android.media.MediaPlayer"/>
-<fullyQualifiedTypeName name="android.os.Environment"/>
-<fullyQualifiedTypeName name="android.widget.AdapterView.OnItemLongClickListener"/>
-<fullyQualifiedTypeName name="java.lang.Boolean"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.Unforget.UpdateUnforgetActivity"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.DateTimePickerDialog"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.provider.SyncStateContract.Constants"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.FileOper"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.R.drawable"/>
 <fullyQualifiedTypeName name="android.R.color"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.R.color"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.app.AlarmManager"/>
 <fullyQualifiedTypeName name="java.util.TimeZone"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
@@ -39,7 +24,6 @@
 <fullyQualifiedTypeName name="android.widget.EditText"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Model.Password"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Password.PasswordActivity"/>
-<fullyQualifiedTypeName name="sqliteDataBase.Bll.Password"/>
 <fullyQualifiedTypeName name="android.view.Gravity"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Password.UpdatePasswordActivity"/>
 <fullyQualifiedTypeName name="com.example.aes256demo.R.id"/>
@@ -55,9 +39,25 @@
 <fullyQualifiedTypeName name="android.app.PendingIntent"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
 <fullyQualifiedTypeName name="android.app.Dialog"/>
 <fullyQualifiedTypeName name="android.widget.AbsListView.MultiChoiceModeListener"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="com.example.leanclouddemo.R.id"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceScreen"/>
+<fullyQualifiedTypeName name="android.preference.Preference"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.Setting.UpdateDataActivity"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="android.os.Message"/>
+<fullyQualifiedTypeName name="android.widget.Toast"/>
+<fullyQualifiedTypeName name="sqliteDataBase.Bll.Charge"/>
+<fullyQualifiedTypeName name="sqliteDataBase.Bll.Unforget"/>
+<fullyQualifiedTypeName name="sqliteDataBase.Bll.Password"/>
+<fullyQualifiedTypeName name="com.avos.avoscloud.AVObject"/>
+<fullyQualifiedTypeName name="com.avos.avoscloud.AVQuery"/>
+<fullyQualifiedTypeName name="com.avos.avoscloud.SaveCallback"/>
+<fullyQualifiedTypeName name="android.preference.CheckBoxPreference"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.Setting.UpdateVersionActivity"/>
 </qualifiedTypeNameHistroy>

@@ -50,5 +50,14 @@ public class Password {
 			maxid  = cr.getInt(0); 
 		return maxid;
 	}
+	public int getCount(){
+		int count=0;
+		Cursor c = db.rawQuery("select count(*) from tablePassword ",null); 
+		if(c.moveToNext()){
+			count = c.getInt(0);
+		}
+		return count;
+		   
+	}
 
 }

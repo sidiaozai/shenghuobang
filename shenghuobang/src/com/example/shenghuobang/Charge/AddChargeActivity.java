@@ -96,10 +96,9 @@ public class AddChargeActivity extends ListActivity {
 				bllCharge.insert(modelCharge);
 				
 				setListViewData();
-				etAddChargeSum.setText("");
+				
 				etAddChargeDes.setText("");
-				
-				
+				etAddChargeSum.setText("");
 			}
 		});
 		

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;SpringProgressView.java&apos; to &apos;shenghuobang/src/com.example.shenghuobang.Setting&apos;&#x0D;&#x0A;－ 原始项目：“SpringProgressDemo”&#x0D;&#x0A;－ 目标元素：“shenghuobang/src/com.example.shenghuobang.Setting”&#x0D;&#x0A;－ 原始元素：“com.spring.progressview.SpringProgressView.java”" description="复制编译单元" destination="=shenghuobang/src&lt;com.example.shenghuobang.Setting" element1="/src&lt;com.spring.progressview{SpringProgressView.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1417584485509" units="1" version="1.0"/>
+</session>

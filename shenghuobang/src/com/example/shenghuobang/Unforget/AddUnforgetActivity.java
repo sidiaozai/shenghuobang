@@ -246,7 +246,7 @@ public class AddUnforgetActivity extends Activity {
                 PendingIntent pi = PendingIntent.getBroadcast(AddUnforgetActivity.this, bllUnforget.getMaxId(), intent, 0);    //´´½¨PendingIntent
                 alarmManager.set(AlarmManager.RTC_WAKEUP, c_set.getTimeInMillis(), pi);
                 //alarmManager.cancel(pi);
-				setResult(1,getIntent());  
+				//setResult(1,getIntent());  
 				finish();
 				
 			}

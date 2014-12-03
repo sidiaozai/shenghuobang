@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 4 elements to &apos;libs&apos;&#x0D;&#x0A;－ 原始项目：“LeanCloudDemo”&#x0D;&#x0A;－ 目标元素：“libs”&#x0D;&#x0A;－ 原始元素：&#x0D;&#x0A;     fastjson.jar&#x0D;&#x0A;     android-async-http-1.4.6.jar&#x0D;&#x0A;     httpmime-4.2.4.jar&#x0D;&#x0A;     avoscloud-v2.6.8.2.jar" description="复制文件" element1="libs/fastjson.jar" element2="libs/android-async-http-1.4.6.jar" element3="libs/httpmime-4.2.4.jar" element4="libs/avoscloud-v2.6.8.2.jar" files="4" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1417585940916" target="/shenghuobang/libs" units="0" version="1.0"/>
+</session>

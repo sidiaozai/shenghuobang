@@ -1,0 +1,131 @@
+package com.example.shenghuobang.Setting;
+
+import java.util.Random;
+
+import sqliteDataBase.Bll.Charge;
+import sqliteDataBase.Bll.Password;
+import sqliteDataBase.Bll.Unforget;
+
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+import com.example.shenghuobang.R;
+
+import android.app.Activity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
+
+
+public class UpdateDataActivity extends Activity {
+	
+	private SpringProgressView progressView;
+	private Handler mHandler;
+	private sqliteDataBase.Bll.Charge bllCharge;
+	private sqliteDataBase.Bll.Unforget bllUnforget;
+	private sqliteDataBase.Bll.Password bllPassword;
+	int time=0;
+	int counts;
+	int count=0;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.activity_update_data);
+		
+		bllCharge = new sqliteDataBase.Bll.Charge(UpdateDataActivity.this);
+		bllUnforget = new sqliteDataBase.Bll.Unforget(UpdateDataActivity.this);
+		bllPassword = new sqliteDataBase.Bll.Password(UpdateDataActivity.this);
+		
+		counts = bllCharge.getCount()+ bllUnforget.getCount()+ bllPassword.getCount();
+		
+		
+		AVOSCloud.initialize(this, "qcrjy7s8b5vforciw86pptxnhypnyt5n67yyrwnty2f2vcj4", "udpajg0bbynronjwfzqcvyfk4kfc6ccjbluzamo9u6gdmdhb");
+		
+		
+		
+		
+		
+		progressView = (SpringProgressView) findViewById(R.id.spring_progress_view);
+		
+		progressView.setMaxCount(counts);
+
+		mHandler = new Handler() {  
+            @Override  
+            public void handleMessage(Message msg) {  
+                super.handleMessage(msg);  
+                switch (msg.what) {  
+                case 1:  
+                	//int time = (Integer) msg.obj;
+                	progressView.setCurrentCount(time++); 
+                	
+                    break;  
+                }  
+            }  
+        };  
+        
+        new Thread(new Runnable(){
+			public void run(){
+				try {
+					while(time<1000){
+						Thread.sleep(100);
+						
+						Message msg = new Message();
+						msg.what =1;
+						mHandler.sendMessage(msg );
+						
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+	private void  updateCharge(){
+		Cursor cursor = bllCharge.query();
+		AVObject testObject = new AVObject("Charge");
+		try {
+			testObject.delete();
+		} catch (AVException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+
+		while(cursor.moveToNext()){
+			int idIndex = cursor.getColumnIndex("id");
+    		int yearIndex = cursor.getColumnIndex("year");
+    		int monthIndex = cursor.getColumnIndex("month");
+    		int dayIndex = cursor.getColumnIndex("day");
+    		
+    		int typeIndex = cursor.getColumnIndex("type");
+    		int sumIndex = cursor.getColumnIndex("sum");
+    		int desIndex = cursor.getColumnIndex("des");
+    		
+    		int id = cursor.getInt(idIndex);
+
+    		int year = cursor.getInt(yearIndex);
+    		int month = cursor.getInt(monthIndex);
+    		int day = cursor.getInt(dayIndex);
+    		
+    		int sum = cursor.getInt(sumIndex);
+    		int type = cursor.getInt(typeIndex);
+    		String des = cursor.getString(desIndex);
+    		
+    		testObject.put("id", id);
+    		testObject.put("year", year);
+    		testObject.put("month", month);
+    		testObject.put("day", day);
+    		testObject.put("type", type);
+    		testObject.put("sum", sum);
+    		testObject.put("des", des);
+
+    		testObject.saveInBackground();
+		}
+	}
+	
+	
+
+}

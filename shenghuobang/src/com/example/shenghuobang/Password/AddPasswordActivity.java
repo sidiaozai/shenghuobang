@@ -51,7 +51,7 @@ public class AddPasswordActivity extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
 				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 		
-		setContentView(R.layout.acitvity_add_password);
+		setContentView(R.layout.activity_add_password);
 		
 		bllPassword = new sqliteDataBase.Bll.Password(this);
 		

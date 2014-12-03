@@ -38,7 +38,7 @@ public class Unforget {
 	}
 	public Cursor query()
     {
-        Cursor c=db.query("tableUnforget", null, null, null, null, null, null);
+        Cursor c=db.query("tableUnforget", null, null, null, null, null, "year asc,month asc,day asc,hour asc,minute asc");
         return c;
     }
 
@@ -54,5 +54,14 @@ public class Unforget {
 		if(cr.moveToFirst())  
 			maxid  = cr.getInt(0); 
 		return maxid;
+	}
+	public int getCount(){
+		int count=0;
+		Cursor c = db.rawQuery("select count(*) from tableUnforget ",null); 
+		if(c.moveToNext()){
+			count = c.getInt(0);
+		}
+		return count;
+		   
 	}
 }

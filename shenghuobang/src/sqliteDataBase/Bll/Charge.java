@@ -68,4 +68,13 @@ public class Charge {
 		db.delete("tableCharge", "year=? and month=? and day=?",new String[]{String.valueOf(year),String.valueOf(month),String.valueOf(day)});
 		return 0;
 	}
+	public int getCount(){
+		int count=0;
+		Cursor c = db.rawQuery("select count(*) from tableCharge ",null); 
+		if(c.moveToNext()){
+			count = c.getInt(0);
+		}
+		return count;
+		   
+	}
 }
