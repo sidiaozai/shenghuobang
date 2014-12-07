@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="备忘通知" android:key="set_local" />
+	<CheckBoxPreference android:key="apply_enable_sound"
+		android:title="开启声音" android:summary="当有备忘通知时播放声音提示"
+		android:defaultValue="true">
+	</CheckBoxPreference>
+	<CheckBoxPreference android:key="apply_enable_vibrate"
+		android:title="开启震动" android:summary="当有备忘提醒时震动提示"
+		android:defaultValue="true">
+	</CheckBoxPreference>
+
+	<PreferenceCategory android:title="安全管理"></PreferenceCategory>
+
+	<CheckBoxPreference android:key="apply_enable_password" 
+		android:title="密码登入" android:summary="登录时显示登陆界面" >
+	</CheckBoxPreference>
+	
+	<EditTextPreference android:key="number_edit"
+		android:title="修改密码" android:defaultValue="123">
+	</EditTextPreference>
+	<Preference android:key="data_update" android:title="数据同步"
+		android:summary="数据同步" >
+		<intent android:action="com.feixun.action.seemAction" 
+			android:targetPackage="com.example.shenghuobang.Setting" android:targetClass="com.example.shenghuobang.Setting.UpdateDataActivity" />
+	</Preference>
+	<Preference android:key="version_update" android:title="检测版本"
+		android:summary="检测版本" >
+		<intent android:action="com.feixun.action.seemAction" 
+			android:targetPackage="com.example.shenghuobang.Setting" android:targetClass="com.example.shenghuobang.Setting.UpdateVersionActivity" />
+	</Preference>
+	<Preference android:key="feedback" android:title="用户反馈"
+		android:summary="用户反馈" >
+		<intent android:action="com.feixun.action.seemAction" 
+			android:targetPackage="com.example.shenghuobang.Setting" android:targetClass="com.example.shenghuobang.Setting.UpdateVersionActivity" />
+	</Preference>
+	
+	
+</PreferenceScreen>

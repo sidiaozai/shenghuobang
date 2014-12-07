@@ -1,0 +1,78 @@
+package com.example.shenghuobang;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.Toast;
+
+
+public class InputPasswordActivity extends Activity {
+	
+	private Button 
+	private EditText etPassword;
+	private SharedPreferences mySharedPreferences; 
+	private Boolean isPicture=false;
+	
+	
+	protected void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+  
+		setContentView(R.layout.activity_password_input);
+		
+		mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+		if(!mySharedPreferences.getBoolean("apply_enable_password", false)){
+			Intent intent = new Intent();
+            intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+		}
+		String verPassword = mySharedPreferences.getString("number_edit", null);
+		if(verPassword.equals(null)||verPassword.equals("")){
+			Intent intent = new Intent();
+            intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+		}
+		
+		etPassword = (EditText) findViewById(R.id.etPassword);
+		
+		etPassword.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				
+				//Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_LONG).show(); 
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				
+				//Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				
+				String password = etPassword.getText().toString();
+				
+				String verPassword = mySharedPreferences.getString("number_edit", null);
+				
+				if(password.equals(verPassword)){
+					Intent intent = new Intent();
+	                intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
+	                startActivity(intent);
+	                finish();
+				}
+			}
+		});
+		
+	}
+}

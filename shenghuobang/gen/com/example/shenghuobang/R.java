@@ -8,6 +8,10 @@
 package com.example.shenghuobang;
 
 public final class R {
+    public static final class array {
+        public static final int department=0x7f060000;
+        public static final int department_value=0x7f060001;
+    }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
@@ -30,23 +34,23 @@ containing a value of this type.
         public static final int border_width=0x7f010000;
     }
     public static final class color {
-        public static final int black=0x7f060007;
-        public static final int blue=0x7f06000b;
-        public static final int green=0x7f06000c;
-        public static final int grey=0x7f06000a;
-        public static final int home_bg=0x7f060008;
-        public static final int integral_color=0x7f060005;
-        public static final int key_color=0x7f060004;
-        public static final int list_color1=0x7f060001;
-        public static final int list_color2=0x7f060002;
-        public static final int menu_color=0x7f060010;
-        public static final int name_color=0x7f060003;
-        public static final int red=0x7f060009;
-        public static final int size_color=0x7f060006;
-        public static final int text_gray=0x7f06000e;
-        public static final int text_makered=0x7f06000d;
-        public static final int text_red=0x7f06000f;
-        public static final int white=0x7f060000;
+        public static final int black=0x7f070007;
+        public static final int blue=0x7f07000b;
+        public static final int green=0x7f07000c;
+        public static final int grey=0x7f07000a;
+        public static final int home_bg=0x7f070008;
+        public static final int integral_color=0x7f070005;
+        public static final int key_color=0x7f070004;
+        public static final int list_color1=0x7f070001;
+        public static final int list_color2=0x7f070002;
+        public static final int menu_color=0x7f070010;
+        public static final int name_color=0x7f070003;
+        public static final int red=0x7f070009;
+        public static final int size_color=0x7f070006;
+        public static final int text_gray=0x7f07000e;
+        public static final int text_makered=0x7f07000d;
+        public static final int text_red=0x7f07000f;
+        public static final int white=0x7f070000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -55,8 +59,8 @@ containing a value of this type.
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f070000;
-        public static final int activity_vertical_margin=0x7f070001;
+        public static final int activity_horizontal_margin=0x7f080000;
+        public static final int activity_vertical_margin=0x7f080001;
     }
     public static final class drawable {
         public static final int background=0x7f020000;
@@ -91,91 +95,96 @@ containing a value of this type.
         public static final int textview_press=0x7f02001d;
     }
     public static final class id {
-        public static final int action_charge=0x7f0a0051;
-        public static final int action_memo=0x7f0a0052;
-        public static final int action_password=0x7f0a0053;
-        public static final int action_settings=0x7f0a0054;
-        public static final int action_text=0x7f0a0000;
-        public static final int btnAddPassword=0x7f0a0046;
-        public static final int btnAddPasswordAudio=0x7f0a0015;
-        public static final int btnAddPasswordCancel=0x7f0a0016;
-        public static final int btnAddPasswordOK=0x7f0a0017;
-        public static final int btnAddUnForget=0x7f0a0048;
-        public static final int btnAddUnforgetAudio=0x7f0a0020;
-        public static final int btnAddUnforgetCancel=0x7f0a0021;
-        public static final int btnAddUnforgetOK=0x7f0a0022;
-        public static final int btnRetrunCharge=0x7f0a0001;
-        public static final int btnSave=0x7f0a0003;
-        public static final int datepicker=0x7f0a0033;
-        public static final int del=0x7f0a004c;
-        public static final int etAddChargeDes=0x7f0a0012;
-        public static final int etAddChargeSum=0x7f0a0009;
-        public static final int etForgetName=0x7f0a0018;
-        public static final int etPassword=0x7f0a0014;
-        public static final int etPasswordName=0x7f0a0013;
-        public static final int gridViewPassword=0x7f0a0047;
-        public static final int gridViewUnforget=0x7f0a0049;
-        public static final int image2=0x7f0a0029;
-        public static final int image3=0x7f0a002a;
-        public static final int image4=0x7f0a002c;
-        public static final int image5=0x7f0a002e;
-        public static final int image6=0x7f0a0031;
-        public static final int imageAddCharge=0x7f0a0027;
-        public static final int img_tab_charge=0x7f0a0038;
-        public static final int img_tab_password=0x7f0a0040;
-        public static final int img_tab_settings=0x7f0a0044;
-        public static final int img_tab_unforget=0x7f0a003c;
-        public static final int ll1=0x7f0a002b;
-        public static final int ll2=0x7f0a0030;
-        public static final int ll3=0x7f0a0023;
-        public static final int llTimeSelector=0x7f0a0024;
-        public static final int llUnforgetDate=0x7f0a0019;
-        public static final int llUnforgetTime=0x7f0a001d;
-        public static final int lvContent=0x7f0a004b;
-        public static final int main_layout_charge=0x7f0a0036;
-        public static final int main_layout_password=0x7f0a003e;
-        public static final int main_layout_settings=0x7f0a0042;
-        public static final int main_layout_unforget=0x7f0a003a;
-        public static final int main_tab_charge=0x7f0a0037;
-        public static final int main_tab_group=0x7f0a0035;
-        public static final int main_tab_password=0x7f0a003f;
-        public static final int main_tab_settings=0x7f0a0043;
-        public static final int main_tab_unforget=0x7f0a003b;
-        public static final int menu_select=0x7f0a004f;
-        public static final int menu_unselect=0x7f0a0050;
-        public static final int radioButton1=0x7f0a000e;
-        public static final int radioButton2=0x7f0a000f;
-        public static final int radioGroupType=0x7f0a000d;
-        public static final int spring_progress_view=0x7f0a004a;
-        public static final int tVAddChargeDes=0x7f0a0011;
-        public static final int tVAddChargeSum=0x7f0a0008;
-        public static final int tVAddChargeTime=0x7f0a0005;
-        public static final int tVAddChargeTime1=0x7f0a0006;
-        public static final int tVAddChargeType=0x7f0a000c;
-        public static final int tVAddChargeYuan=0x7f0a000a;
-        public static final int tVDetails=0x7f0a0002;
-        public static final int tab_charge_text=0x7f0a0039;
-        public static final int tab_password_text=0x7f0a0041;
-        public static final int tab_settings_text=0x7f0a0045;
-        public static final int tab_unforget_text=0x7f0a003d;
-        public static final int tableRow1=0x7f0a0004;
-        public static final int tableRow2=0x7f0a0007;
-        public static final int tableRow3=0x7f0a000b;
-        public static final int tableRow4=0x7f0a0010;
-        public static final int textView1=0x7f0a0028;
-        public static final int timepicker=0x7f0a0034;
-        public static final int tvBalance=0x7f0a0032;
-        public static final int tvInMonthSum=0x7f0a002d;
-        public static final int tvMonth=0x7f0a0026;
-        public static final int tvOutMonthSum=0x7f0a002f;
-        public static final int tvUnforgetDay=0x7f0a001c;
-        public static final int tvUnforgetHour=0x7f0a001e;
-        public static final int tvUnforgetMinute=0x7f0a001f;
-        public static final int tvUnforgetMonth=0x7f0a001b;
-        public static final int tvUnforgetName=0x7f0a004d;
-        public static final int tvUnforgetTime=0x7f0a004e;
-        public static final int tvUnforgetYear=0x7f0a001a;
-        public static final int tvYear=0x7f0a0025;
+        public static final int action_charge=0x7f0b0056;
+        public static final int action_memo=0x7f0b0057;
+        public static final int action_password=0x7f0b0058;
+        public static final int action_settings=0x7f0b0059;
+        public static final int action_text=0x7f0b0000;
+        public static final int btnAddPassword=0x7f0b0046;
+        public static final int btnAddPasswordAudio=0x7f0b0015;
+        public static final int btnAddPasswordCancel=0x7f0b0016;
+        public static final int btnAddPasswordOK=0x7f0b0017;
+        public static final int btnAddUnForget=0x7f0b004d;
+        public static final int btnAddUnforgetAudio=0x7f0b0020;
+        public static final int btnAddUnforgetCancel=0x7f0b0021;
+        public static final int btnAddUnforgetOK=0x7f0b0022;
+        public static final int btnChangePasswordStyle=0x7f0b0049;
+        public static final int btnRetrunCharge=0x7f0b0001;
+        public static final int btnSave=0x7f0b0003;
+        public static final int buttosdfsdf=0x7f0b004c;
+        public static final int datepicker=0x7f0b0033;
+        public static final int del=0x7f0b0051;
+        public static final int etAddChargeDes=0x7f0b0012;
+        public static final int etAddChargeSum=0x7f0b0009;
+        public static final int etForgetName=0x7f0b0018;
+        public static final int etPassword=0x7f0b0014;
+        public static final int etPasswordName=0x7f0b0013;
+        public static final int gridViewPassword=0x7f0b0047;
+        public static final int gridViewUnforget=0x7f0b004e;
+        public static final int image2=0x7f0b0029;
+        public static final int image3=0x7f0b002a;
+        public static final int image4=0x7f0b002c;
+        public static final int image5=0x7f0b002e;
+        public static final int image6=0x7f0b0031;
+        public static final int imageAddCharge=0x7f0b0027;
+        public static final int img_tab_charge=0x7f0b0038;
+        public static final int img_tab_password=0x7f0b0040;
+        public static final int img_tab_settings=0x7f0b0044;
+        public static final int img_tab_unforget=0x7f0b003c;
+        public static final int ll1=0x7f0b002b;
+        public static final int ll2=0x7f0b0030;
+        public static final int ll3=0x7f0b0023;
+        public static final int llPicture=0x7f0b004b;
+        public static final int llText=0x7f0b004a;
+        public static final int llTimeSelector=0x7f0b0024;
+        public static final int llUnforgetDate=0x7f0b0019;
+        public static final int llUnforgetTime=0x7f0b001d;
+        public static final int lvContent=0x7f0b0050;
+        public static final int main_layout_charge=0x7f0b0036;
+        public static final int main_layout_password=0x7f0b003e;
+        public static final int main_layout_settings=0x7f0b0042;
+        public static final int main_layout_unforget=0x7f0b003a;
+        public static final int main_tab_charge=0x7f0b0037;
+        public static final int main_tab_group=0x7f0b0035;
+        public static final int main_tab_password=0x7f0b003f;
+        public static final int main_tab_settings=0x7f0b0043;
+        public static final int main_tab_unforget=0x7f0b003b;
+        public static final int menu_select=0x7f0b0054;
+        public static final int menu_unselect=0x7f0b0055;
+        public static final int radioButton1=0x7f0b000e;
+        public static final int radioButton2=0x7f0b000f;
+        public static final int radioGroupType=0x7f0b000d;
+        public static final int relativeLayout1=0x7f0b0048;
+        public static final int spring_progress_view=0x7f0b004f;
+        public static final int tVAddChargeDes=0x7f0b0011;
+        public static final int tVAddChargeSum=0x7f0b0008;
+        public static final int tVAddChargeTime=0x7f0b0005;
+        public static final int tVAddChargeTime1=0x7f0b0006;
+        public static final int tVAddChargeType=0x7f0b000c;
+        public static final int tVAddChargeYuan=0x7f0b000a;
+        public static final int tVDetails=0x7f0b0002;
+        public static final int tab_charge_text=0x7f0b0039;
+        public static final int tab_password_text=0x7f0b0041;
+        public static final int tab_settings_text=0x7f0b0045;
+        public static final int tab_unforget_text=0x7f0b003d;
+        public static final int tableRow1=0x7f0b0004;
+        public static final int tableRow2=0x7f0b0007;
+        public static final int tableRow3=0x7f0b000b;
+        public static final int tableRow4=0x7f0b0010;
+        public static final int textView1=0x7f0b0028;
+        public static final int timepicker=0x7f0b0034;
+        public static final int tvBalance=0x7f0b0032;
+        public static final int tvInMonthSum=0x7f0b002d;
+        public static final int tvMonth=0x7f0b0026;
+        public static final int tvOutMonthSum=0x7f0b002f;
+        public static final int tvUnforgetDay=0x7f0b001c;
+        public static final int tvUnforgetHour=0x7f0b001e;
+        public static final int tvUnforgetMinute=0x7f0b001f;
+        public static final int tvUnforgetMonth=0x7f0b001b;
+        public static final int tvUnforgetName=0x7f0b0052;
+        public static final int tvUnforgetTime=0x7f0b0053;
+        public static final int tvUnforgetYear=0x7f0b001a;
+        public static final int tvYear=0x7f0b0025;
     }
     public static final class layout {
         public static final int actionbar_layout=0x7f030000;
@@ -196,21 +205,21 @@ containing a value of this type.
         public static final int view_unforget=0x7f03000f;
     }
     public static final class menu {
-        public static final int action_menu=0x7f090000;
-        public static final int menu_charge=0x7f090001;
+        public static final int action_menu=0x7f0a0000;
+        public static final int menu_charge=0x7f0a0001;
     }
     public static final class string {
-        public static final int action_charge=0x7f080001;
-        public static final int action_memo=0x7f080002;
-        public static final int action_password=0x7f080003;
-        public static final int action_settings=0x7f080004;
-        public static final int add=0x7f080007;
-        public static final int app_name=0x7f080000;
-        public static final int end=0x7f080006;
-        public static final int select_all=0x7f080009;
-        public static final int selection=0x7f080008;
-        public static final int start=0x7f080005;
-        public static final int unselect_all=0x7f08000a;
+        public static final int action_charge=0x7f090001;
+        public static final int action_memo=0x7f090002;
+        public static final int action_password=0x7f090003;
+        public static final int action_settings=0x7f090004;
+        public static final int add=0x7f090007;
+        public static final int app_name=0x7f090000;
+        public static final int end=0x7f090006;
+        public static final int select_all=0x7f090009;
+        public static final int selection=0x7f090008;
+        public static final int start=0x7f090005;
+        public static final int unselect_all=0x7f09000a;
     }
     public static final class style {
         /** 
@@ -242,7 +251,8 @@ containing a value of this type.
         public static final int MyDialogStyle=0x7f050000;
     }
     public static final class xml {
-        public static final int setting_preference=0x7f040000;
+        public static final int mypreference=0x7f040000;
+        public static final int setting_preference=0x7f040001;
     }
     public static final class styleable {
         /** Attributes that can be used with a CircleImageView.

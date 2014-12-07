@@ -38,8 +38,9 @@ public class Unforget {
 	}
 	public Cursor query()
     {
-        Cursor c=db.query("tableUnforget", null, null, null, null, null, "year asc,month asc,day asc,hour asc,minute asc");
-        return c;
+        //Cursor c=db.query("tableUnforget", null, null, null, null, null, "year asc,month asc,day asc,hour asc,minute asc");
+		Cursor c=db.rawQuery("select * from tableUnforget order by year asc,month asc,day asc,hour asc,minute asc", null);
+		return c;
     }
 
 	

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="17"
+        android:minSdkVersion="10"
         android:targetSdkVersion="19" />
     <application
         android:allowBackup="true"
@@ -14,8 +14,11 @@
         android:theme="@style/AppTheme" >
         
         <activity android:name="com.example.shenghuobang.InputPasswordActivity"
-            android:theme="@android:style/Theme.Dialog" >
-        	
+            android:theme="@android:style/Theme.NoTitleBar" >
+        	<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.shenghuobang.StartPageActivity"
@@ -25,37 +28,35 @@
         
         <activity android:name="com.example.shenghuobang.MainActivity"
             android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
         <activity android:name="com.example.shenghuobang.Charge.ChargeActivity"
             android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.example.shenghuobang.Password.PasswordActivity"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.example.shenghuobang.Unforget.UnforgetActivity"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.example.shenghuobang.Setting.SettingActivity" 
-            android:label="设置与帮助"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="keyboardHidden|orientation" />
         <activity android:name="com.example.shenghuobang.Charge.AddChargeActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
-         <activity android:name="com.example.shenghuobang.Charge.UpdateChargeActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        
+        <activity android:name="com.example.shenghuobang.Password.PasswordActivity"
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.example.shenghuobang.Password.AddPasswordActivity"
             android:theme="@style/MyDialogStyle" >
         </activity>
         <activity android:name="com.example.shenghuobang.Password.UpdatePasswordActivity"
             android:theme="@style/MyDialogStyle" >
         </activity>
+        <activity android:name="com.example.shenghuobang.Unforget.UnforgetActivity"
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="com.example.shenghuobang.Unforget.AddUnforgetActivity"
              android:theme="@style/MyDialogStyle" > 
        </activity>
        <activity android:name="com.example.shenghuobang.Unforget.UpdateUnforgetActivity"
             android:theme="@style/MyDialogStyle" >
        </activity>
+       
+        <activity android:name="com.example.shenghuobang.Setting.SettingActivity" 
+            android:label="设置与帮助"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation" />
+        
        
        <activity android:name="com.example.shenghuobang.Setting.UpdateDataActivity"
          		  android:alwaysRetainTaskState="true"

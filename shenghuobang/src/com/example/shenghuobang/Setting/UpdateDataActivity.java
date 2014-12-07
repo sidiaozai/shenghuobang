@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -37,6 +38,8 @@ public class UpdateDataActivity extends Activity {
 		
 		setContentView(R.layout.activity_update_data);
 		
+		Log.i("UpdateDataActivity", "UpdateDataActivity----->");
+		
 		bllCharge = new sqliteDataBase.Bll.Charge(UpdateDataActivity.this);
 		bllUnforget = new sqliteDataBase.Bll.Unforget(UpdateDataActivity.this);
 		bllPassword = new sqliteDataBase.Bll.Password(UpdateDataActivity.this);
@@ -55,14 +58,15 @@ public class UpdateDataActivity extends Activity {
 		AVOSCloud.initialize(this, "qcrjy7s8b5vforciw86pptxnhypnyt5n67yyrwnty2f2vcj4", "udpajg0bbynronjwfzqcvyfk4kfc6ccjbluzamo9u6gdmdhb");
 		
 		progressView = (SpringProgressView) findViewById(R.id.spring_progress_view);
-		
-		progressView.setMaxCount(counts);
-      
+		Log.i("UpdateDataActivity", "UpdateDataActivity----->1");
+		progressView.setMaxCount(17);
+		Log.i("UpdateDataActivity", "UpdateDataActivity----->"+counts);
 		saveCallback = new SaveCallback() {
 			
 			@Override
 			public void done(AVException arg0) {
 				count++;
+				Log.i("UpdateDataActivity", ""+count);
 				progressView.setCurrentCount(count);
 				
 				if(count>=counts){
@@ -72,7 +76,7 @@ public class UpdateDataActivity extends Activity {
 				
 			}
 		};
-		
+		Log.i("UpdateDataActivity", ""+count);
         updateCharge();
         updateUnforget();
         updatePassword();
@@ -102,7 +106,7 @@ public class UpdateDataActivity extends Activity {
     		int type = cursor.getInt(typeIndex);
     		String des = cursor.getString(desIndex);
     		
-    		ChargeObject.put("id", id);
+    		ChargeObject.put("chargeID", id);
     		ChargeObject.put("year", year);
     		ChargeObject.put("month", month);
     		ChargeObject.put("day", day);
@@ -146,7 +150,7 @@ public class UpdateDataActivity extends Activity {
     		soundFileName = cursor.getString(soundFileNameIndex);
     		
     		
-    		UnforgetObject.put("id", id);
+    		UnforgetObject.put("unforgetID", id);
     		UnforgetObject.put("year", year);
     		UnforgetObject.put("month", month);
     		UnforgetObject.put("day", day);
@@ -182,7 +186,7 @@ public class UpdateDataActivity extends Activity {
     		soundFileName = cursor.getString(soundFileNameIndex);
     		
     		
-    		PasswordObject.put("id", id);
+    		PasswordObject.put("passwordID", id);
     		PasswordObject.put("name", name);
     		PasswordObject.put("password", password);
     		PasswordObject.put("soundFileName", soundFileName);

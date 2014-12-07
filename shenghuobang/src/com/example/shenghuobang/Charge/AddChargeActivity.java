@@ -2,23 +2,26 @@ package com.example.shenghuobang.Charge;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
+
 import com.example.shenghuobang.R;
-import com.example.shenghuobang.R.id;
-import com.example.shenghuobang.R.layout;
 
 import sqliteDataBase.Model.Charge;
+import android.app.DatePickerDialog;
 import android.app.ListActivity;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -37,7 +40,14 @@ public class AddChargeActivity extends ListActivity {
 	
 	private AddChargeAdapter adapter;
 	
+	
 	private Intent intent;   
+	private int intYear ;
+	private String strYear;
+	private int intMonth ;
+	private String strMonth ;
+	private int intData;
+	private String strData ;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO 自动生成的方法存根
@@ -47,19 +57,54 @@ public class AddChargeActivity extends ListActivity {
 		intent = getIntent();
 		
 		bllCharge = new sqliteDataBase.Bll.Charge(AddChargeActivity.this);
-		
-		Date curDate = new Date(System.currentTimeMillis());
-		
-		final int intYear = curDate.getYear()+1900;
-		String strYear = String.format("%04d",intYear)+"年";
-		final int intMonth = curDate.getMonth()+1;
-		String strMonth = String.format("%02d",intMonth)+"月";
-		final int intData = curDate.getDate();
-		String strData = String.format("%02d",intData)+"日";
-		
-	
+
 		tVAddChargeTime1 = (TextView) findViewById(R.id.tVAddChargeTime1);
+		boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
+		if(isUpdate == false){
+			Date curDate = new Date(System.currentTimeMillis());
+			
+			intYear = curDate.getYear()+1900;
+			strYear = String.format("%04d",intYear)+"年";
+			intMonth = curDate.getMonth()+1;
+			strMonth = String.format("%02d",intMonth)+"月";
+			intData = curDate.getDate();
+			strData = String.format("%02d",intData)+"日";
+			Toast.makeText(getApplicationContext(), "false", Toast.LENGTH_SHORT).show();
+			 
+		}else{
+			
+			intYear = intent.getIntExtra("year", 2014);
+			strYear = String.format("%04d",intYear)+"年";
+			intMonth = intent.getIntExtra("month", 12);
+			strMonth = String.format("%02d",intMonth)+"月";
+			intData = intent.getIntExtra("day", 1);
+			strData = String.format("%02d",intData)+"日";
+			Toast.makeText(getApplicationContext(), "true", Toast.LENGTH_SHORT).show();
+		}
 		tVAddChargeTime1.setText(strYear+strMonth+strData);
+		
+		tVAddChargeTime1.setOnClickListener(new OnClickListener() {
+			
+			Calendar calendar = Calendar.getInstance();
+			@Override
+			public void onClick(View arg0) {
+				
+					
+					new DatePickerDialog(AddChargeActivity.this,new OnDateSetListener() {
+						
+						@Override
+						public void onDateSet(DatePicker arg0, int year, int month, int dayOfMonth) {
+							strYear = String.valueOf(year)+"年";
+							strMonth = String.format("%02d",month+1)+"月";
+							strData = String.format("%02d",dayOfMonth)+"日";
+							
+							tVAddChargeTime1.setText(strYear+strMonth+strData);
+							
+							setListViewData();
+						}
+					},intYear,intMonth-1,intData).show();
+				}
+		});
 		
 		etAddChargeSum = (EditText) findViewById(R.id.etAddChargeSum);
 		
@@ -74,9 +119,16 @@ public class AddChargeActivity extends ListActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				//Date date = new Date(intYear, intMonth, intData);
+				String time = tVAddChargeTime1.getText().toString();
+
+				String strYear = time.substring(0, 4);
+				String strMonth = time.substring(5, 7);
+				String strData = time.substring(8, 10);
 				
-				//String time = formatter.format(curDate);
+				int intYear = Integer.parseInt(strYear);
+				int intMonth = Integer.parseInt(strMonth);
+				int intData = Integer.parseInt(strData);
+				
 				String srtSum = etAddChargeSum.getText().toString();
 				if(srtSum.length()==0){
 					Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
@@ -99,6 +151,8 @@ public class AddChargeActivity extends ListActivity {
 				
 				etAddChargeDes.setText("");
 				etAddChargeSum.setText("");
+				etAddChargeSum.setFocusable(true);
+				etAddChargeSum.requestFocus();
 			}
 		});
 		
@@ -118,11 +172,18 @@ public class AddChargeActivity extends ListActivity {
 	private void setListViewData(){
 		
 
-		Date curDate = new Date(System.currentTimeMillis());
+		//Date curDate = new Date(System.currentTimeMillis());
 		
-		int intYear = curDate.getYear()+1900;
-		int intMonth = curDate.getMonth()+1;
-		int intData = curDate.getDate();
+		
+		String time = tVAddChargeTime1.getText().toString();
+
+		String strYear = time.substring(0, 4);
+		String strMonth = time.substring(5, 7);
+		String strData = time.substring(8, 10);
+		
+		int intYear = Integer.parseInt(strYear);
+		int intMonth = Integer.parseInt(strMonth);
+		int intData = Integer.parseInt(strData);
 		
 		Cursor cursor = bllCharge.queryByDay(intYear,intMonth,intData);
 			

@@ -90,7 +90,7 @@ public class AddChargeAdapter extends BaseAdapter {
 		});
 	
 			sqliteDataBase.Model.Charge modelCharge = this.arrays.get(position);
-			viewHolder.tvTitle.setText("金额："+modelCharge.getSum()+"    用途："+modelCharge.getDes());
+			viewHolder.tvTitle.setText("id"+modelCharge.getId()+"金额："+modelCharge.getSum()+"    用途："+modelCharge.getDes());
 		
 		//为删除按钮添加监听事件，实现点击删除按钮时删除该项
 		viewHolder.btnDel.setOnClickListener(new OnClickListener() {

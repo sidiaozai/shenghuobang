@@ -96,11 +96,13 @@ public class UpdatePasswordActivity extends Activity {
 				}
 				
 				String password = etPassword.getText().toString();
-				if(password.equals("")){
-					Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
+				String soundFileName = fileName;
+				
+				if(password.equals("")&&soundFileName.equals("NULL")){
+					Toast.makeText(getApplicationContext(), "密码和语音不能同时为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				String soundFileName = fileName;
+				
 				
 				modelPassword = new sqliteDataBase.Model.Password(passWordId,passwordName, password, soundFileName);
 				Log.i("tag", "密码名："+passwordName);

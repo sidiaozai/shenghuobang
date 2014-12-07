@@ -2,12 +2,11 @@ package com.example.shenghuobang.Charge;
 import java.util.List;
 
 import com.example.shenghuobang.R;
-import com.example.shenghuobang.Charge.AddChargeAdapter.ViewHolder;
-import com.example.shenghuobang.R.id;
-import com.example.shenghuobang.R.layout;
+
 
 import sqliteDataBase.Bll.Charge;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChargeAdapter extends BaseAdapter {
 	private List<sqliteDataBase.Model.ChargeStatistic> arrays = null;
@@ -56,38 +54,60 @@ public class ChargeAdapter extends BaseAdapter {
 		view.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				final ViewHolder holder = (ViewHolder) v.getTag();
-				//当按下时处理
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					//设置背景为选中状态
+				
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {//当按下时处理
 					v.setBackgroundResource(R.drawable.textview_press);
-					//获取按下时的x轴坐标
 					x = event.getX();
-					//判断之前是否出现了删除按钮如果存在就隐藏
 					if (curDel_btn != null) {
 						curDel_btn.setVisibility(View.GONE);
 					}
-				} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+				}else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
 					//设置背景为未选中正常状态
 					v.setBackgroundResource(R.drawable.textview_norm);
 					//获取松开时的x坐标
+					
 					ux = event.getX();
 					//判断当前项中按钮控件不为空时
-					if (holder.btnDel != null) {
-						//按下和松开绝对值差当大于20时显示删除按钮，否则不显示
-						if (Math.abs(x - ux) > 20) {
-							holder.btnDel.setVisibility(View.VISIBLE);
-							curDel_btn = holder.btnDel;
-						}
+					if ((holder.btnDel != null)&&(Math.abs(x - ux) > 20)) {
+						holder.btnDel.setVisibility(View.VISIBLE);
+						curDel_btn = holder.btnDel;
+						return true;
 					}
-				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {//当滑动时背景为选中状态
+					
+				}else if (event.getAction() == MotionEvent.ACTION_MOVE) {//当滑动时背景为选中状态
 					v.setBackgroundResource(R.drawable.textview_press);
-				} else {//其他模式
-					//设置背景为未选中正常状态
+				} else {
 					v.setBackgroundResource(R.drawable.textview_norm);
+					
 				}
-				return true;
+				return false;
+			}
+			
+		});
+		
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if ((curDel_btn != null)&&curDel_btn.getVisibility()==View.VISIBLE) {
+					curDel_btn.setVisibility(View.GONE);
+					return;
+				}
+				
+				
+				sqliteDataBase.Model.ChargeStatistic modelChargeStatistic = arrays.get(position);
+				//Toast.makeText(getApplicationContext(), "year", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent();
+				intent.putExtra("isUpdate", true);
+				intent.putExtra("year", modelChargeStatistic.getYear());
+				intent.putExtra("month", modelChargeStatistic.getMonth());
+				intent.putExtra("day", modelChargeStatistic.getDay());
+		        intent.setClass(mContext, AddChargeActivity.class);
+		        
+		        mContext.startActivity(intent);
 			}
 		});
+		
 		//为删除按钮添加监听事件，实现点击删除按钮时删除该项
 		viewHolder.btnDel.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

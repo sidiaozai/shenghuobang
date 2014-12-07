@@ -41,7 +41,8 @@ public class Charge {
 	}
 	public Cursor query()
     {
-        Cursor c=db.query("tableCharge", null, null, null, null, null, null);
+        //Cursor c=db.query("tableCharge", null, null, null, null, null, null);
+		Cursor c=db.rawQuery("select * from tableCharge", null);
         return c;
     }
 	public Cursor queryByMonth(int year, int month)

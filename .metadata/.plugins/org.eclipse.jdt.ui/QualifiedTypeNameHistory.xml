@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.util.Log"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.DateTimePickerDialog"/>
-<fullyQualifiedTypeName name="android.provider.SyncStateContract.Constants"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.FileOper"/>
-<fullyQualifiedTypeName name="java.io.File"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.R.drawable"/>
-<fullyQualifiedTypeName name="android.R.color"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.R.color"/>
-<fullyQualifiedTypeName name="android.app.AlarmManager"/>
-<fullyQualifiedTypeName name="java.util.TimeZone"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
-<fullyQualifiedTypeName name="android.view.View"/>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup"/>
 <fullyQualifiedTypeName name="android.database.sqlite.SQLiteDatabase"/>
@@ -20,7 +8,6 @@
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
 <fullyQualifiedTypeName name="android.view.MotionEvent"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.R.id"/>
 <fullyQualifiedTypeName name="android.widget.EditText"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Model.Password"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Password.PasswordActivity"/>
@@ -35,23 +22,18 @@
 <fullyQualifiedTypeName name="android.os.Vibrator"/>
 <fullyQualifiedTypeName name="android.app.NotificationManager"/>
 <fullyQualifiedTypeName name="android.app.Notification"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.R"/>
 <fullyQualifiedTypeName name="android.app.PendingIntent"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
 <fullyQualifiedTypeName name="android.app.Dialog"/>
 <fullyQualifiedTypeName name="android.widget.AbsListView.MultiChoiceModeListener"/>
-<fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="com.example.leanclouddemo.R.id"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.preference.PreferenceScreen"/>
 <fullyQualifiedTypeName name="android.preference.Preference"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="com.example.shenghuobang.Setting.UpdateDataActivity"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="android.os.Message"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Bll.Charge"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Bll.Unforget"/>
 <fullyQualifiedTypeName name="sqliteDataBase.Bll.Password"/>
@@ -60,4 +42,22 @@
 <fullyQualifiedTypeName name="com.avos.avoscloud.SaveCallback"/>
 <fullyQualifiedTypeName name="android.preference.CheckBoxPreference"/>
 <fullyQualifiedTypeName name="com.example.shenghuobang.Setting.UpdateVersionActivity"/>
+<fullyQualifiedTypeName name="android.widget.Toast"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.Setting.UpdateDataActivity"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.Charge.AddChargeActivity"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.R"/>
+<fullyQualifiedTypeName name="android.os.Bundle"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="com.example.testclock.R.id"/>
+<fullyQualifiedTypeName name="java.util.Locale"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+<fullyQualifiedTypeName name="android.app.Activity"/>
+<fullyQualifiedTypeName name="java.lang.Boolean"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="com.example.shenghuobang.R.id"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.widget.LinearLayout"/>
+<fullyQualifiedTypeName name="com.avos.avoscloud.R"/>
+<fullyQualifiedTypeName name="android.view.View"/>
 </qualifiedTypeNameHistroy>

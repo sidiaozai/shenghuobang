@@ -104,7 +104,7 @@ public class ChargeActivity extends ListActivity {
 				new MonPickerDialog(ChargeActivity.this,dateListener, calendar.get(1), calendar.get(2),1).show();
 			}
 		});
-		setListViewData();
+		//setListViewData();
 	}
 	DatePickerDialog.OnDateSetListener dateListener =  new DatePickerDialog.OnDateSetListener() { 
 		@Override
@@ -119,6 +119,7 @@ public class ChargeActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		// TODO 自动生成的方法存根
+		setListViewData();
 		super.onResume();
 	}
 
@@ -192,20 +193,6 @@ public class ChargeActivity extends ListActivity {
 		return list;
 	}
 
-	@Override   
-    protected void onListItemClick(ListView l, View v, int position, long id) {  
-		super.onListItemClick(l, v, position, id);  
-		
-		ChargeStatistic chargeStatistic = list.get(position);
-
-		Intent intent = new Intent();
-		intent.putExtra("year", chargeStatistic.getYear());
-		intent.putExtra("month", chargeStatistic.getMonth());
-		intent.putExtra("day", chargeStatistic.getDay());
-        intent.setClass(ChargeActivity.this, UpdateChargeActivity.class);
-        
-        startActivityForResult(intent, 1);
-    }  
 	
 	@Override 
 	protected void onActivityResult(int requestCode,int resultCode,Intent data){

@@ -33,7 +33,8 @@ public class Password {
 	}
 	public Cursor query()
     {
-        Cursor c=db.query("tablePassword", null, null, null, null, null, null);
+        //Cursor c=db.query("tablePassword", null, null, null, null, null, null);
+		Cursor c=db.rawQuery("select * from tablePassword", null);
         return c;
     }
 

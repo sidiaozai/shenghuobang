@@ -2,31 +2,74 @@ package com.example.shenghuobang;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnKeyListener;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 
 public class InputPasswordActivity extends Activity {
 	
+	private Button btnChangePasswordStyle;
 	private EditText etPassword;
+	private SharedPreferences mySharedPreferences; 
+	private Boolean isPicture=false;
+	
+	private LinearLayout llText;
+	private LinearLayout llPicture;
+	
 	
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
-				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-		  
+  
 		setContentView(R.layout.activity_password_input);
+		
+		mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+		if(!mySharedPreferences.getBoolean("apply_enable_password", false)){
+			Intent intent = new Intent();
+            intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+		}
+		String verPassword = mySharedPreferences.getString("number_edit", null);
+		if(verPassword.equals(null)||verPassword.equals("")){
+			Intent intent = new Intent();
+            intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+		}
+		
+		llText = (LinearLayout) findViewById(R.id.llText);
+		llPicture = (LinearLayout) findViewById(R.id.llPicture);
+		
+		btnChangePasswordStyle = (Button) findViewById(R.id.btnChangePasswordStyle);
+		btnChangePasswordStyle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				if(isPicture==false){
+					isPicture = true;
+					llPicture.setVisibility(View.VISIBLE);
+					llText.setVisibility(View.GONE);
+					btnChangePasswordStyle.setText(" ˝◊÷√‹¬Î");
+				}else{
+					isPicture=false;
+					llPicture.setVisibility(View.GONE);
+					llText.setVisibility(View.VISIBLE);
+					btnChangePasswordStyle.setText("Õº–Œ√‹¬Î");
+				}
+				
+			}
+		});
 		
 		etPassword = (EditText) findViewById(R.id.etPassword);
 		
@@ -47,18 +90,16 @@ public class InputPasswordActivity extends Activity {
 			
 			@Override
 			public void afterTextChanged(Editable arg0) {
-				//Toast.makeText(getApplicationContext(), "afterTextChanged", Toast.LENGTH_LONG).show();
+				
 				String password = etPassword.getText().toString();
-				if(password.length()!=4)
-					return;
-				if(password.equals("1234")){
+				
+				String verPassword = mySharedPreferences.getString("number_edit", null);
+				
+				if(password.equals(verPassword)){
 					Intent intent = new Intent();
 	                intent.setClass(InputPasswordActivity.this, StartPageActivity.class);
 	                startActivity(intent);
 	                finish();
-				}else{
-					Toast.makeText(getApplicationContext(), "√‹¬Î¥ÌŒÛ", Toast.LENGTH_LONG).show();
-					etPassword.setText("");
 				}
 			}
 		});
