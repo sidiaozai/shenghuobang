@@ -75,7 +75,7 @@ public class UnforgetActivity extends Activity {
             	Log.i("tag", "按钮按下"); 
             	
                 Unforget unforget = listUnforget.get(position);
-                 
+                unforget = bllUnforget.query(unforget.getId());
                 
                 Log.i("tag", "读数据成功");	
                 Intent intent = new Intent();
@@ -159,7 +159,11 @@ public class UnforgetActivity extends Activity {
     		hour = cursor.getInt(hourIndex);
     		minute = cursor.getInt(minuteIndex);
     		second = cursor.getInt(secondIndex);
+    		
     		name = cursor.getString(nameIndex);
+    		if(name.length()>9){
+    			name= name.substring(0, 6)+"...";
+    		}
     		soundFileName = cursor.getString(soundFileNameIndex);
     		
     		Log.i("tag", "显示："+id);

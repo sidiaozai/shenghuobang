@@ -9,5 +9,12 @@
         <item name="android:windowContentOverlay">@null</item>  
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>  
         <item name="android:backgroundDimEnabled">true</item>  
-</style> 
+	</style> 
+	<style name="MainPageStyle">   
+        <item name="android:windowFrame">@null</item>  
+        <item name="android:windowNoTitle">true</item>    
+        <item name="android:windowContentOverlay">@null</item>  
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>  
+        <item name="android:backgroundDimEnabled">true</item>  
+	</style>
 </resources>

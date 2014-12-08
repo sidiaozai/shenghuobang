@@ -8,7 +8,10 @@ import java.util.List;
 
 
 
+
+
 import com.example.shenghuobang.R;
+import com.example.shenghuobang.Unforget.AddUnforgetActivity;
 
 import sqliteDataBase.Model.Charge;
 import android.app.DatePickerDialog;
@@ -27,7 +30,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddChargeActivity extends ListActivity {
+public class AddChargeActivity extends ListActivity  {
 	
 	private Button btnRetrunCharge;
 	private Button btnSave;
@@ -38,8 +41,8 @@ public class AddChargeActivity extends ListActivity {
 	private sqliteDataBase.Model.Charge modelCharge ;
 	private sqliteDataBase.Bll.Charge bllCharge;
 	
-	private AddChargeAdapter adapter;
-	
+	//private AddChargeAdapter adapter;
+	private ListChargeAdapter adapter;
 	
 	private Intent intent;   
 	private int intYear ;
@@ -69,7 +72,6 @@ public class AddChargeActivity extends ListActivity {
 			strMonth = String.format("%02d",intMonth)+"月";
 			intData = curDate.getDate();
 			strData = String.format("%02d",intData)+"日";
-			Toast.makeText(getApplicationContext(), "false", Toast.LENGTH_SHORT).show();
 			 
 		}else{
 			
@@ -79,7 +81,6 @@ public class AddChargeActivity extends ListActivity {
 			strMonth = String.format("%02d",intMonth)+"月";
 			intData = intent.getIntExtra("day", 1);
 			strData = String.format("%02d",intData)+"日";
-			Toast.makeText(getApplicationContext(), "true", Toast.LENGTH_SHORT).show();
 		}
 		tVAddChargeTime1.setText(strYear+strMonth+strData);
 		
@@ -89,14 +90,24 @@ public class AddChargeActivity extends ListActivity {
 			@Override
 			public void onClick(View arg0) {
 				
+				String time = tVAddChargeTime1.getText().toString();
+
+				String strYear = time.substring(0, 4);
+				String strMonth = time.substring(5, 7);
+				String strData = time.substring(8, 10);
+				
+				int intYear = Integer.parseInt(strYear);
+				int intMonth = Integer.parseInt(strMonth);
+				int intData = Integer.parseInt(strData);
 					
 					new DatePickerDialog(AddChargeActivity.this,new OnDateSetListener() {
 						
 						@Override
 						public void onDateSet(DatePicker arg0, int year, int month, int dayOfMonth) {
-							strYear = String.valueOf(year)+"年";
-							strMonth = String.format("%02d",month+1)+"月";
-							strData = String.format("%02d",dayOfMonth)+"日";
+
+							String strYear = String.valueOf(year)+"年";
+							String strMonth = String.format("%02d",month+1)+"月";
+							String strData = String.format("%02d",dayOfMonth)+"日";
 							
 							tVAddChargeTime1.setText(strYear+strMonth+strData);
 							
@@ -134,6 +145,10 @@ public class AddChargeActivity extends ListActivity {
 					Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				if(srtSum.length()>8){
+					Toast.makeText(AddChargeActivity.this, "输入金额不能超过100000000元", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				
 				int sum = Integer.valueOf(srtSum);
 				
@@ -165,8 +180,16 @@ public class AddChargeActivity extends ListActivity {
 				finish();
 			}
 		});
-		
-		setListViewData();
+		adapter = new ListChargeAdapter(this);
+		adapter.setListChargeAdapterListening(new ListChargeAdapterListening() {
+			
+			@Override
+			public void deleteItem(int position) {
+				sqliteDataBase.Model.Charge modelCharge = (Charge) adapter.getItem(position);
+				sqliteDataBase.Bll.Charge bllCharge = new sqliteDataBase.Bll.Charge(getApplicationContext());
+				bllCharge.delete(modelCharge.getId());
+			}
+		});
 	}
 	
 	private void setListViewData(){
@@ -188,12 +211,9 @@ public class AddChargeActivity extends ListActivity {
 		Cursor cursor = bllCharge.queryByDay(intYear,intMonth,intData);
 			
 		if(cursor.getCount()==0){
-//			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
-//			setListAdapter(arrayAdapter);
 			setListAdapter(null);
-		}
-		else{
-			adapter = new AddChargeAdapter(this, getData(cursor));
+		}else{
+			adapter.setData(getData(cursor));
 			setListAdapter(adapter);
 		}
 	}
@@ -240,5 +260,11 @@ public class AddChargeActivity extends ListActivity {
 			setResult(1,intent);
 		}	
 		return super.onKeyDown(keyCode,event); 	
+	}
+	@Override
+	protected void onResume() {
+		// TODO 自动生成的方法存根
+		setListViewData();
+		super.onResume();
 	}
 }

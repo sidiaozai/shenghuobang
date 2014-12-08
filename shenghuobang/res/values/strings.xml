@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">生活帮</string>
+    <string name="app_name">易记帮</string>
     
     <string name="action_charge">记账</string>
     <string name="action_memo">备忘</string>

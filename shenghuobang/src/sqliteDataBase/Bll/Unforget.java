@@ -42,6 +42,42 @@ public class Unforget {
 		Cursor c=db.rawQuery("select * from tableUnforget order by year asc,month asc,day asc,hour asc,minute asc", null);
 		return c;
     }
+	public sqliteDataBase.Model.Unforget query(int id){
+		Log.i("tag", "读取数据："+id);
+		Cursor cursor=db.rawQuery("select * from tableUnforget where id=?", new String[]{String.valueOf(id)});
+		Log.i("tag", "select * from tableUnforget where id ="+id);
+		Log.i("tag", "获取数据条数"+cursor.getCount());
+		if(cursor.getCount()!=1)
+			return null;
+		cursor.moveToFirst();
+		int year,month,day;
+		int hour,minute,second;
+		String name;
+		String soundFileName;
+		
+		int yearIndex = cursor.getColumnIndex("year");
+		int monthIndex = cursor.getColumnIndex("month");
+		int dayIndex = cursor.getColumnIndex("day");
+		int hourIndex = cursor.getColumnIndex("hour");
+		int minuteIndex = cursor.getColumnIndex("minute");
+		int secondIndex = cursor.getColumnIndex("second");
+		int nameIndex = cursor.getColumnIndex("name");
+		int soundFileNameIndex = cursor.getColumnIndex("soundFileName");
+		
+		year = cursor.getInt(yearIndex);
+		month = cursor.getInt(monthIndex);
+		day = cursor.getInt(dayIndex);
+		hour = cursor.getInt(hourIndex);
+		minute = cursor.getInt(minuteIndex);
+		second = cursor.getInt(secondIndex);
+		
+		name = cursor.getString(nameIndex);
+		soundFileName = cursor.getString(soundFileNameIndex);
+		
+		sqliteDataBase.Model.Unforget modelUnforget = new sqliteDataBase.Model.Unforget(id,year, month, day, hour, minute, second, name, soundFileName);
+		
+		return modelUnforget;
+	}
 
 	
 	public int delete(int id){

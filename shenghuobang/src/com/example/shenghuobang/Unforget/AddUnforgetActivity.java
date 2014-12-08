@@ -201,6 +201,8 @@ public class AddUnforgetActivity extends Activity {
 					return;
 				}
 				
+				
+				
 				Calendar c_cur = Calendar.getInstance();//获取日期对象  
 				Calendar c_set = getDateTimeFromTextView();//获取日期对象    
 				
@@ -229,7 +231,17 @@ public class AddUnforgetActivity extends Activity {
 		llUnforgetDate = (LinearLayout) findViewById(R.id.llUnforgetDate);
 		llUnforgetDate.setOnClickListener(new OnClickListener() {
 			
-			Calendar calendar = getDateTimeFromTextView();
+			String strYear = tvUnforgetYear.getText().toString().substring(0, 4);
+			int intYear = Integer.parseInt(strYear);
+			
+			
+			String strMonth = tvUnforgetMonth.getText().toString().substring(0, 2);
+			int intMonth = Integer.parseInt(strMonth);
+
+			
+			String strDay = tvUnforgetDay.getText().toString().substring(0, 2);
+			int intDay = Integer.parseInt(strDay);
+			
 			@Override
 			public void onClick(View arg0) {
 				
@@ -243,26 +255,32 @@ public class AddUnforgetActivity extends Activity {
 							tvUnforgetDay.setText(String.format("%02d",dayOfMonth)+"日");
 							
 						}
-					},calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+					},intYear,intMonth-1,intDay).show();
 				}
 		});
 		llUnforgetTime = (LinearLayout) findViewById(R.id.llUnforgetTime);
 		llUnforgetTime.setOnClickListener(new OnClickListener() {
+
+			String strHour = tvUnforgetHour.getText().toString().substring(0, 2);
+			int intHour = Integer.parseInt(strHour);
 			
-			Calendar calendar = getDateTimeFromTextView();
+			String strMinute = tvUnforgetMinute.getText().toString().substring(0, 2);
+			int intMinute = Integer.parseInt(strMinute);
 			@Override
 			public void onClick(View arg0) {
 				
+				
 					
-					new TimePickerDialog(AddUnforgetActivity.this, new OnTimeSetListener() {
+				new TimePickerDialog(AddUnforgetActivity.this, new OnTimeSetListener() {
+					
+					@Override
+					public void onTimeSet(TimePicker arg0, int hour, int minute) {
+						tvUnforgetHour.setText(String.format("%02d",hour)+"时");
+						tvUnforgetMinute.setText(String.format("%02d",minute)+"分");
 						
-						@Override
-						public void onTimeSet(TimePicker arg0, int hour, int minute) {
-							tvUnforgetHour.setText(String.format("%02d",hour)+"时");
-							tvUnforgetMinute.setText(String.format("%02d",minute)+"分");
-							
-						}
-					}, calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE), true).show();
+					}
+				}, intHour,intMinute, true).show();
+				
 			}
 		});
 	}

@@ -79,10 +79,11 @@ public class AddPasswordActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				String passwordName = etPasswordName.getText().toString();
-				if(passwordName.equals("")){
+				if(passwordName.length()==0){
 					Toast.makeText(getApplicationContext(), "密码名不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				
 				
 				String password = etPassword.getText().toString();
 				if(password.equals("")){

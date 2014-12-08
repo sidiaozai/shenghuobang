@@ -52,10 +52,9 @@ public class ChargeActivity extends ListActivity {
 	
 	private LinearLayout llTimeSelector;
 	
-	private ChargeAdapter adapter;
-	
+	//private ChargeAdapter adapter;
+	private ListChargeStatisticAdapter listMessageAdapter;
 	private sqliteDataBase.Bll.Charge bllCharge;
-	private List<ChargeStatistic> list;
  
 	@SuppressWarnings("deprecation")
 	@Override
@@ -101,10 +100,35 @@ public class ChargeActivity extends ListActivity {
 			Calendar calendar = Calendar.getInstance();
 			@Override
 			public void onClick(View arg0) {
-				new MonPickerDialog(ChargeActivity.this,dateListener, calendar.get(1), calendar.get(2),1).show();
+				String strYear = tvYear.getText().toString().substring(0, 4);
+				int intYear;
+				intYear=Integer.parseInt(strYear);
+				
+				String strMonth = tvMonth.getText().toString().substring(0, 2);
+				int intMonth;
+				intMonth=Integer.parseInt(strMonth);
+				new MonPickerDialog(ChargeActivity.this,dateListener,intYear, intMonth-1,1).show();
 			}
 		});
-		//setListViewData();
+		listMessageAdapter = new ListChargeStatisticAdapter(this);
+		listMessageAdapter.setListChargeAdapterListening(new ListChargeAdapterListening() {
+			
+			@Override
+			public void deleteItem(int position) {
+				sqliteDataBase.Model.ChargeStatistic modelChargeStatistic = (ChargeStatistic) listMessageAdapter.getItem(position);
+				sqliteDataBase.Bll.Charge bllCharge = new sqliteDataBase.Bll.Charge(getApplicationContext());
+				bllCharge.delete(modelChargeStatistic.getYear(),modelChargeStatistic.getMonth(),modelChargeStatistic.getDay());
+				
+				String strYear = tvYear.getText().toString().substring(0, 4);
+				int intYear;
+				intYear=Integer.parseInt(strYear);
+				
+				String strMonth = tvMonth.getText().toString().substring(0, 2);
+				int intMonth;
+				intMonth=Integer.parseInt(strMonth);
+				setStatisticData( intYear, intMonth);
+			}
+		});
 	}
 	DatePickerDialog.OnDateSetListener dateListener =  new DatePickerDialog.OnDateSetListener() { 
 		@Override
@@ -113,6 +137,7 @@ public class ChargeActivity extends ListActivity {
 			tvYear.setText(String.valueOf(year)+"年");
 			tvMonth.setText(String.format("%02d",month+1)+"月");
 			setListViewData();
+			
 		}     
 	}; 
 
@@ -136,25 +161,53 @@ public class ChargeActivity extends ListActivity {
 		Cursor cursor = bllCharge.queryByMonth(intYear,intMonth);
 		
 		if(cursor.getCount()==0){
-//			arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getNullData());
-//			setListAdapter(arrayAdapter);
+
 			setListAdapter(null);
 			tvInMonthSum.setText("收入");
 			tvOutMonthSum.setText("支出");
 			tvBalance.setText("结余");
 		}
 		else{
-			adapter = new ChargeAdapter(this, getData(intYear,intMonth));
-			setListAdapter(adapter);
+
+			listMessageAdapter.setData(getData(intYear,intMonth));
+			setListAdapter(listMessageAdapter);
+			setStatisticData(intYear,intMonth);
 		}
 	}
-
-	
-	
 	
 	private List<ChargeStatistic> getData(int year,int month) {
 
-		list = new ArrayList<ChargeStatistic>();
+		List<ChargeStatistic> list = new ArrayList<ChargeStatistic>();
+		for(int day=31;day>=1;day--){
+
+			Cursor cursor = bllCharge.queryByDay(year, month, day);
+			if(cursor.getCount()==0)
+				continue;
+			
+			int inDaySum=0;
+			int outDaySum=0;
+			while(cursor.moveToNext()){
+	    		int typeIndex = cursor.getColumnIndex("type");
+	    		int sumIndex = cursor.getColumnIndex("sum");
+	    		int sum = cursor.getInt(sumIndex);
+	    		int type = cursor.getInt(typeIndex);
+	    		
+	    		if(type==0){
+	    			inDaySum += sum;
+	    		}
+	    		else{
+	    			outDaySum +=sum;
+	    		}
+	    	}
+
+			list.add(new ChargeStatistic(year, month, day, inDaySum, outDaySum));
+    		cursor.close();
+		}
+
+		return list;
+	}
+	public void setStatisticData(int year,int month){
+
 		int inMonthSum=0;
 		int outMonthSum=0;
 		for(int day=31;day>=1;day--){
@@ -180,7 +233,6 @@ public class ChargeActivity extends ListActivity {
 	    	}
 			inMonthSum += inDaySum;
 			outMonthSum += outDaySum;
-			list.add(new ChargeStatistic(year, month, day, inDaySum, outDaySum));
     		cursor.close();
 		}
 		tvInMonthSum.setText("收入："+ inMonthSum);
@@ -190,7 +242,6 @@ public class ChargeActivity extends ListActivity {
 		int monthBalance = inMonthSum-outMonthSum;
 		
 		tvBalance.setText("结余："+monthBalance);
-		return list;
 	}
 
 	

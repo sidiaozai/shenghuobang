@@ -87,7 +87,8 @@
 		        android:id="@+id/etAddChargeSum"
 		        android:layout_width="150dp"
 		        android:layout_height="wrap_content"
-		        android:background="@drawable/shape_radius"
+		        android:textColor="@color/black"
+            	android:background="@drawable/shape_radius"
 		        android:ems="10"
 		        android:textSize="18sp"
 		        android:inputType="numberSigned" >
@@ -164,7 +165,8 @@
 	            android:id="@+id/etAddChargeDes"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/shape_radius"
+	            android:textColor="@color/black"
+            	android:background="@drawable/shape_radius"
 	            android:textSize="18sp" />
         </TableRow>
     </TableLayout>

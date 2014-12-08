@@ -7,27 +7,33 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Vibrator;
 
 
 public class AlarmActivity extends Activity {
-	private static final int ID = 1213; 
+	private static final int ID = 1213;
+	private Vibrator vibrator;
+	
+	private SharedPreferences mySharedPreferences; 
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-//        //显示对话框
-//        new AlertDialog.Builder(AlarmActivity.this).
-//            setTitle("闹钟").//设置标题
-//            setMessage("时间到了！").//设置内容
-//            setPositiveButton("知道了", new OnClickListener(){//设置按钮
-//                public void onClick(DialogInterface dialog, int which) {
-//                    AlarmActivity.this.finish();//关闭Activity
-//                }
-//            }).create().show();
+        mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+		
+        if(mySharedPreferences.getBoolean("apply_enable_vibrate", false))
+        {
+	        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);  
+	        long [] pattern = {100,400,100,400};   // 停止 开启 停止 开启   
+	        vibrator.vibrate(pattern,-1);           //重复两次上面的pattern 如果只想震动一次，index设为-1   
+        }
         AddNotification();
         finish();
         
@@ -42,7 +48,7 @@ public class AlarmActivity extends Activity {
         
         int icon = R.drawable.ic_launcher; 
         
-        String tickerText ="生活帮"; 
+        String tickerText =""+ID; 
        
         long when = System.currentTimeMillis(); 
           
@@ -78,11 +84,8 @@ public class AlarmActivity extends Activity {
         PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT); 
          
         //设置事件信息，显示在拉开的里面 
-        n.setLatestEventInfo(this,"生活帮", "备忘提醒……", pi); 
+        n.setLatestEventInfo(this,"生活帮", n.tickerText, pi); 
       
         nm.notify(ID,n); 
     } 
-    
-    
-
 }

@@ -1,5 +1,6 @@
 package com.example.shenghuobang.Setting;
 
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.R;
 
 import android.app.Activity;
@@ -20,14 +21,16 @@ public class SettingActivity extends PreferenceActivity implements
 		Preference.OnPreferenceClickListener,
 		Preference.OnPreferenceChangeListener {
 	private static String TAG = "HelloPreference";          
-	private CheckBoxPreference enable_sound; 
-	private CheckBoxPreference enable_vibrate;
-	private CheckBoxPreference enable_password;
+	private CheckBoxPreference enableSound; 
+	private CheckBoxPreference enableVibrate;
+	private CheckBoxPreference enablePassword;
 	
 	
-	private EditTextPreference number_edit;      
-	private Preference data_update;            
-	private Preference version_update; 
+	
+
+	private EditTextPreference login_password;      
+	private Preference dataUpdate;            
+	private Preference versionUpdate; 
 	private Preference feedback; 
 	
 	private SharedPreferences mySharedPreferences; 
@@ -36,23 +39,19 @@ public class SettingActivity extends PreferenceActivity implements
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.mypreference);
 		
-		enable_sound = (CheckBoxPreference) findPreference("apply_enable_sound");
-		enable_vibrate = (CheckBoxPreference) findPreference("apply_enable_vibrate");
-		enable_password = (CheckBoxPreference) findPreference("apply_enable_password");
-		number_edit = (EditTextPreference)findPreference("number_edit");
-		data_update = (Preference) findPreference("data_update");
-		version_update = (Preference) findPreference("version_update");
-		feedback = (Preference) findPreference("feedback");
+		enableSound = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_SOUND);
+		enableVibrate = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_VIBRATE);
+		enablePassword = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_PASSWORD);
+		login_password = (EditTextPreference)findPreference(CommonValue.LOGIN_PASSWORD);
+		dataUpdate = (Preference) findPreference(CommonValue.DATA_UPDATE);
+		versionUpdate = (Preference) findPreference(CommonValue.VERSION_UPDATE);
+		feedback = (Preference) findPreference(CommonValue.FEEDBACK);
 		
-		number_edit.setOnPreferenceClickListener(this);
-		number_edit.setOnPreferenceChangeListener(this);
+		login_password.setOnPreferenceClickListener(this);
+		login_password.setOnPreferenceChangeListener(this);
 		
 		mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
 		
-		enable_sound.setChecked(mySharedPreferences.getBoolean("apply_enable_sound", false));
-		enable_vibrate.setChecked(mySharedPreferences.getBoolean("apply_enable_vibrate", false));
-		enable_password.setChecked(mySharedPreferences.getBoolean("apply_enable_password", false));
-		number_edit.setDefaultValue(mySharedPreferences.getString("number_edit", null));
 		
 	}
 
@@ -62,8 +61,8 @@ public class SettingActivity extends PreferenceActivity implements
 	public boolean onPreferenceClick(Preference preference) {
 		
 		Log.i(TAG, "onPreferenceClick----->"+String.valueOf(preference.getKey()));
-		if(preference.getKey().equals("number_edit")){
-			number_edit.setText(mySharedPreferences.getString("number_edit", null));
+		if(preference.getKey().equals(CommonValue.LOGIN_PASSWORD)){
+			login_password.setText(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
 			
 		} 
 		
@@ -75,29 +74,30 @@ public class SettingActivity extends PreferenceActivity implements
 		Log.i(TAG, "onPreferenceTreeClick----->"+preference.getKey());
 		
 		
-		if(preference.getKey().equals("apply_enable_sound")){
+		if(preference.getKey().equals(CommonValue.APPLY_ENABLE_SOUND)){
 			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean("apply_enable_sound", enable_sound.isChecked());
+			editor.putBoolean(CommonValue.APPLY_ENABLE_SOUND, enableSound.isChecked());
 			editor.commit();
-		}else if(preference.getKey().equals("apply_enable_vibrate")){
+		}else if(preference.getKey().equals(CommonValue.APPLY_ENABLE_VIBRATE)){
 			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean("apply_enable_vibrate", enable_vibrate.isChecked());
+			editor.putBoolean(CommonValue.APPLY_ENABLE_VIBRATE, enableVibrate.isChecked());
 			editor.commit();
-		}else if(preference.getKey().equals("apply_enable_password")){
+		}else if(preference.getKey().equals(CommonValue.APPLY_ENABLE_PASSWORD)){
 			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean("apply_enable_password", enable_password.isChecked());
+			editor.putBoolean(CommonValue.APPLY_ENABLE_PASSWORD, enablePassword.isChecked());
 			editor.commit();
-		}else if(preference.getKey().equals("data_update")){
+		}else if(preference.getKey().equals(CommonValue.DATA_UPDATE)){
 			Intent i = new Intent(SettingActivity.this, UpdateDataActivity.class);
 			startActivity(i);
 			return true;
-		}else if (preference.getKey().equals("version_update")) {
+		}else if (preference.getKey().equals(CommonValue.VERSION_UPDATE)) {
 
 			Intent i = new Intent(SettingActivity.this, UpdateVersionActivity.class);
 			startActivity(i);
 			return true;
-		}else if(preference.getKey().equals("feedback")){
-			Toast.makeText(getApplicationContext(), "asdfas", Toast.LENGTH_SHORT).show();
+		}else if(preference.getKey().equals(CommonValue.FEEDBACK)){
+			Toast.makeText(getApplicationContext(), "功能未实现", Toast.LENGTH_SHORT).show();
+			return true;
 		}
 		
 		
@@ -106,12 +106,21 @@ public class SettingActivity extends PreferenceActivity implements
 
 	public boolean onPreferenceChange(Preference preference, Object objValue) {
 		
-		if (preference == number_edit) {
+		if (preference == login_password) {
 			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putString("number_edit", objValue.toString());
+			editor.putString(CommonValue.LOGIN_PASSWORD, objValue.toString());
 			editor.commit();
 			return true; // 不保存更新值
 		}
 		return true;  //保存更新后的值
+	}
+	@Override
+	protected void onResume() {
+		enableSound.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_SOUND, false));
+		enableVibrate.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_VIBRATE, false));
+		enablePassword.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_PASSWORD, false));
+		//login_password.setDefaultValue(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
+		login_password.setText(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
+		super.onResume();
 	}
 }

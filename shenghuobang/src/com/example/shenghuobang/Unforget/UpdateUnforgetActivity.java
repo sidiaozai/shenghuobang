@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -112,11 +113,12 @@ public class UpdateUnforgetActivity extends Activity {
 		
 		btnAddUnforgetAudio = (Button)findViewById(R.id.btnAddUnforgetAudio);
 		
-		if(soundFileName.equals("NULL"))
+		if(soundFileName.equals("NULL")){
 			btnAddUnforgetAudio.setEnabled(false);
-		else {
+			btnAddUnforgetAudio.setText("没有录音");
+		}else {
 			fileName = soundFileName;
-			btnAddUnforgetAudio.setText(soundFileName);
+			btnAddUnforgetAudio.setText("播放");
 		}
 		btnAddUnforgetAudio.setOnClickListener(new OnClickListener() {
 			
@@ -126,7 +128,15 @@ public class UpdateUnforgetActivity extends Activity {
 	            try{  
 	                mPlayer.setDataSource(pathName +"/"+ fileName);  
 	                mPlayer.prepare();  
-	                mPlayer.start();  
+	                mPlayer.start(); 
+	                btnAddUnforgetAudio.setText("正在播放");
+	                mPlayer.setOnCompletionListener(new OnCompletionListener() {
+						
+						@Override
+						public void onCompletion(MediaPlayer arg0) {
+							btnAddUnforgetAudio.setText("播放");
+						}
+					});
 	            }catch(IOException e){  
 	                Log.e("LOG_TAG","播放失败");  
 	            } 
@@ -155,6 +165,7 @@ public class UpdateUnforgetActivity extends Activity {
 					Toast.makeText(getApplicationContext(), "备忘名不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				
 				
 				Calendar c_cur = Calendar.getInstance();//获取日期对象  
 				Calendar c_set = getDateTimeFromTextView();//获取日期对象    
@@ -186,11 +197,19 @@ public class UpdateUnforgetActivity extends Activity {
 		llUnforgetDate = (LinearLayout) findViewById(R.id.llUnforgetDate);
 		llUnforgetDate.setOnClickListener(new OnClickListener() {
 			
-			Calendar calendar = getDateTimeFromTextView();
+			String strYear = tvUnforgetYear.getText().toString().substring(0, 4);
+			int intYear = Integer.parseInt(strYear);
+			
+			
+			String strMonth = tvUnforgetMonth.getText().toString().substring(0, 2);
+			int intMonth = Integer.parseInt(strMonth);
+
+			
+			String strDay = tvUnforgetDay.getText().toString().substring(0, 2);
+			int intDay = Integer.parseInt(strDay);
+			
 			@Override
 			public void onClick(View arg0) {
-				
-					
 					new DatePickerDialog(UpdateUnforgetActivity.this,new OnDateSetListener() {
 						
 						@Override
@@ -200,13 +219,18 @@ public class UpdateUnforgetActivity extends Activity {
 							tvUnforgetDay.setText(String.format("%02d",dayOfMonth)+"日");
 							
 						}
-					},calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+					},intYear,intMonth-1,intDay).show();
 				}
 		});
 		llUnforgetTime = (LinearLayout) findViewById(R.id.llUnforgetTime);
 		llUnforgetTime.setOnClickListener(new OnClickListener() {
 			
-			Calendar calendar = getDateTimeFromTextView();
+			String strHour = tvUnforgetHour.getText().toString().substring(0, 2);
+			int intHour = Integer.parseInt(strHour);
+			
+			String strMinute = tvUnforgetMinute.getText().toString().substring(0, 2);
+			int intMinute = Integer.parseInt(strMinute);
+			
 			@Override
 			public void onClick(View arg0) {
 				
@@ -219,7 +243,7 @@ public class UpdateUnforgetActivity extends Activity {
 							tvUnforgetMinute.setText(String.format("%02d",minute)+"分");
 							
 						}
-					}, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+					}, intHour,intMinute, true).show();
 			}
 		});
 	}

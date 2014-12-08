@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="251" key="DIALOG_WIDTH"/>
-		<item value="163" key="DIALOG_Y_ORIGIN"/>
+		<item value="78" key="DIALOG_Y_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="1045" key="DIALOG_X_ORIGIN"/>
+		<item value="1084" key="DIALOG_X_ORIGIN"/>
 		<item value="1|微软雅黑|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|微软雅黑" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,22 +13,26 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="OnCompleteListener" key="selection"/>
+		<item value="CommonValue.APPLY_ENABLE_PASSWORD" key="selection"/>
 		<list key="findhistory">
-			<item value="OnCompleteListener"/>
-			<item value="apply_internet"/>
-			<item value="24"/>
-			<item value="cursor.getColumnIndex"/>
-			<item value="历史记录"/>
-			<item value="DatabaseHelper"/>
-			<item value="20sp"/>
-			<item value="28sp"/>
+			<item value="&quot;apply_enable_password&quot;"/>
+			<item value="&quot;number_edit&quot;"/>
+			<item value="&quot;feedback&quot;"/>
+			<item value="&quot;version_update&quot;"/>
+			<item value="&quot;data_update&quot;"/>
+			<item value="&quot;apply_enable_sound&quot;"/>
+			<item value="LOGIN_PASSWORD"/>
+			<item value="APPLY_ENABLE_PASSWORD"/>
 		</list>
 		<list key="replacehistory">
-			<item value="18"/>
-			<item value="map.get"/>
-			<item value="24sp"/>
-			<item value="20sp"/>
+			<item value="CommonValue.APPLY_ENABLE_PASSWORD"/>
+			<item value="CommonValue.LOGIN_PASSWORD"/>
+			<item value="CommonValue.FEEDBACK"/>
+			<item value="CommonValue.VERSION_UPDATE"/>
+			<item value="CommonValue.DATA_UPDATE"/>
+			<item value="CommonValue.APPLY_ENABLE_SOUND"/>
+			<item value="CommonValue.APPLY_ENABLE_VIBRATE"/>
+			<item value="versionUpdate"/>
 		</list>
 	</section>
 </section>

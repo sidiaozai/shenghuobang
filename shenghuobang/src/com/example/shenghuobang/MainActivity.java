@@ -1,13 +1,17 @@
 package com.example.shenghuobang;
 
 import com.example.shenghuobang.Charge.ChargeActivity;
+import com.example.shenghuobang.Password.LoginPasswordActivity;
 import com.example.shenghuobang.Password.PasswordActivity;
+import com.example.shenghuobang.Password.SetLoginPassword;
 import com.example.shenghuobang.Setting.SettingActivity;
 import com.example.shenghuobang.Unforget.UnforgetActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +23,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 public class MainActivity extends TabActivity {
-	
+
 	TabHost tabHost;
 	private TextView main_tab_unread_tv;
 	private RelativeLayout main_tab_charge, main_tab_unforget,main_tab_password,main_tab_settings;
@@ -74,6 +78,9 @@ public class MainActivity extends TabActivity {
 
         main_tab_charge.setOnClickListener(new OnClickListener() {
         	public void onClick(View arg0) {
+        		if(tabHost.getCurrentTabTag().equals("first")){
+        			return;
+        		}
         		tabHost.setCurrentTabByTag("first");
  
                 //Õº∆¨µ„¡¡
@@ -91,6 +98,10 @@ public class MainActivity extends TabActivity {
         
         main_tab_unforget.setOnClickListener(new OnClickListener() {
         	public void onClick(View arg0) {
+        		if(tabHost.getCurrentTabTag().equals("second")){
+        			return;
+        		}
+        		
         		tabHost.setCurrentTabByTag("second");
                             	
                 //Õº∆¨µ„¡¡
@@ -108,25 +119,31 @@ public class MainActivity extends TabActivity {
         
         main_tab_password.setOnClickListener(new OnClickListener() {
         	public void onClick(View v) {
-        		// TODO Auto-generated method stub
-        		tabHost.setCurrentTabByTag("third");
-        		//Õº∆¨µ„¡¡
-        		img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
-                img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
-                img_tab_password.setImageResource(R.drawable.ico_password_press);
-                img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
-                //Œƒ◊÷µ„¡¡
-                text_tab_charge.setTextColor(getResources().getColor(R.color.grey));
-                text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
-                text_tab_password.setTextColor(getResources().getColor(R.color.menu_color));
-                text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
-            }
+        		if(tabHost.getCurrentTabTag().equals("third")){
+        			return;
+        		}
+        		
+        		SharedPreferences mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+        		
+        		String verPassword = mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null);
+        		//√ª”–√‹¬Î£¨œ»…Ë÷√√‹¬Î
+        		if((verPassword==null)||verPassword.equals("")){
+        			Intent intent = new Intent(MainActivity.this, SetLoginPassword.class);
+                    startActivityForResult(intent, 1);
+                    
+        		}else{
+        			Intent intent = new Intent(MainActivity.this,LoginPasswordActivity.class);
+        			startActivityForResult(intent,1);	
+        		}
+        	}
         });
             
         main_tab_settings.setOnClickListener(new OnClickListener() {
         	public void onClick(View v) {
         		
-        		// TODO Auto-generated method stub
+        		if(tabHost.getCurrentTabTag().equals("four")){
+        			return;
+        		}
         		tabHost.setCurrentTabByTag("four");
         		//Õº∆¨µ„¡¡
 		        img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
@@ -152,4 +169,21 @@ public class MainActivity extends TabActivity {
     	tabHost.addTab(tabHost.newTabSpec("four").setIndicator("four").setContent(
     		new Intent(this, SettingActivity.class)));
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
+    	if(1==resultCode)  {
+    		tabHost.setCurrentTabByTag("third");
+			//Õº∆¨µ„¡¡
+			img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
+	        img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
+	        img_tab_password.setImageResource(R.drawable.ico_password_press);
+	        img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
+	        //Œƒ◊÷µ„¡¡
+	        text_tab_charge.setTextColor(getResources().getColor(R.color.grey));
+	        text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
+	        text_tab_password.setTextColor(getResources().getColor(R.color.menu_color));
+	        text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+    	}
+        super.onActivityResult(requestCode, resultCode, data);  
+	}
 }
