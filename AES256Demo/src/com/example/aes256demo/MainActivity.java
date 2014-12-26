@@ -15,6 +15,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	
 	private Button mEncryptButton;
 	private Button mDecryptButton;
+	private Button button1;
 	private EditText mInputEdit;
 	private TextView mShowText;
 	private TextView mShowKey;
@@ -34,6 +35,20 @@ public class MainActivity extends Activity implements OnClickListener{
 		mShowKey = (TextView) findViewById(R.id.main_show_encrypt_key);
 		mEncryptButton.setOnClickListener(this);
 		mDecryptButton.setOnClickListener(this);
+		
+		button1 =  (Button)findViewById(R.id.button1);
+		button1.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				String str = "123";
+				byte[] b = str.getBytes();
+				str =new String(b);
+				b = str.getBytes();
+				
+				mShowText.setText(new String(b));
+			}
+		});
 	}
 
 

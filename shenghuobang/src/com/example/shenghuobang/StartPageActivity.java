@@ -17,6 +17,7 @@ public class StartPageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start_page);
+		//overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
 		
 		new Thread()
         {
@@ -51,6 +52,7 @@ public class StartPageActivity extends Activity {
 	        		Intent intent = new Intent();
 	                intent.setClass(StartPageActivity.this, MainActivity.class);
 	                startActivity(intent);
+	                //overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
 	                finish();
 	                break;
         		default:break;

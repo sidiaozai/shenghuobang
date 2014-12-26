@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//src/com/tencent/sample/DataProviderActivity.java=UTF-8
+encoding//src/com/tencent/sample/Util.java=UTF-8
+encoding//src/com/tencent/sample/activitys/QQDatalineActivity.java=UTF-8
+encoding//src/com/tencent/sample/activitys/QQShareActivity.java=UTF-8
+encoding//src/com/tencent/sample/activitys/TQQInfoActivity.java=UTF-8
+encoding//src/com/tencent/sample/activitys/WPAActivity.java=UTF-8
+encoding//src/com/tencent/sample/weiyun/FileListAdapter.java=UTF-8
+encoding//src/com/tencent/sample/weiyun/IFileListAdapterItemClick.java=UTF-8
+encoding//src/com/tencent/sample/weiyun/IRecordListAdapterItemClick.java=UTF-8
+encoding//src/com/tencent/sample/weiyun/RecordOperationActivity.java=UTF-8

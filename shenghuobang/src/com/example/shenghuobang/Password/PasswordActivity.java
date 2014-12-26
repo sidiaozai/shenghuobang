@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sqliteDataBase.Model.Password;
-import sqliteDataBase.Model.Unforget;
-
-import com.example.shenghuobang.FileOper;
-import com.example.shenghuobang.R;
-import com.example.shenghuobang.R.id;
-import com.example.shenghuobang.R.layout;
-import com.example.shenghuobang.Unforget.UnforgetActivity;
-import com.example.shenghuobang.Unforget.UnforgetAdapter;
-import com.example.shenghuobang.Unforget.UpdateUnforgetActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,27 +13,30 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView.MultiChoiceModeListener;
+import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
+
+import com.example.shenghuobang.CommonValue;
+import com.example.shenghuobang.FileOper;
+import com.example.shenghuobang.MainActivity;
+import com.example.shenghuobang.MainGroupTab;
+import com.example.shenghuobang.R;
+import com.example.shenghuobang.Charge.ChargeActivity;
 
 public class PasswordActivity extends Activity  {
 	
-	private Button btnAddPassword;
+	private TextView tvAddPassword;
 	private TextView mActionText;
 	private GridView gridViewPassword;
 	
@@ -65,8 +58,6 @@ public class PasswordActivity extends Activity  {
 		
 		setEmptyData();
 		
-		
-
 		gridViewPassword.setOnItemClickListener(new OnItemClickListener() { 
 			
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) 
@@ -79,11 +70,15 @@ public class PasswordActivity extends Activity  {
                 password = bllPassword.query(password.getId());
                 
                 Log.i("tag", "读数据成功");	
+                
+                CommonValue commonValue = new CommonValue(getApplicationContext());
+                
+                String passwordStr = commonValue.Decrypt(password.getPassWord());
 
 				Intent intent = new Intent();
 				intent .putExtra("id", password.getId());
 				intent .putExtra("name", password.getName());
-				intent .putExtra("passWord", password.getPassWord());
+				intent .putExtra("passWord", passwordStr);
 				intent.putExtra("soundFileName", password.getSoundFileName());
 				
                 intent.setClass(PasswordActivity.this, UpdatePasswordActivity.class);
@@ -125,13 +120,14 @@ public class PasswordActivity extends Activity  {
 			}
 		});
 		
-		btnAddPassword = (Button) findViewById(R.id.btnAddPassword);
+		tvAddPassword = (TextView) findViewById(R.id.tvAddPassword);
 		
-		btnAddPassword.setOnClickListener(new OnClickListener() {
+		tvAddPassword.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent();
+				intent.putExtra("mode", "Return");
                 intent.setClass(PasswordActivity.this, AddPasswordActivity.class);
                 startActivityForResult(intent, 1);
 			}
@@ -139,6 +135,14 @@ public class PasswordActivity extends Activity  {
 	}
 	
 	
+	@Override
+	protected void onRestart() {
+		((MainActivity)getParent()).OnRestartPasswordActivity();
+      
+		super.onRestart();
+	}
+
+
 	private List<Password> getData(){
 		listPassword = new ArrayList<sqliteDataBase.Model.Password>();
 		
@@ -178,6 +182,7 @@ public class PasswordActivity extends Activity  {
         emptyView.setText("没有密码数据，请先添加密码数据");  
         emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
         emptyView.setVisibility(View.GONE);  
+        emptyView.setTextSize(15);
         ((ViewGroup)gridViewPassword.getParent()).addView(emptyView);  
         gridViewPassword.setEmptyView(emptyView);
 	}
@@ -193,6 +198,21 @@ public class PasswordActivity extends Activity  {
 		updateGridView();
 		super.onResume();
 	}
+	private long exitTime = 0;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 	
 }

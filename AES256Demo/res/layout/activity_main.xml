@@ -55,4 +55,14 @@
         android:layout_marginTop="26dp"
         android:text="AES 256 key" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_show_encrypt_key"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="94dp"
+        android:layout_toLeftOf="@+id/main_decrypt_button"
+        android:text="Button" />
+
 </RelativeLayout>

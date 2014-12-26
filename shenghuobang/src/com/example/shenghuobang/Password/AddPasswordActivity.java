@@ -5,16 +5,24 @@ import java.io.IOException;
 
 import sqliteDataBase.Bll.Password;
 
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.FileOper;
+import com.example.shenghuobang.MediaPlayerPlay;
+import com.example.shenghuobang.MediaRecorderPlay;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.R.id;
 import com.example.shenghuobang.R.layout;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +38,7 @@ public class AddPasswordActivity extends Activity {
 	
 	private Button btnAddPasswordCancel;
 	private Button btnAddPasswordOK;
+	private Button btnIsPassword;
 	
 	private EditText etPasswordName;
 	private EditText etPassword;
@@ -38,10 +47,14 @@ public class AddPasswordActivity extends Activity {
 	private String pathName = null; 
 	private String fileName = "NULL";
 	
-	private MediaRecorder mRecorder;
 	
 	private sqliteDataBase.Model.Password modelPassword ;
 	private sqliteDataBase.Bll.Password bllPassword;
+	
+	private long startTime;
+	private static final int MIN_INTERVAL_TIME = 2000;// 2s
+	
+	private MediaRecorderPlay mediaRecordPlay;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -55,7 +68,7 @@ public class AddPasswordActivity extends Activity {
 		
 		bllPassword = new sqliteDataBase.Bll.Password(this);
 		
-		pathName = Environment.getExternalStorageDirectory().getAbsolutePath(); 
+		
 		
 		etPasswordName = (EditText) findViewById(R.id.etPasswordName);
 		etPassword = (EditText) findViewById(R.id.etPassword);
@@ -79,6 +92,7 @@ public class AddPasswordActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				String passwordName = etPasswordName.getText().toString();
+				
 				if(passwordName.length()==0){
 					Toast.makeText(getApplicationContext(), "密码名不能为空", Toast.LENGTH_SHORT).show();
 					return;
@@ -86,20 +100,40 @@ public class AddPasswordActivity extends Activity {
 				
 				
 				String password = etPassword.getText().toString();
-				if(password.equals("")){
-					Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
+				String soundFileName = fileName;
+				if(password.equals("")&&soundFileName.equals("NULL")){
+					Toast.makeText(getApplicationContext(), "密码和语音不能同时为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				String soundFileName = fileName;
 				
-				modelPassword = new sqliteDataBase.Model.Password(passwordName, password, soundFileName);
+				CommonValue commonValue = new CommonValue(getApplicationContext());
+				
+			    String 	encryptPassword = commonValue.Encrypt(password);
+				
+				modelPassword = new sqliteDataBase.Model.Password(passwordName, encryptPassword, soundFileName);
 				bllPassword.insert(modelPassword);
-				
 				
 				setResult(1,getIntent());  
 				finish();
 				
 				
+			}
+		});
+		btnIsPassword =  (Button) findViewById(R.id.btnIsPassword);
+		btnIsPassword.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				TransformationMethod passwordMethod = PasswordTransformationMethod.getInstance();
+				TransformationMethod HideReturnsMethod = HideReturnsTransformationMethod.getInstance();
+				TransformationMethod state = etPassword.getTransformationMethod();
+				if(state == passwordMethod){
+					etPassword.setTransformationMethod(HideReturnsMethod);
+					
+				}else{
+					etPassword.setTransformationMethod(passwordMethod);
+				}
+				etPassword.setSelection(etPassword.length());
 			}
 		});
 //		
@@ -112,35 +146,49 @@ public class AddPasswordActivity extends Activity {
 				if(btnAddPasswordAudio.getText().toString().equals("播放"))
 					return false;
 				
-				if (event.getAction()== MotionEvent.ACTION_UP)//判断按钮释放被释放 
-				{
-					btnAddPasswordAudio.setText("播放");
-					mRecorder.stop();  
-					mRecorder.release();  
-					mRecorder = null;  
-					return true;
-				}else if(event.getAction()== MotionEvent.ACTION_DOWN){
+				if(event.getAction()== MotionEvent.ACTION_DOWN){
+					
+					if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+			            Toast.makeText(AddPasswordActivity.this, "SD卡不存在，请插入SD卡", Toast.LENGTH_SHORT).show();
+			            return true;
+			        }
+					pathName = Environment.getExternalStorageDirectory().getAbsolutePath(); 
+					
 					
 					btnAddPasswordAudio.setText("正在录音");
 					
-					long curDate = System.currentTimeMillis();
-					fileName = String.valueOf(""+curDate+".3gp") ;
+					startTime = System.currentTimeMillis();
+					fileName = String.valueOf(""+startTime+CommonValue.SoundFileType) ;
 					
-					mRecorder = new MediaRecorder();  
-		            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);  
-		            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);  
-		            mRecorder.setOutputFile(pathName +"/"+ fileName);  
-		            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);  
-		            try {
-		            	mRecorder.prepare();  
-		            } catch (IOException e) {
-		            	btnAddPasswordAudio.setText("录音失败");
-		            	Log.e("LOG_TAG", "prepare() failed");  
-		            }  
-		            mRecorder.start();  
-				}
+					mediaRecordPlay = new MediaRecorderPlay(pathName +File.separator+ fileName); 
+					mediaRecordPlay.start();  
+				}else if (event.getAction()== MotionEvent.ACTION_UP){//判断按钮释放被释放 
 				
-				return false;
+					long intervalTime = System.currentTimeMillis() - startTime;
+					if (intervalTime < MIN_INTERVAL_TIME) {
+						Toast.makeText(getApplicationContext(), "录音时间太短，录音被取消", Toast.LENGTH_SHORT).show();
+						
+						mediaRecordPlay.stop();
+						
+						File file = new File(pathName +"/"+ fileName);
+						file.delete();
+						btnAddPasswordAudio.setText("录音");
+					}else{
+						mediaRecordPlay.stop();
+						
+						btnAddPasswordAudio.setText("播放");
+					}
+					return true;
+				}else if (event.getAction()== MotionEvent.ACTION_CANCEL){
+					mediaRecordPlay.stop();
+					
+					Toast.makeText(getApplicationContext(), "录音被取消", Toast.LENGTH_SHORT).show();
+					File file = new File(pathName +File.separator+ fileName);
+					file.delete();
+					btnAddPasswordAudio.setText("录音");
+				}
+
+				return true;
 			}
 		});
 		
@@ -148,17 +196,27 @@ public class AddPasswordActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				MediaPlayer mPlayer = new MediaPlayer();  
-	            try{  
-	                mPlayer.setDataSource(pathName +"/"+ fileName);  
-	                mPlayer.prepare();  
-	                mPlayer.start();  
-	            }catch(IOException e){  
-	                Log.e("LOG_TAG","播放失败");  
-	            } 
+				File file = new File(pathName +File.separator+ fileName);
+				if(!file.exists()){
+            		Log.e("LOG_TAG","文件不存在");  
+            		return;
+            	}
+				
+				MediaPlayerPlay mediaPlayPlay = new MediaPlayerPlay(pathName +File.separator+ fileName);
+				mediaPlayPlay.Start();
+				btnAddPasswordAudio.setText("正在播放");
+				
+				mediaPlayPlay.SetOnCompletionListener(new OnCompletionListener() {
+					
+					@Override
+					public void onCompletion(MediaPlayer arg0) {
+						btnAddPasswordAudio.setText("播放");
+					}
+				}); 
 				
 			}
 		});
+		
 		
 	}
 

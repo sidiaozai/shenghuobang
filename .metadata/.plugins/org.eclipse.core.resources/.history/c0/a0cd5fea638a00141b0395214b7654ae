@@ -1,0 +1,27 @@
+package com.example.shenghuobang.Setting;
+
+import org.json.JSONObject;
+
+import com.example.shenghuobang.R;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class UpdateVersionActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_update_version);
+	}
+	public void login(){
+		Tencent mTencent = Tencent.createInstance(AppId, this.getApplicationContext());
+		if (!mTencent.isSessionValid()){
+			mTencent.login(this, Scope, listener);
+		}
+	}
+}

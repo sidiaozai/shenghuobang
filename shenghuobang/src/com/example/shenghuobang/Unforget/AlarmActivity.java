@@ -1,5 +1,7 @@
 package com.example.shenghuobang.Unforget;
 
+import com.example.shenghuobang.CommonValue;
+import com.example.shenghuobang.LoginActivity;
 import com.example.shenghuobang.R;
 
 import android.app.Activity;
@@ -17,18 +19,21 @@ import android.os.Vibrator;
 
 
 public class AlarmActivity extends Activity {
-	private static final int ID = 1213;
+	//private static final ;
 	private Vibrator vibrator;
 	
 	private SharedPreferences mySharedPreferences; 
 	
+	private Bundle bundle;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+        bundle = getIntent().getExtras();
+        
+        mySharedPreferences= getSharedPreferences(CommonValue.AppName, Activity.MODE_PRIVATE); 
 		
-        if(mySharedPreferences.getBoolean("apply_enable_vibrate", false))
+        if(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_VIBRATE, false))
         {
 	        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);  
 	        long [] pattern = {100,400,100,400};   // 停止 开启 停止 开启   
@@ -40,25 +45,24 @@ public class AlarmActivity extends Activity {
     }
     
     public void AddNotification(){ 
-        
-        
+
         NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE); 
         
         Notification n = new Notification(); 
-        
         int icon = R.drawable.ic_launcher; 
         
-        String tickerText =""+ID; 
-       
+        int ID = bundle.getInt("id", 0);
+        String tickerText =bundle.getString("unforget"); 
+
         long when = System.currentTimeMillis(); 
-          
+
         n.icon = icon; 
         n.tickerText = tickerText; 
         n.when = when; 
         
         n.flags|=Notification.FLAG_AUTO_CANCEL; //自动终止 
          
-        Intent it = new Intent(this,AlarmActivity.class);  
+        Intent it = new Intent(this,LoginActivity.class);  
         /*********************
          *获得PendingIntent  
          *FLAG_CANCEL_CURRENT:
@@ -82,10 +86,7 @@ public class AlarmActivity extends Activity {
          *********************/ 
           
         PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT); 
-         
-        //设置事件信息，显示在拉开的里面 
-        n.setLatestEventInfo(this,"生活帮", n.tickerText, pi); 
-      
+        n.setLatestEventInfo(this,"易记帮", n.tickerText, pi); 
         nm.notify(ID,n); 
     } 
 }

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
             android:textSize="18sp"
-            android:text="记账" />
+            android:text="返回" />
         <TextView
             android:id="@+id/tVDetails"
             android:layout_centerHorizontal="true"
@@ -89,9 +89,11 @@
 		        android:layout_height="wrap_content"
 		        android:textColor="@color/black"
             	android:background="@drawable/shape_radius"
+            	android:textCursorDrawable="@null"
+            	android:maxLength="10"
 		        android:ems="10"
 		        android:textSize="18sp"
-		        android:inputType="numberSigned" >
+		        android:inputType="numberDecimal" >
 		        <requestFocus />
 		    </EditText>
             <TextView
@@ -167,6 +169,7 @@
 	            android:layout_height="wrap_content"
 	            android:textColor="@color/black"
             	android:background="@drawable/shape_radius"
+            	android:textCursorDrawable="@null"
 	            android:textSize="18sp" />
         </TableRow>
     </TableLayout>
@@ -179,12 +182,12 @@
     	android:listSelector="@drawable/list_bg_selector"
     	android:cacheColorHint="@android:color/transparent"
     	android:divider="@android:color/transparent" 
-    	android:dividerHeight="20px" /> 
-    </LinearLayout>
+    	android:dividerHeight="5dp" /> 
     <TextView android:id="@+id/android:empty"  
         android:layout_width="wrap_content"  
         android:layout_height="wrap_content"   
         android:layout_gravity="center" 
-        android:textSize="40px"  
-        android:text="没有记录"/> 
+        android:textSize="15sp"  
+        android:text="没有记录"/>
+    </LinearLayout>
 </LinearLayout>

@@ -13,7 +13,7 @@ public class Password {
 	private SQLiteDatabase db;
 	
 	public Password(Context context){
-		helper = new DatabaseHelper(context);
+		helper = DatabaseHelper.getInstance(context);
         db = helper.getWritableDatabase();
 	}
 	public int insert(sqliteDataBase.Model.Password modelPassword){
@@ -63,6 +63,11 @@ public class Password {
 	public int delete(int id){
 		Log.i("tag", "É¾³ýÊý¾Ý£º"+id);
 		db.delete("tablePassword", "id=?",new String[]{String.valueOf(id)});
+		return 0;
+	}
+	public int delete(){
+		
+		db.delete("tablePassword", "",null);
 		return 0;
 	}
 	public int getMaxId(){

@@ -17,9 +17,13 @@
 		android:title="密码登入" android:summary="登录时显示登陆界面" >
 	</CheckBoxPreference>
 	
-	<EditTextPreference android:key="login_password"
-		android:title="修改密码" android:summary="修改登录密码"  android:defaultValue="">
-	</EditTextPreference>
+	
+	<Preference android:key="login_password" android:title="修改密码"
+		android:summary="修改登录密码" >
+		<intent android:action="com.feixun.action.seemAction" 
+			android:targetPackage="com.example.shenghuobang.Setting" android:targetClass="com.example.shenghuobang.Setting.SetLoginPassword" />
+	</Preference>
+	
 	<PreferenceCategory android:title="数据同步"></PreferenceCategory>
 	<Preference android:key="data_update" android:title="数据同步"
 		android:summary="数据同步" >

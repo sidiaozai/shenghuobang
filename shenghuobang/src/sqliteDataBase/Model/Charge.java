@@ -6,11 +6,11 @@ public class Charge {
 	private int id;
 	private int year,month,day;
 	//private String time;
-	private int sum;
-	private int type;
+	private Double sum;
+	private int type;//0 输入，1输出
 	private String des;
 	
-	public Charge(int id,int year,int month,int day,int sum,int type,String des){
+	public Charge(int id,int year,int month,int day,Double sum,int type,String des){
 		this.id = id;
 		this.year = year;
 		this.month = month;
@@ -20,7 +20,7 @@ public class Charge {
 		 this.des = des;
 	}
 	
-	public Charge(int year,int month,int day,int sum,int type,String des){
+	public Charge(int year,int month,int day,Double sum,int type,String des){
 		this.year = year;
 		this.month = month;
 		this.day = day;
@@ -59,10 +59,10 @@ public class Charge {
 	public String getDataStr(){
 		return String.format("%04d", year)+"年"+String.format("%02d", month)+"月"+String.format("%02d", day)+"日";
 	}
-	public int getSum(){
+	public Double getSum(){
 		return sum;
 	}
-	public void setSum(int sum){
+	public void setSum(Double sum){
 		this.sum = sum;
 	}
 	public int getType(){

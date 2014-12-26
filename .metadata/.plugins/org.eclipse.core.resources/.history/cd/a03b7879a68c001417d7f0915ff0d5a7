@@ -1,0 +1,48 @@
+package com.example.shenghuobang.Setting;
+
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.sns.SNS;
+import com.avos.sns.SNSBase;
+import com.avos.sns.SNSCallback;
+import com.avos.sns.SNSException;
+import com.avos.sns.SNSType;
+
+import android.app.Activity;
+import android.content.Intent;
+
+public class AuthActivity extends Activity{
+
+	private SNSType type = SNSType.AVOSCloudSNSQQ;
+	
+	public void onCreate(){   
+
+	          try {
+				SNS.setupPlatform(type,"登录URL", null, null);
+			} catch (AVException e1) {
+				// TODO 自动生成的 catch 块
+				e1.printStackTrace();
+			}
+	          SNS.loginWithCallback(AuthActivity.this, type,new SNSCallback() {
+				
+	        	  @Override
+	        	  public void done(SNSBase base, SNSException e) {
+	        		  if(e==null){
+	        			  SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
+	        				  @Override
+	        				  public void done(AVUser arg0, AVException arg1) {  
+	        				  }
+	        			});
+	        		}
+	        	}
+			});
+	   }
+
+	   @Override
+	   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        super.onActivityResult(requestCode, resultCode, data);
+	        
+			SNS.onActivityResult(requestCode, resultCode, data, type);
+	    }
+	}

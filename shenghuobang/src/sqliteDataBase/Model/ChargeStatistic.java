@@ -5,10 +5,10 @@ import java.util.Date;
 public class ChargeStatistic {
 	private int id;
 	private int year, month, day;
-	private int inSum;
-	private int outSum;
+	private Double inSum;
+	private Double outSum;
 	
-	public ChargeStatistic(int id,int year,int month,int day,int inSum,int outSum){
+	public ChargeStatistic(int id,int year,int month,int day,Double inSum,Double outSum){
 		this.id = id;
 		this.year = year;
 		this.month = month;
@@ -17,7 +17,7 @@ public class ChargeStatistic {
 		this.outSum = outSum;
 	}
 	
-	public ChargeStatistic(int year,int month,int day,int inSum,int outSum){
+	public ChargeStatistic(int year,int month,int day,Double inSum,Double outSum){
 		this.year = year;
 		this.month = month;
 		this.day = day;
@@ -39,16 +39,16 @@ public class ChargeStatistic {
 	public String getDataStr(){
 		return String.format("%04d", year)+"Äê"+String.format("%02d", month)+"ÔÂ"+String.format("%02d", day)+"ÈÕ";
 	}
-	public int getInSum(){
+	public Double getInSum(){
 		return inSum;
 	}
-	public void setInSum(int inSum){
+	public void setInSum(Double inSum){
 		this.inSum = inSum;
 	}
-	public int getOutSum(){
+	public Double getOutSum(){
 		return outSum;
 	}
-	public void setOutSum(int outSum){
+	public void setOutSum(Double outSum){
 		this.outSum = outSum;
 	}
 	public int getYear(){

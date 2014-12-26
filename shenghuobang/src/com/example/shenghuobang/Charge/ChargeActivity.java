@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.MonPickerDialog;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.R.id;
 import com.example.shenghuobang.R.layout;
 import com.example.shenghuobang.Unforget.UnforgetActivity;
+import com.testin.agent.TestinAgent;
 
 import sqliteDataBase.Model.Charge;
 import sqliteDataBase.Model.ChargeStatistic;
@@ -22,6 +24,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -43,6 +47,11 @@ import android.widget.Toast;
 
 public class ChargeActivity extends ListActivity {
 	
+	private final int WHATE_READ_FAILED = 1;
+	private final int WHATE_READ_LOAD_DATA = 2;
+	private final int WHATE_READ_STATISTIC_FAILED = 3;
+	private final int WHATE_READ_STATISTIC_LOAD_DATA = 4;
+	
 	private ImageView imageAddCharge;
 	private TextView tvInMonthSum;
 	private TextView tvOutMonthSum;
@@ -62,6 +71,8 @@ public class ChargeActivity extends ListActivity {
 		// TODO 自动生成的方法存根
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_charge);
+		TestinAgent.init(getBaseContext(), "ec82cbfb8a51c1b76e45f1f82e51094d", "wandoujia");
+		//overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
 
 		bllCharge = new sqliteDataBase.Bll.Charge(ChargeActivity.this);
 		
@@ -128,6 +139,12 @@ public class ChargeActivity extends ListActivity {
 				intMonth=Integer.parseInt(strMonth);
 				setStatisticData( intYear, intMonth);
 			}
+
+			@Override
+			public void onListItemClick(int position) {
+				// TODO 自动生成的方法存根
+				
+			}
 		});
 	}
 	DatePickerDialog.OnDateSetListener dateListener =  new DatePickerDialog.OnDateSetListener() { 
@@ -149,7 +166,6 @@ public class ChargeActivity extends ListActivity {
 	}
 
 	private void setListViewData(){
-		
 		String strYear = tvYear.getText().toString().substring(0, 4);
 		int intYear;
 		intYear=Integer.parseInt(strYear);
@@ -157,92 +173,132 @@ public class ChargeActivity extends ListActivity {
 		String strMonth = tvMonth.getText().toString().substring(0, 2);
 		int intMonth;
 		intMonth=Integer.parseInt(strMonth);
-		
-		Cursor cursor = bllCharge.queryByMonth(intYear,intMonth);
-		
-		if(cursor.getCount()==0){
-
-			setListAdapter(null);
-			tvInMonthSum.setText("收入");
-			tvOutMonthSum.setText("支出");
-			tvBalance.setText("结余");
-		}
-		else{
-
-			listMessageAdapter.setData(getData(intYear,intMonth));
-			setListAdapter(listMessageAdapter);
-			setStatisticData(intYear,intMonth);
-		}
+		onLoadData(intYear,intMonth);
+		setStatisticData(intYear,intMonth);
 	}
 	
-	private List<ChargeStatistic> getData(int year,int month) {
+	private void onLoadData(final int year,final int month) {
+		
+		new Thread(new Runnable(){
 
-		List<ChargeStatistic> list = new ArrayList<ChargeStatistic>();
-		for(int day=31;day>=1;day--){
+			@Override
+			public void run() {
+				Message msg = new Message();
+				List<ChargeStatistic> list = new ArrayList<ChargeStatistic>();
+				for(int day=31;day>=1;day--){
 
-			Cursor cursor = bllCharge.queryByDay(year, month, day);
-			if(cursor.getCount()==0)
-				continue;
-			
-			int inDaySum=0;
-			int outDaySum=0;
-			while(cursor.moveToNext()){
-	    		int typeIndex = cursor.getColumnIndex("type");
-	    		int sumIndex = cursor.getColumnIndex("sum");
-	    		int sum = cursor.getInt(sumIndex);
-	    		int type = cursor.getInt(typeIndex);
-	    		
-	    		if(type==0){
-	    			inDaySum += sum;
-	    		}
-	    		else{
-	    			outDaySum +=sum;
-	    		}
-	    	}
-
-			list.add(new ChargeStatistic(year, month, day, inDaySum, outDaySum));
-    		cursor.close();
-		}
-
-		return list;
+					Cursor cursor = bllCharge.queryByDay(year, month, day);
+					if(cursor.getCount()==0)
+						continue;
+					
+					Double inDaySum=0.0;
+					Double outDaySum=0.0;
+					
+					while(cursor.moveToNext()){
+			    		int typeIndex = cursor.getColumnIndex("type");
+			    		int sumIndex = cursor.getColumnIndex("sum");
+			    		Double sum = cursor.getDouble(sumIndex);
+			    		int type = cursor.getInt(typeIndex);
+			    		
+			    		if(type==0){
+			    			inDaySum += sum;
+			    		}
+			    		else{
+			    			outDaySum +=sum;
+			    		}
+			    	}
+					list.add(new ChargeStatistic(year, month, day, inDaySum, outDaySum));
+		    		cursor.close();
+		    	}
+				if(null == list || list.equals(null)){
+					msg = mUIHandler.obtainMessage(WHATE_READ_FAILED);
+				}else{
+					msg = mUIHandler.obtainMessage(WHATE_READ_LOAD_DATA);
+					msg.obj = list;
+				}
+				msg.sendToTarget();
+			}}).start();
 	}
-	public void setStatisticData(int year,int month){
-
-		int inMonthSum=0;
-		int outMonthSum=0;
-		for(int day=31;day>=1;day--){
-
-			Cursor cursor = bllCharge.queryByDay(year, month, day);
-			if(cursor.getCount()==0)
-				continue;
+	public void setStatisticData(final int year,final int month){
+		
+		
+		new Thread(new Runnable(){
 			
-			int inDaySum=0;
-			int outDaySum=0;
-			while(cursor.moveToNext()){
-	    		int typeIndex = cursor.getColumnIndex("type");
-	    		int sumIndex = cursor.getColumnIndex("sum");
-	    		int sum = cursor.getInt(sumIndex);
-	    		int type = cursor.getInt(typeIndex);
-	    		
-	    		if(type==0){
-	    			inDaySum += sum;
-	    		}
-	    		else{
-	    			outDaySum +=sum;
-	    		}
-	    	}
-			inMonthSum += inDaySum;
-			outMonthSum += outDaySum;
-    		cursor.close();
-		}
-		tvInMonthSum.setText("收入："+ inMonthSum);
-		
-		tvOutMonthSum.setText("支出："+ outMonthSum);
-		
-		int monthBalance = inMonthSum-outMonthSum;
-		
-		tvBalance.setText("结余："+monthBalance);
+			Message msg = new Message();
+			@Override
+			public void run() {
+				Double inMonthSum=0.0;
+				Double outMonthSum=0.0;
+				for(int day=31;day>=1;day--){
+
+					Cursor cursor = bllCharge.queryByDay(year, month, day);
+					if(cursor.getCount()==0)
+						continue;
+					
+					Double inDaySum=0.0;
+					Double outDaySum=0.0;
+					while(cursor.moveToNext()){
+			    		int typeIndex = cursor.getColumnIndex("type");
+			    		int sumIndex = cursor.getColumnIndex("sum");
+			    		Double sum = cursor.getDouble(sumIndex);
+			    		int type = cursor.getInt(typeIndex);
+			    		
+			    		if(type==0){
+			    			inDaySum += sum;
+			    		}
+			    		else{
+			    			outDaySum +=sum;
+			    		}
+			    	}
+					inMonthSum += inDaySum;
+					outMonthSum += outDaySum;
+		    		cursor.close();
+				}
+				Bundle bundle = new Bundle();
+				
+				bundle.putDouble("inMonthSum", inMonthSum);
+				bundle.putDouble("outMonthSum", outMonthSum);
+				
+				msg = mUIHandler.obtainMessage(WHATE_READ_STATISTIC_LOAD_DATA);
+				msg.obj = bundle;
+				msg.sendToTarget();
+				
+			}
+		}).start();
 	}
+	
+	private Handler mUIHandler = new Handler(){
+		@SuppressWarnings("unchecked")
+		@Override
+		public void handleMessage(Message msg){
+			switch(msg.what){
+			case WHATE_READ_FAILED:
+				setListAdapter(null);
+				tvInMonthSum.setText("收入:0");
+				tvOutMonthSum.setText("支出:0");
+				tvBalance.setText("结余:0");
+				
+				break;
+			case WHATE_READ_LOAD_DATA:
+				List<ChargeStatistic> list = new ArrayList<ChargeStatistic>();
+				list = (ArrayList<ChargeStatistic>)msg.obj;
+				listMessageAdapter.setData(list);
+				setListAdapter(listMessageAdapter);
+				break;
+			case WHATE_READ_STATISTIC_LOAD_DATA:
+				Bundle bundle = new Bundle();
+				bundle = (Bundle) msg.obj;
+				Double inMonthSum = bundle.getDouble("inMonthSum");
+				Double outMonthSum = bundle.getDouble("outMonthSum");
+				tvInMonthSum.setText( CommonValue.myFormatter.format(inMonthSum));
+				tvOutMonthSum.setText(CommonValue.myFormatter.format( outMonthSum));
+				Double monthBalance = inMonthSum-outMonthSum;
+				tvBalance.setText(CommonValue.myFormatter.format(monthBalance));
+				break;
+			}
+		}
+		
+	};
 
 	
 	@Override 
@@ -252,5 +308,33 @@ public class ChargeActivity extends ListActivity {
 			setListViewData();
 			//Toast.makeText(getApplicationContext(), "由添加界面返回", Toast.LENGTH_SHORT).show();
 		}
-	}  
+	}
+	private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                //System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	TestinAgent.onStart(getBaseContext());
+    }
+    
+    @Override
+    protected void onStop() {
+    	super.onStop();
+    	TestinAgent.onStop(getBaseContext());
+    }
 }

@@ -3,7 +3,7 @@
     <corners
         android:radius="5dp"/>
     <solid
-        android:color="@android:color/white"/><!-- 填充的颜色 -->
+        android:color="@android:color/primary_text_dark"/><!-- 填充的颜色 -->
     <stroke
         
         android:color="@android:color/black"/>

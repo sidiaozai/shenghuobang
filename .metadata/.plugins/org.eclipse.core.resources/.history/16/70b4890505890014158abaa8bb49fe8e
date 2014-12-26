@@ -1,0 +1,219 @@
+package com.example.shenghuobang;
+
+import com.example.shenghuobang.Charge.ChargeActivity;
+import com.example.shenghuobang.Password.LoginPasswordActivity;
+import com.example.shenghuobang.Password.PasswordActivity;
+import com.example.shenghuobang.Setting.SetLoginPassword;
+import com.example.shenghuobang.Setting.SettingActivity;
+import com.example.shenghuobang.Unforget.UnforgetActivity;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.TabActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends TabActivity {
+
+	TabHost tabHost;
+	private TextView main_tab_unread_tv;
+	private RelativeLayout main_tab_charge, main_tab_unforget;
+	private static RelativeLayout main_tab_password;
+	private RelativeLayout main_tab_settings;
+	private LinearLayout main_layout_charge,main_layout_unforget,main_layout_password,main_layout_settings;
+	private ImageView  img_tab_charge ,img_tab_unforget,img_tab_password,img_tab_settings ;
+	private TextView text_tab_charge ,text_tab_unforget,text_tab_password,text_tab_settings;
+	
+	public void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_main);
+
+		initTab();
+		init();
+	}
+	
+        
+	private void init() {
+    	//点击底部
+    	main_tab_charge = (RelativeLayout) findViewById(R.id.main_tab_charge);
+    	main_tab_unforget = (RelativeLayout) findViewById(R.id.main_tab_unforget);
+    	main_tab_password=(RelativeLayout) findViewById(R.id.main_tab_password);
+    	main_tab_settings=(RelativeLayout) findViewById(R.id.main_tab_settings);
+        
+    	//底部图片跟换                
+    	img_tab_charge = (ImageView) findViewById(R.id.img_tab_charge) ;
+    	img_tab_unforget = (ImageView) findViewById(R.id.img_tab_unforget) ;
+    	img_tab_password = (ImageView) findViewById(R.id.img_tab_password) ;
+    	img_tab_settings = (ImageView) findViewById(R.id.img_tab_settings) ;
+    	
+    	//底部文字
+    	text_tab_charge = (TextView) findViewById(R.id.tab_charge_text) ;
+    	text_tab_unforget = (TextView) findViewById(R.id.tab_unforget_text) ;
+    	text_tab_password = (TextView) findViewById(R.id.tab_password_text) ;
+    	text_tab_settings = (TextView) findViewById(R.id.tab_settings_text) ;
+    	main_layout_charge=(LinearLayout) findViewById(R.id.main_layout_charge);
+    	main_layout_unforget=(LinearLayout) findViewById(R.id.main_layout_unforget);
+    	main_layout_password=(LinearLayout) findViewById(R.id.main_layout_password);
+    	main_layout_settings=(LinearLayout) findViewById(R.id.main_layout_settings);
+ 
+        //图片点亮
+        img_tab_charge.setImageResource(R.drawable.ico_writeing_press);
+        img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
+        img_tab_password.setImageResource(R.drawable.ico_password_norm);
+        img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
+        //文字点亮
+        text_tab_charge.setTextColor(getResources().getColor(R.color.menu_color));
+        text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
+        text_tab_password.setTextColor(getResources().getColor(R.color.grey));
+        text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+        
+
+        main_tab_charge.setOnClickListener(new OnClickListener() {
+        	public void onClick(View arg0) {
+        		if(tabHost.getCurrentTabTag().equals("first")){
+        			return;
+        		}
+        		tabHost.setCurrentTabByTag("first");
+ 
+                //图片点亮
+                img_tab_charge.setImageResource(R.drawable.ico_writeing_press);
+                img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
+                img_tab_password.setImageResource(R.drawable.ico_password_norm);
+                img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
+                //文字点亮
+                text_tab_charge.setTextColor(getResources().getColor(R.color.menu_color));
+                text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
+                text_tab_password.setTextColor(getResources().getColor(R.color.grey));
+                text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+            }
+        });
+        
+        main_tab_unforget.setOnClickListener(new OnClickListener() {
+        	public void onClick(View arg0) {
+        		if(tabHost.getCurrentTabTag().equals("second")){
+        			return;
+        		}
+        		
+        		tabHost.setCurrentTabByTag("second");
+                            	
+                //图片点亮
+                img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
+                img_tab_unforget.setImageResource(R.drawable.ico_unforget_press);
+                img_tab_password.setImageResource(R.drawable.ico_password_norm);
+                img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
+                //文字点亮
+                text_tab_charge.setTextColor(getResources().getColor(R.color.grey));
+                text_tab_unforget.setTextColor(getResources().getColor(R.color.menu_color));
+                text_tab_password.setTextColor(getResources().getColor(R.color.grey));
+                text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+            }
+        });
+        
+        main_tab_password.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		if(tabHost.getCurrentTabTag().equals("third")){
+        			return;
+        		}
+        		
+        		SharedPreferences mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+        		
+        		String verPassword = mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null);
+        		//没有密码，先设置密码
+        		if((verPassword==null)||verPassword.equals("")){
+        			Intent intent = new Intent(MainActivity.this, SetLoginPassword.class);
+        			intent.putExtra(CommonValue.ClickPosition,CommonValue.ClickPassword);
+                    startActivityForResult(intent, 1);
+                    
+        		}else{
+        			Intent intent = new Intent(MainActivity.this,LoginPasswordActivity.class);
+        			startActivityForResult(intent,1);	
+        		}
+        	}
+        });
+            
+        main_tab_settings.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		
+        		if(tabHost.getCurrentTabTag().equals("four")){
+        			return;
+        		}
+        		tabHost.setCurrentTabByTag("four");
+        		//图片点亮
+		        img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
+		        img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
+		        img_tab_password.setImageResource(R.drawable.ico_password_norm);
+		        img_tab_settings.setImageResource(R.drawable.ico_setting_press);
+		        //文字点亮
+		        text_tab_charge.setTextColor(getResources().getColor(R.color.grey));
+		        text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
+		        text_tab_password.setTextColor(getResources().getColor(R.color.grey));
+		        text_tab_settings.setTextColor(getResources().getColor(R.color.menu_color));
+        	}
+        });
+    }
+    private void initTab(){
+    	tabHost=getTabHost();
+    	tabHost.addTab(tabHost.newTabSpec("first").setIndicator("first").setContent(
+    		new Intent(this, ChargeActivity.class)));
+    	tabHost.addTab(tabHost.newTabSpec("second").setIndicator("second").setContent(
+    		new Intent(this, UnforgetActivity.class)));
+    	tabHost.addTab(tabHost.newTabSpec("third").setIndicator("third").setContent(
+    		new Intent(this, PasswordActivity.class)));
+    	tabHost.addTab(tabHost.newTabSpec("four").setIndicator("four").setContent(
+    		new Intent(this, SettingActivity.class)));
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
+    	if(1==resultCode)  {
+    		tabHost.setCurrentTabByTag("third");
+			//图片点亮
+			img_tab_charge.setImageResource(R.drawable.ico_writeing_norm);
+	        img_tab_unforget.setImageResource(R.drawable.ico_unforget_norm);
+	        img_tab_password.setImageResource(R.drawable.ico_password_press);
+	        img_tab_settings.setImageResource(R.drawable.ico_setting_norm);
+	        //文字点亮
+	        text_tab_charge.setTextColor(getResources().getColor(R.color.grey));
+	        text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
+	        text_tab_password.setTextColor(getResources().getColor(R.color.menu_color));
+	        text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+    	}else if(2==resultCode){
+    		main_tab_charge.performClick();
+    	}
+        super.onActivityResult(requestCode, resultCode, data);  
+	}
+    
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    public void MainTabPasswordPerformClick(){
+    	Toast.makeText(getApplicationContext(), "adsf序", Toast.LENGTH_SHORT).show();
+    	main_tab_password.performClick();
+    }
+}

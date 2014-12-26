@@ -1,0 +1,5 @@
+package com.example.shenghuobang.Setting;
+
+public class BaseApiListener {
+
+}

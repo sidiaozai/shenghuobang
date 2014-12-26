@@ -1,9 +1,11 @@
 package com.example.shenghuobang.Unforget;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.example.shenghuobang.MediaPlayerPlay;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.R.id;
 import com.example.shenghuobang.R.layout;
@@ -81,7 +83,7 @@ public class UpdateUnforgetActivity extends Activity {
 		
 		alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		
-		pathName = Environment.getExternalStorageDirectory().getAbsolutePath();  
+		
 
 		intent = getIntent();
 		
@@ -124,23 +126,24 @@ public class UpdateUnforgetActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				MediaPlayer mPlayer = new MediaPlayer();  
-	            try{  
-	                mPlayer.setDataSource(pathName +"/"+ fileName);  
-	                mPlayer.prepare();  
-	                mPlayer.start(); 
-	                btnAddUnforgetAudio.setText("正在播放");
-	                mPlayer.setOnCompletionListener(new OnCompletionListener() {
-						
-						@Override
-						public void onCompletion(MediaPlayer arg0) {
-							btnAddUnforgetAudio.setText("播放");
-						}
-					});
-	            }catch(IOException e){  
-	                Log.e("LOG_TAG","播放失败");  
-	            } 
+				pathName = 	Environment.getExternalStorageDirectory().getAbsolutePath();  
+				File file = new File(pathName +File.separator+ fileName);
+				if(!file.exists()){
+            		Log.e("LOG_TAG","文件不存在");  
+            		return;
+            	}
 				
+				MediaPlayerPlay mediaPlayPlay = new MediaPlayerPlay(pathName +File.separator+ fileName);
+				mediaPlayPlay.Start();
+				btnAddUnforgetAudio.setText("正在播放");
+				
+				mediaPlayPlay.SetOnCompletionListener(new OnCompletionListener() {
+					
+					@Override
+					public void onCompletion(MediaPlayer arg0) {
+						btnAddUnforgetAudio.setText("播放");
+					}
+				});
 			}
 		});
 		

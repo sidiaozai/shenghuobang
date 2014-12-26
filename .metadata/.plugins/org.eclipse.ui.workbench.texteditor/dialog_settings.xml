@@ -13,26 +13,26 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="CommonValue.APPLY_ENABLE_PASSWORD" key="selection"/>
+		<item value="overridePendingTransition" key="selection"/>
 		<list key="findhistory">
-			<item value="&quot;apply_enable_password&quot;"/>
-			<item value="&quot;number_edit&quot;"/>
-			<item value="&quot;feedback&quot;"/>
-			<item value="&quot;version_update&quot;"/>
-			<item value="&quot;data_update&quot;"/>
-			<item value="&quot;apply_enable_sound&quot;"/>
-			<item value="LOGIN_PASSWORD"/>
-			<item value="APPLY_ENABLE_PASSWORD"/>
+			<item value="overridePendingTransition"/>
+			<item value="text"/>
+			<item value="main_sso_btn"/>
+			<item value="toPointString"/>
+			<item value="密码不能为空,请输入密码."/>
+			<item value="密码太短"/>
+			<item value="llUnforgetDate"/>
+			<item value="saveCharge"/>
 		</list>
 		<list key="replacehistory">
+			<item value="shengHuoBang"/>
+			<item value=""/>
 			<item value="CommonValue.APPLY_ENABLE_PASSWORD"/>
 			<item value="CommonValue.LOGIN_PASSWORD"/>
 			<item value="CommonValue.FEEDBACK"/>
 			<item value="CommonValue.VERSION_UPDATE"/>
 			<item value="CommonValue.DATA_UPDATE"/>
 			<item value="CommonValue.APPLY_ENABLE_SOUND"/>
-			<item value="CommonValue.APPLY_ENABLE_VIBRATE"/>
-			<item value="versionUpdate"/>
 		</list>
 	</section>
 </section>

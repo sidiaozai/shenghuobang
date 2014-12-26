@@ -8,6 +8,7 @@ import sqliteDataBase.Model.Password;
 import sqliteDataBase.Model.Unforget;
 import android.R.color;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,25 +43,47 @@ public class PasswordAdapter extends BaseAdapter{
         //创建View方法 
         public View getView(int position, View convertView, ViewGroup parent) { 
         	
-        	Button buttonView; 
-            if (convertView == null) { 
-            	buttonView = new Button(context); 
-            }  
-            else { 
-            	buttonView = (Button) convertView; 
-            } 
-            
-            buttonView.setBackgroundResource(R.drawable.btn_bg_password);
+//        	Button buttonView; 
+//            if (convertView == null) { 
+//            	buttonView = new Button(context); 
+//            }  
+//            else { 
+//            	buttonView = (Button) convertView; 
+//            } 
+//            
+//            buttonView.setBackgroundResource(R.drawable.btn_bg_password);
+//	          
+//            Password password = array.get(position);
+//	        buttonView.setText(password.getName());
+//	        buttonView.setGravity(Gravity.CENTER);
+//	        buttonView.setClickable(false);
+//	        buttonView.setFocusable(false);
+//	        buttonView.setEnabled(false);
+//	        buttonView.setFocusableInTouchMode(false);
+//
+//            return buttonView;  
+        
+        	TextView textView; 
+	          if (convertView == null) { 
+	        	  textView = new TextView(context); 
+	          }  
+	          else { 
+	        	  textView = (TextView) convertView; 
+	          } 
 	          
-            Password password = array.get(position);
-	        buttonView.setText(password.getName());
-	        buttonView.setGravity(Gravity.CENTER);
-	        buttonView.setClickable(false);
-	        buttonView.setFocusable(false);
-	        buttonView.setEnabled(false);
-	        buttonView.setFocusableInTouchMode(false);
-
-            return buttonView;  
+	          textView.setBackgroundResource(R.drawable.btn_bg_password);
+		          
+	          Password password = array.get(position);
+	          textView.setText(password.getName());
+	          textView.setGravity(Gravity.CENTER);
+	          textView.setTextColor(context.getResources().getColor(R.color.black));
+//	          textView.setClickable(false);
+//	          textView.setFocusable(false);
+//	          textView.setEnabled(false);
+//	          textView.setFocusableInTouchMode(false);
+	
+	          return textView; 
+        	
         } 
         
 } 

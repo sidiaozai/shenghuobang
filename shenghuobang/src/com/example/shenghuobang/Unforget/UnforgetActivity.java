@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import android.widget.Toast;
 
 public class UnforgetActivity extends Activity {
 	
-	private Button btnAddUnForget;
+	private TextView tvAddUnForget;
 	private GridView gridViewUnforget;
 	private sqliteDataBase.Bll.Unforget bllUnforget;
 	private List<Unforget> listUnforget;
@@ -51,9 +52,9 @@ public class UnforgetActivity extends Activity {
 		pathName = Environment.getExternalStorageDirectory().getAbsolutePath();  
 		
 		
-		btnAddUnForget = (Button) findViewById(R.id.btnAddUnForget);
+		tvAddUnForget = (TextView) findViewById(R.id.tvAddUnForget);
 		
-		btnAddUnForget.setOnClickListener(new OnClickListener() {
+		tvAddUnForget.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -177,7 +178,8 @@ public class UnforgetActivity extends Activity {
 		Log.i("tag", "没有备忘数据");
 		TextView emptyView = new TextView(UnforgetActivity.this);  
         emptyView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));  
-        emptyView.setText("没有备忘数据请先添加备忘数据");  
+        emptyView.setText("没有备忘数据,请先添加备忘数据"); 
+        emptyView.setTextSize(15);
         emptyView.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
         emptyView.setVisibility(View.GONE);  
         ((ViewGroup)gridViewUnforget.getParent()).addView(emptyView);  
@@ -198,5 +200,21 @@ public class UnforgetActivity extends Activity {
 		updateGridView();
 		super.onResume();
 	}
+	private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 	
 }

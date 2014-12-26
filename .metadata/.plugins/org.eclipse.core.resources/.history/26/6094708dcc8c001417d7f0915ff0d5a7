@@ -1,0 +1,16 @@
+package com.tencent.sample.weiyun;
+
+
+public interface IFileListAdapterItemClick {
+
+    //鏌ョ湅缂╃暐鍥�    
+	public void onThumbPicClick(int position);
+    
+    //涓嬭浇鏂囦欢
+    public void onDownloadClick(int position, int actiontype);
+    
+    //鍒犻櫎浜戠鍥剧墖
+    public void onDeleteClick(int position, int actiontype);
+
+
+}

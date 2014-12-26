@@ -1,0 +1,37 @@
+package com.example.shenghuobang.Setting;
+
+import com.avos.avoscloud.LogInCallback;
+import com.avos.sns.SNS;
+import com.avos.sns.SNSBase;
+import com.avos.sns.SNSCallback;
+import com.avos.sns.SNSType;
+
+import android.app.Activity;
+
+public class AuthActivity extends Activity{
+
+	   public void onCreate(){   
+
+	          SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo,"µÇÂ¼URL");
+	          SNS.loginWithCallback(AuthActivity¡£this, SNSType.AVOSCloudSNSSinaWeibo, new SNSCallback() {
+
+	            @Override
+	            public void done(SNSBase base, SNSException e) {
+	              if(e==null){
+	               SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
+
+	                  @Override
+	                  public void done(final AVUser user, AVException e) {
+	                  }
+	              });
+	              }
+	            }
+	          });
+	   }
+
+	   @Override
+	   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        super.onActivityResult(requestCode, resultCode, data);
+	        SNS.onActivityResult(requestCode, resultCode, data, type);
+	    }
+	}

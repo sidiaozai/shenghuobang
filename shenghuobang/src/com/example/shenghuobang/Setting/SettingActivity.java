@@ -15,6 +15,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 public class SettingActivity extends PreferenceActivity implements 
@@ -25,15 +26,14 @@ public class SettingActivity extends PreferenceActivity implements
 	private CheckBoxPreference enableVibrate;
 	private CheckBoxPreference enablePassword;
 	
-	
-	
-
-	private EditTextPreference login_password;      
+	private Preference setLoginPassword;      
 	private Preference dataUpdate;            
 	private Preference versionUpdate; 
 	private Preference feedback; 
 	
-	private SharedPreferences mySharedPreferences; 
+	
+	private CommonValue commonValue;
+	//private SharedPreferences mySharedPreferences; 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,15 +42,16 @@ public class SettingActivity extends PreferenceActivity implements
 		enableSound = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_SOUND);
 		enableVibrate = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_VIBRATE);
 		enablePassword = (CheckBoxPreference) findPreference(CommonValue.APPLY_ENABLE_PASSWORD);
-		login_password = (EditTextPreference)findPreference(CommonValue.LOGIN_PASSWORD);
+		setLoginPassword = (Preference)findPreference(CommonValue.LOGIN_PASSWORD);
 		dataUpdate = (Preference) findPreference(CommonValue.DATA_UPDATE);
 		versionUpdate = (Preference) findPreference(CommonValue.VERSION_UPDATE);
 		feedback = (Preference) findPreference(CommonValue.FEEDBACK);
 		
-		login_password.setOnPreferenceClickListener(this);
-		login_password.setOnPreferenceChangeListener(this);
+//		login_password.setOnPreferenceClickListener(this);
+//		login_password.setOnPreferenceChangeListener(this);
 		
-		mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+		commonValue = new CommonValue(this);
+		//mySharedPreferences= getSharedPreferences(CommonValue.AppName, Activity.MODE_PRIVATE); 
 		
 		
 	}
@@ -61,10 +62,7 @@ public class SettingActivity extends PreferenceActivity implements
 	public boolean onPreferenceClick(Preference preference) {
 		
 		Log.i(TAG, "onPreferenceClick----->"+String.valueOf(preference.getKey()));
-		if(preference.getKey().equals(CommonValue.LOGIN_PASSWORD)){
-			login_password.setText(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
-			
-		} 
+		
 		
 		return false;
 	}
@@ -75,24 +73,23 @@ public class SettingActivity extends PreferenceActivity implements
 		
 		
 		if(preference.getKey().equals(CommonValue.APPLY_ENABLE_SOUND)){
-			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean(CommonValue.APPLY_ENABLE_SOUND, enableSound.isChecked());
-			editor.commit();
+			commonValue.setApplyEnableSound(enablePassword.isChecked());
 		}else if(preference.getKey().equals(CommonValue.APPLY_ENABLE_VIBRATE)){
-			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean(CommonValue.APPLY_ENABLE_VIBRATE, enableVibrate.isChecked());
-			editor.commit();
+			commonValue.setApplyEnableVibrate(enablePassword.isChecked());
 		}else if(preference.getKey().equals(CommonValue.APPLY_ENABLE_PASSWORD)){
-			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putBoolean(CommonValue.APPLY_ENABLE_PASSWORD, enablePassword.isChecked());
-			editor.commit();
+			commonValue.setApplyEnablePassword(enablePassword.isChecked());
+		}else if(preference.getKey().equals(CommonValue.LOGIN_PASSWORD)){
+			Intent i = new Intent(SettingActivity.this, SetLoginPassword.class);
+			startActivity(i);
+			return true;
 		}else if(preference.getKey().equals(CommonValue.DATA_UPDATE)){
 			Intent i = new Intent(SettingActivity.this, UpdateDataActivity.class);
 			startActivity(i);
 			return true;
 		}else if (preference.getKey().equals(CommonValue.VERSION_UPDATE)) {
 
-			Intent i = new Intent(SettingActivity.this, UpdateVersionActivity.class);
+			Intent i = new Intent(SettingActivity.this, AuthActivity.class);
+			//Intent i = new Intent(SettingActivity.this, UpdateVersionActivity.class);
 			startActivity(i);
 			return true;
 		}else if(preference.getKey().equals(CommonValue.FEEDBACK)){
@@ -106,21 +103,37 @@ public class SettingActivity extends PreferenceActivity implements
 
 	public boolean onPreferenceChange(Preference preference, Object objValue) {
 		
-		if (preference == login_password) {
-			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
-			editor.putString(CommonValue.LOGIN_PASSWORD, objValue.toString());
-			editor.commit();
-			return true; // 不保存更新值
-		}
+//		if (preference == login_password) {
+//			SharedPreferences.Editor editor = mySharedPreferences.edit(); 
+//			editor.putString(CommonValue.LOGIN_PASSWORD, objValue.toString());
+//			editor.commit();
+//			return true; // 不保存更新值
+//		}
 		return true;  //保存更新后的值
 	}
 	@Override
 	protected void onResume() {
-		enableSound.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_SOUND, false));
-		enableVibrate.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_VIBRATE, false));
-		enablePassword.setChecked(mySharedPreferences.getBoolean(CommonValue.APPLY_ENABLE_PASSWORD, false));
+		
+		enableSound.setChecked(commonValue.getApplyEnableSound());
+		enableVibrate.setChecked(commonValue.getApplyEnableVibrate());
+		enablePassword.setChecked(commonValue.getApplyEnablePassword());
 		//login_password.setDefaultValue(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
-		login_password.setText(mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null));
 		super.onResume();
 	}
+	private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -1,0 +1,15 @@
+package com.tencent.sample.weiyun;
+
+
+public interface IRecordListAdapterItemClick {
+
+    //鏌ョ湅缂╃暐鍥�    public void onDeleteClick(int position);
+    
+    //涓嬭浇鏂囦欢
+    public void onModifyClick(int position);
+    
+    //鍒犻櫎浜戠鍥剧墖
+    public void onGetClick(int position);
+
+	public void onDeleteClick(int arg0);
+}

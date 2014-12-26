@@ -12,7 +12,7 @@ public class Unforget {
 	private SQLiteDatabase db;
 	
 	public Unforget(Context context){
-		helper = new DatabaseHelper(context);
+		helper = DatabaseHelper.getInstance(context);
         db = helper.getWritableDatabase();
 	}
 	

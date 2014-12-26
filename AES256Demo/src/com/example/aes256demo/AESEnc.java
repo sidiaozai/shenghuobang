@@ -44,18 +44,19 @@ public class AESEnc {
 	 */
 	private byte[] generateAesKey(){
 
+		return "12345678901234567890123456789012".getBytes();
 
-		KeyGenerator kgen = null;
-		try {
-			kgen = KeyGenerator.getInstance(KEY_ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		kgen.init(256);		
-		SecretKey secretKey = kgen.generateKey();		
-		
-		return secretKey.getEncoded();
+//		KeyGenerator kgen = null;
+//		try {
+//			kgen = KeyGenerator.getInstance(KEY_ALGORITHM);
+//		} catch (NoSuchAlgorithmException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		kgen.init(256);		
+//		SecretKey secretKey = kgen.generateKey();		
+//		
+//		return secretKey.getEncoded();
 	}
 
 	/**

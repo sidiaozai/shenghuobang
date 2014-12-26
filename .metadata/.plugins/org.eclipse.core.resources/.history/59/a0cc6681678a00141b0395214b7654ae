@@ -1,0 +1,42 @@
+package com.example.shenghuobang.Setting;
+
+import org.json.JSONObject;
+
+import com.example.shenghuobang.R;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+public class UpdateVersionActivity extends Activity {
+
+	private Tencent mTencent;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO 自动生成的方法存根
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_update_version);
+		// Tencent类是SDK的主要实现类，开发者可通过Tencent类访问腾讯开放的OpenAPI。
+		// 其中APP_ID是分配给第三方应用的appid，类型为String。
+		//mTencent = Tencent.createInstance("1103828316", this.getApplicationContext());
+		// 1.4版本:此处需新增参数，传入应用程序的全局context，可通过activity的getApplicationContext方法获取
+		// 初始化视图
+		login();
+	}
+	//APP ID:1103828316
+	//APP KEY:gd6X0zVwO69CQMEi
+	public void login(){
+		mTencent = Tencent.createInstance("1103828316", this.getApplicationContext());
+		if (!mTencent.isSessionValid()){
+			IUiListener listener = new BaseUiListener();
+			mTencent.login(this, "all", listener );
+		}
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		mTencent.onActivityResult(requestCode, resultCode, data);
+	}
+}

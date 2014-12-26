@@ -122,16 +122,32 @@
 				        android:layout_height="80dp"
 					    android:src="@drawable/blue_bg_norm"     	
 			    	/>
-		
-				    <TextView
-				        android:id="@+id/tvInMonthSum"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"  
-				        android:layout_gravity="center"
-				        android:textColor="@color/white"
-				        android:textSize="10sp"
-				        android:text="收入"
-				         />
+
+				    <RelativeLayout
+				        android:layout_width="fill_parent"
+				        android:layout_height="fill_parent"
+				        android:gravity="center_vertical" >
+				        
+				        <TextView
+				            android:id="@+id/tvInMonthSumTitle"
+				            android:layout_width="fill_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center"
+				            android:text="收入"
+				            android:textColor="@color/white"
+				            android:textSize="12sp" />
+				        
+				        <TextView
+				            android:id="@+id/tvInMonthSum"
+				            android:layout_width="fill_parent"
+				            android:layout_height="wrap_content"
+				            android:gravity="center"
+				            android:layout_below="@id/tvInMonthSumTitle"
+				            android:text="0.00"
+				            android:textColor="@color/white"
+				            android:textSize="12sp" />
+				    </RelativeLayout>
+					
 				</FrameLayout>
 				<FrameLayout 
 		            android:layout_alignParentRight="true"
@@ -143,16 +159,31 @@
 				        android:layout_height="80dp"
 					    android:src="@drawable/blue_bg_norm"     	
 			    	/>
-		
-				    <TextView
-				         android:id="@+id/tvOutMonthSum"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"  
-				        android:layout_gravity="center"
-				        android:textColor="@color/white"
-				        android:textSize="10sp"
-				        android:text="支出"
-				         />
+				    <RelativeLayout
+				        android:layout_width="fill_parent"
+				        android:layout_height="fill_parent"
+				        android:gravity="center_vertical" >
+				        <TextView
+					        android:id="@+id/tvOutMonthSumTitle"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:gravity="center"  
+					        android:textColor="@color/white"
+					        android:textSize="12sp"
+					        android:text="支出"
+					         />
+				        <TextView
+				        	android:id="@+id/tvOutMonthSum"
+				        	android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:gravity="center" 
+					        android:layout_below="@id/tvOutMonthSumTitle" 
+					        android:textColor="@color/white"
+					        android:textSize="12sp"
+					        android:text="0.00"
+				         	/>
+				    </RelativeLayout>
+				    
 				</FrameLayout>
 		        
 		    </RelativeLayout>
@@ -174,23 +205,37 @@
 					    
 					    android:src="@drawable/blue_bg_norm"     	
 				    	/>
-		
-				    <TextView
-				        android:id="@+id/tvBalance"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"  
-				        android:layout_gravity="center"
-				        android:textColor="@color/white"
-				        android:textSize="10sp"
-				        android:text="结余 "
-				         />
+					<RelativeLayout
+					    android:layout_width="fill_parent"
+					    android:layout_height="fill_parent"
+					    android:gravity="center_vertical" >
+					    <TextView
+					        android:id="@+id/tvBalanceTitle"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:gravity="center"   
+					        android:textColor="@color/white"
+					        android:textSize="12sp"
+					        android:text="结余 "
+					         />
+					    <TextView
+					        android:id="@+id/tvBalance"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:gravity="center"  
+					        android:layout_below="@id/tvBalanceTitle" 
+					        android:textColor="@color/white"
+					        android:textSize="12sp"
+					        android:text="0.00"
+					         />
+					</RelativeLayout>
+				    
 				</FrameLayout>
 		        
 		    </RelativeLayout>
 
 		</RelativeLayout >
 	</LinearLayout>
-	
 	
 	<ListView  
     	android:id="@id/android:list"  
@@ -200,11 +245,11 @@
     	android:listSelector="@drawable/list_bg_selector"
     	android:cacheColorHint="@android:color/transparent"
     	android:divider="@android:color/transparent" 
-    	android:dividerHeight="30px" /> 
+    	android:dividerHeight="5dp" /> 
     <TextView android:id="@+id/android:empty"  
         android:layout_width="wrap_content"  
         android:layout_height="wrap_content"   
         android:layout_gravity="center" 
-        android:textSize="40px"  
+        android:textSize="15sp"  
         android:text="没有记录"/> 
 </LinearLayout>

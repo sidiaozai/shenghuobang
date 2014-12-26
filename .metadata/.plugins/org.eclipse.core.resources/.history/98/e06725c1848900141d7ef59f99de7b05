@@ -1,0 +1,82 @@
+package com.example.avosclouddemo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
+import com.avos.sns.SNS;
+import com.avos.sns.SNSBase;
+import com.avos.sns.SNSCallback;
+import com.avos.sns.SNSException;
+import com.avos.sns.SNSType;
+
+public class QQSNS  extends Activity{
+	private SNSType loginType = SNSType.AVOSCloudSNSQQ;
+	private Button button1;
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_qqsns);
+		
+		final SNSCallback myCallback = new SNSCallback() {
+			@Override
+			public void done(SNSBase object, SNSException e) {
+				if (e == null){
+					//SNS.associateWithAuthData(AVUser.getCurrentUser(), object.userInfo(), null);
+	                Log.d("QQSNS", "login ok " + object.userId+":"+object.userName);
+				}else {
+					Log.d("QQSNS", "login fail " + loginType);
+				}
+				
+			}
+		};
+
+		try {
+			SNS.setupPlatform(loginType, "897624494", "", "");
+			SNS.loginWithCallback(this, loginType, myCallback);
+		} catch (AVException e1) {
+			// TODO 自动生成的 catch 块
+			e1.printStackTrace();
+		}
+		
+		button1 = (Button) findViewById(R.id.button1);
+		button1.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				AVUser currentUser = AVUser.getCurrentUser();
+				if (currentUser != null) {
+					Toast.makeText(getApplicationContext(), currentUser.getUsername(), Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getApplicationContext(), "没有用户", Toast.LENGTH_SHORT).show();
+				}
+				
+				
+				/*
+				aVUser.put("testPhone", "132654455");
+				aVUser.saveInBackground(new SaveCallback() {
+					
+					@Override
+					public void done(AVException arg0) {
+						Log.d("QQSNS", "同步数据成功");
+					}
+				});*/
+			}
+		});
+		
+	}
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SNS.onActivityResult(requestCode, resultCode, data, loginType);
+    }
+}

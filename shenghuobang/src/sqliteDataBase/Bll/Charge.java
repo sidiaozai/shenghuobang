@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 import sqliteDataBase.DatabaseHelper;
 
 public class Charge {
@@ -15,7 +16,7 @@ public class Charge {
 	
 	public Charge(Context context){
 		
-		helper = new DatabaseHelper(context);
+		helper = DatabaseHelper.getInstance(context);
 		//helper.deleteDatabase(context);
 		
         db = helper.getWritableDatabase();
@@ -35,8 +36,9 @@ public class Charge {
 	}
 	
 	public int update(sqliteDataBase.Model.Charge modelCharge){
-		db.execSQL("update tableCharge set sum=?,type=?,des=? where year=? and month=? and day=?",
-                new Object[] { modelCharge.getSum(),modelCharge.getType(),modelCharge.getDes(),modelCharge.getYear(),modelCharge.getMonth(),modelCharge.getDay()});
+		
+		db.execSQL("update tableCharge set sum=?,type=?,des=?,year=?,month=?,day=? where id=?;",
+                new Object[] { modelCharge.getSum(),modelCharge.getType(),modelCharge.getDes(),modelCharge.getYear(),modelCharge.getMonth(),modelCharge.getDay(),modelCharge.getId()});
 		return 0;
 	}
 	public Cursor query()

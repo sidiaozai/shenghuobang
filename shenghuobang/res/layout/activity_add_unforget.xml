@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:background="@drawable/shape_radius"
+            android:textCursorDrawable="@null"
             android:ems="10" >
             <requestFocus />
         </EditText>

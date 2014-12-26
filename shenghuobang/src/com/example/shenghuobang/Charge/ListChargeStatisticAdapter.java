@@ -1,11 +1,13 @@
 package com.example.shenghuobang.Charge;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import sqliteDataBase.Bll.Charge;
 
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.R;
 
 import android.content.Context;
@@ -131,7 +133,10 @@ public class ListChargeStatisticAdapter extends BaseAdapter {
 		final int chickPosition = position;
 		
 		sqliteDataBase.Model.ChargeStatistic modelChargeStatistic = this.list.get(position);
-		holder.content.setText("支出："+modelChargeStatistic.getOutSum()+"    收入："+modelChargeStatistic.getInSum()+"  时间："+modelChargeStatistic.getDataStr());
+		
+		holder.content.setText("支出："+CommonValue.myFormatter.format(modelChargeStatistic.getOutSum())+"\n"
+				+ "收入："+CommonValue.myFormatter.format(modelChargeStatistic.getInSum())+"\n"
+				+ "时间："+modelChargeStatistic.getDataStr());
 		
 		
 		final int finalPosition = position;
@@ -173,6 +178,7 @@ public class ListChargeStatisticAdapter extends BaseAdapter {
 		holder.linearlayout.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
+				v.setBackgroundResource(R.drawable.textview_norm);
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					v.setBackgroundResource(R.drawable.textview_press);

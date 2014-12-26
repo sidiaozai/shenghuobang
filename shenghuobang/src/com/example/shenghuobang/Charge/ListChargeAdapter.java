@@ -1,16 +1,19 @@
 package com.example.shenghuobang.Charge;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import sqliteDataBase.Bll.Charge;
 
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.R;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -132,8 +135,14 @@ public class ListChargeAdapter extends BaseAdapter {
 		final int chickPosition = position;
 		
 		sqliteDataBase.Model.Charge modelCharge = this.list.get(position);
-		holder.content.setText("金额："+modelCharge.getSum()+"    用途："+modelCharge.getDes());
-		
+		DecimalFormat myFormatter = new DecimalFormat("0.00"); 
+		if(modelCharge.getType()==1){
+			holder.content.setText("金额："+CommonValue.myFormatter.format(modelCharge.getSum())+"\n"
+					+ "用途："+modelCharge.getDes());
+		}else{
+			holder.content.setText("金额："+CommonValue.myFormatter.format(modelCharge.getSum())+"\n"
+					+ "来源："+modelCharge.getDes());
+		}
 		
 		final int finalPosition = position;
 		if (position == mLastPosition) {
@@ -173,6 +182,7 @@ public class ListChargeAdapter extends BaseAdapter {
 		holder.linearlayout.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
+				v.setBackgroundResource(R.drawable.textview_norm);
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					v.setBackgroundResource(R.drawable.textview_press);
@@ -204,6 +214,7 @@ public class ListChargeAdapter extends BaseAdapter {
 					v.setBackgroundResource(R.drawable.textview_norm);
 					break;
 				}
+				
 				return false;
 			}
 		});
@@ -216,6 +227,8 @@ public class ListChargeAdapter extends BaseAdapter {
 					notifyDataSetChanged();
 				} else {
 					
+					mListChargeAdapterListening.onListItemClick(chickPosition);
+					//Toast.makeText(context, "You click: " + chickPosition, Toast.LENGTH_SHORT).show(); 
 				}
 			}
 		});

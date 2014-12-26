@@ -3,7 +3,7 @@ package com.example.shenghuobang;
 import com.example.shenghuobang.Charge.ChargeActivity;
 import com.example.shenghuobang.Password.LoginPasswordActivity;
 import com.example.shenghuobang.Password.PasswordActivity;
-import com.example.shenghuobang.Password.SetLoginPassword;
+import com.example.shenghuobang.Setting.SetLoginPassword;
 import com.example.shenghuobang.Setting.SettingActivity;
 import com.example.shenghuobang.Unforget.UnforgetActivity;
 
@@ -13,6 +13,8 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -21,12 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends TabActivity {
 
 	TabHost tabHost;
 	private TextView main_tab_unread_tv;
-	private RelativeLayout main_tab_charge, main_tab_unforget,main_tab_password,main_tab_settings;
+	private RelativeLayout main_tab_charge, main_tab_unforget;
+	private static RelativeLayout main_tab_password;
+	private RelativeLayout main_tab_settings;
 	private LinearLayout main_layout_charge,main_layout_unforget,main_layout_password,main_layout_settings;
 	private ImageView  img_tab_charge ,img_tab_unforget,img_tab_password,img_tab_settings ;
 	private TextView text_tab_charge ,text_tab_unforget,text_tab_password,text_tab_settings;
@@ -36,10 +41,12 @@ public class MainActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-        	
+		//overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
+		
 		initTab();
-		init();   
+		init();
 	}
+	
         
 	private void init() {
     	//点击底部
@@ -129,6 +136,7 @@ public class MainActivity extends TabActivity {
         		//没有密码，先设置密码
         		if((verPassword==null)||verPassword.equals("")){
         			Intent intent = new Intent(MainActivity.this, SetLoginPassword.class);
+        			intent.putExtra(CommonValue.ClickPosition,CommonValue.ClickPassword);
                     startActivityForResult(intent, 1);
                     
         		}else{
@@ -183,7 +191,60 @@ public class MainActivity extends TabActivity {
 	        text_tab_unforget.setTextColor(getResources().getColor(R.color.grey));
 	        text_tab_password.setTextColor(getResources().getColor(R.color.menu_color));
 	        text_tab_settings.setTextColor(getResources().getColor(R.color.grey));
+    	}else if(2==resultCode){
+    		SetCurrentTab(0);
     	}
         super.onActivityResult(requestCode, resultCode, data);  
 	}
+    
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis()-exitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                exitTime = System.currentTimeMillis();   
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    public void SetCurrentTab(int index){
+    	if(index==0){
+    		main_tab_charge.performClick();
+    	}else if(index ==1){
+    		img_tab_unforget.performClick();
+    	}else if(index == 2){
+    		text_tab_password.performClick();
+    	}else if(index ==4){
+    		text_tab_settings.performClick();
+    	}
+    }
+    public void OnRestartPasswordActivity(){
+    	SharedPreferences mySharedPreferences= getSharedPreferences("shenghuobang", Activity.MODE_PRIVATE); 
+		
+		String verPassword = mySharedPreferences.getString(CommonValue.LOGIN_PASSWORD, null);
+		//没有密码，先设置密码
+		if((verPassword==null)||verPassword.equals("")){
+			Intent intent = new Intent(MainActivity.this, SetLoginPassword.class);
+			intent.putExtra(CommonValue.ClickPosition,CommonValue.ClickPassword);
+            startActivityForResult(intent, 1);
+            
+		}else{
+			Intent intent = new Intent(MainActivity.this,LoginPasswordActivity.class);
+			intent.putExtra(CommonValue.SwitchSource,CommonValue.AppSource);
+			startActivityForResult(intent,1);	
+		}
+    }
+    @Override
+    public void finish(){
+    	Log.d("退出", "asdfas");
+    	overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
+    	super.finish();
+    }
 }

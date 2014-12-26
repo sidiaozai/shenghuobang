@@ -10,22 +10,39 @@ import java.util.List;
 
 
 
+
+
+
+
+
+
+
+
+
+import com.example.shenghuobang.CommonValue;
 import com.example.shenghuobang.R;
 import com.example.shenghuobang.Unforget.AddUnforgetActivity;
 
 import sqliteDataBase.Model.Charge;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog;
 import android.app.ListActivity;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +53,8 @@ public class AddChargeActivity extends ListActivity  {
 	private Button btnSave;
 	private TextView tVAddChargeTime1;
 	private EditText etAddChargeSum;
-	private RadioButton radioButtonType;
+	private RadioButton radioButtonTypeOut;
+	private RadioButton radioButtonTypeIn;
 	private EditText etAddChargeDes;
 	private sqliteDataBase.Model.Charge modelCharge ;
 	private sqliteDataBase.Bll.Charge bllCharge;
@@ -51,6 +69,8 @@ public class AddChargeActivity extends ListActivity  {
 	private String strMonth ;
 	private int intData;
 	private String strData ;
+	private boolean isUpdateMode;
+	//private int modelChargeId;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO 自动生成的方法存根
@@ -118,8 +138,47 @@ public class AddChargeActivity extends ListActivity  {
 		});
 		
 		etAddChargeSum = (EditText) findViewById(R.id.etAddChargeSum);
+		etAddChargeSum.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if (s.toString().contains(".")) {
+					if (s.length() - 1 - s.toString().indexOf(".") > 2) {
+						s = s.toString().subSequence(0,s.toString().indexOf(".") + 3);   
+						etAddChargeSum.setText(s); 
+						etAddChargeSum.setSelection(s.length());
+					}
+				}
+				
+				if (s.toString().trim().substring(0).equals(".")) {
+					s = "0" + s;
+					etAddChargeSum.setText(s);
+					etAddChargeSum.setSelection(2);
+				}
+				if (s.toString().startsWith("0") && s.toString().trim().length() > 1) {
+					if (!s.toString().substring(1, 2).equals(".")) {
+						etAddChargeSum.setText(s.subSequence(0, 1));
+						etAddChargeSum.setSelection(1);
+						return;
+					}
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+			}
+		});
 		
-		radioButtonType = (RadioButton) findViewById(R.id.radioButton1);
+		radioButtonTypeOut = (RadioButton) findViewById(R.id.radioButton1);
+		
+		radioButtonTypeIn = (RadioButton) findViewById(R.id.radioButton2);
 		
 		etAddChargeDes = (EditText) findViewById(R.id.etAddChargeDes);
 			
@@ -129,45 +188,21 @@ public class AddChargeActivity extends ListActivity  {
 			
 			@Override
 			public void onClick(View arg0) {
-
-				String time = tVAddChargeTime1.getText().toString();
-
-				String strYear = time.substring(0, 4);
-				String strMonth = time.substring(5, 7);
-				String strData = time.substring(8, 10);
 				
-				int intYear = Integer.parseInt(strYear);
-				int intMonth = Integer.parseInt(strMonth);
-				int intData = Integer.parseInt(strData);
-				
-				String srtSum = etAddChargeSum.getText().toString();
-				if(srtSum.length()==0){
-					Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
-					return;
+				if(isUpdateMode== true){
+					updateCharge();
+				}else{
+					if(saveCharge()==false)
+						return;
 				}
-				if(srtSum.length()>8){
-					Toast.makeText(AddChargeActivity.this, "输入金额不能超过100000000元", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
-				int sum = Integer.valueOf(srtSum);
-				
-				int type = radioButtonType.isChecked()==true?1:0;
-				String des = etAddChargeDes.getText().toString();
-				if(des.length()==0){
-					Toast.makeText(getApplicationContext(), "用途不能为空", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				modelCharge = new Charge(intYear, intMonth, intData, sum, type, des);
-				
-				bllCharge.insert(modelCharge);
 				
 				setListViewData();
-				
 				etAddChargeDes.setText("");
 				etAddChargeSum.setText("");
 				etAddChargeSum.setFocusable(true);
 				etAddChargeSum.requestFocus();
+				
+				isUpdateMode= false;
 			}
 		});
 		
@@ -176,8 +211,34 @@ public class AddChargeActivity extends ListActivity  {
 			
 			@Override
 			public void onClick(View arg0) {
-				setResult(1,intent);   
-				finish();
+				String sum = etAddChargeSum.getText().toString();
+				if(sum==null||sum.equals(""))
+					finish();
+				
+				AlertDialog.Builder builder = new Builder(AddChargeActivity.this);
+				builder.setMessage("是否保存数据");
+				builder.setTitle("提示");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						
+						if(isUpdateMode== true){
+							updateCharge();
+						}else{
+							saveCharge();
+						}
+						finish();
+					}
+				});
+				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						finish();
+					}
+				});
+				builder.create().show();
 			}
 		});
 		adapter = new ListChargeAdapter(this);
@@ -186,18 +247,100 @@ public class AddChargeActivity extends ListActivity  {
 			@Override
 			public void deleteItem(int position) {
 				sqliteDataBase.Model.Charge modelCharge = (Charge) adapter.getItem(position);
-				sqliteDataBase.Bll.Charge bllCharge = new sqliteDataBase.Bll.Charge(getApplicationContext());
+				
 				bllCharge.delete(modelCharge.getId());
+			}
+
+			@Override
+			public void onListItemClick(int position) {
+				modelCharge = (Charge) adapter.getItem(position);
+
+				isUpdateMode= true;
+				
+				
+				etAddChargeSum.setText(CommonValue.myFormatter.format(modelCharge.getSum()));
+
+				if(modelCharge.getType()==0){
+					radioButtonTypeIn.setChecked(true);
+				}else{
+					radioButtonTypeOut.setChecked(true);
+				}
+				etAddChargeDes.setText(modelCharge.getDes());
 			}
 		});
 	}
+	private Boolean saveCharge(){
+		String time = tVAddChargeTime1.getText().toString();
+
+		String strYear = time.substring(0, 4);
+		String strMonth = time.substring(5, 7);
+		String strData = time.substring(8, 10);
+		
+		int intYear = Integer.parseInt(strYear);
+		int intMonth = Integer.parseInt(strMonth);
+		int intData = Integer.parseInt(strData);
+		
+		String srtSum = etAddChargeSum.getText().toString();
+		
+		Log.i("AddChargeActivity", srtSum);
+		
+		if(srtSum.length()==0){
+			Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
+		Double sum = Double.valueOf(srtSum);
+		
+		int type = radioButtonTypeOut.isChecked()==true?1:0;
+		String des = etAddChargeDes.getText().toString();
+//		if(des.length()==0){
+//			Toast.makeText(getApplicationContext(), "用途不能为空", Toast.LENGTH_SHORT).show();
+//			return false;
+//		}
+		modelCharge = new Charge(intYear, intMonth, intData, sum, type, des);
+		
+		bllCharge.insert(modelCharge);
+		
+		return true;
+	} 
+	
+	private Boolean updateCharge(){
+		String time = tVAddChargeTime1.getText().toString();
+
+		String strYear = time.substring(0, 4);
+		String strMonth = time.substring(5, 7);
+		String strData = time.substring(8, 10);
+		
+		int intYear = Integer.parseInt(strYear);
+		int intMonth = Integer.parseInt(strMonth);
+		int intData = Integer.parseInt(strData);
+		
+		String srtSum = etAddChargeSum.getText().toString();
+		
+		Log.i("AddChargeActivity", srtSum);
+		
+		if(srtSum.length()==0){
+			Toast.makeText(AddChargeActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		
+		Double sum = Double.valueOf(srtSum);
+		
+		int type = radioButtonTypeOut.isChecked()==true?1:0;
+		String des = etAddChargeDes.getText().toString();
+//		if(des.length()==0){
+//			Toast.makeText(getApplicationContext(), "用途不能为空", Toast.LENGTH_SHORT).show();
+//			return false;
+//		}
+		
+		modelCharge = new Charge(modelCharge.getId(),intYear, intMonth, intData, sum, type, des);
+		//Toast.makeText(getApplicationContext(), ""+modelChargeId, Toast.LENGTH_SHORT).show();
+		bllCharge.update(modelCharge);
+		
+		return true;
+	}
 	
 	private void setListViewData(){
-		
-
-		//Date curDate = new Date(System.currentTimeMillis());
-		
-		
 		String time = tVAddChargeTime1.getText().toString();
 
 		String strYear = time.substring(0, 4);
@@ -242,7 +385,7 @@ public class AddChargeActivity extends ListActivity  {
     		int month = cursor.getInt(monthIndex);
     		int day = cursor.getInt(dayIndex);
     		
-    		int sum = cursor.getInt(sumIndex);
+    		Double sum = cursor.getDouble(sumIndex);
     		int type = cursor.getInt(typeIndex);
     		String des = cursor.getString(desIndex);
 
@@ -252,6 +395,12 @@ public class AddChargeActivity extends ListActivity  {
         cursor.close();
 		return list;
 	}
+	
+//	@Override   
+//    protected void onListItemClick(ListView l, View v, int position, long id) {  
+//        Toast.makeText(AddChargeActivity.this, "You click: " + position, Toast.LENGTH_SHORT).show();  
+//        super.onListItemClick(l, v, position, id);  
+//    }  
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
